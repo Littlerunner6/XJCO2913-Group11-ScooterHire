@@ -1,0 +1,5 @@
+  __pycache__/
+  *.pyc
+  admin.txt
+  .env
+  db.sqlite3

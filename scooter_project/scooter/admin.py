@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import Scooter, Order
 
-# Register your models here.
+admin.site.register(Scooter)
+admin.site.register(Order)

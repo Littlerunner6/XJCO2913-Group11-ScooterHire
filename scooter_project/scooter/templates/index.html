@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <title>首页</title>
+    <!-- <link rel="stylesheet" href="../static/css/style.css"> -->
+</head>
+<body>
+    <h1>欢迎你，{{ username }}</h1>
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">退出登录</button>
+    </form>
+</body>
+</html>

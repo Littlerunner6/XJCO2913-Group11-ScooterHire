@@ -3,7 +3,10 @@ from django.contrib.auth.models import User
 
 class Scooter(models.Model):
     name = models.CharField(max_length=50, verbose_name="编号")
-    price = models.FloatField(verbose_name="每小时租赁价格")
+    price_1h = models.FloatField(default=0.0, verbose_name="1小时价格")
+    price_4h = models.FloatField(default=0.0, verbose_name="4小时价格")
+    price_1d = models.FloatField(default=0.0, verbose_name="1天价格")
+    price_1w = models.FloatField(default=0.0, verbose_name="1周价格")
     is_available = models.BooleanField(default=True, verbose_name="是否可用")
 
     def __str__(self):

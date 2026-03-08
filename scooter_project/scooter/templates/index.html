@@ -5,10 +5,34 @@
     <!-- <link rel="stylesheet" href="../static/css/style.css"> -->
 </head>
 <body>
-    <h1>欢迎你，{{ username }}</h1>
-    <form action="{% url 'logout' %}" method="post">
-        {% csrf_token %}
-        <button type="submit">退出登录</button>
-    </form>
+    <div>
+        <h1>欢迎你，{{ username }}</h1>
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">退出登录</button>
+        </form>
+    </div>
+    <br>
+    <div class="scooter-list">
+        <h2>可租赁滑板车列表</h2>
+        {% for scooter in scooters %}
+            <div>
+                <div>滑板车ID：{{ scooter.name }}</div>
+                <div>
+                    <div>1小时：¥{{ scooter.price_1h }}</div>
+                    <div>4小时：¥{{ scooter.price_4h }}</div>
+                    <div>1天：¥{{ scooter.price_1d }}</div>
+                    <div>1周：¥{{ scooter.price_1w }}</div>
+                </div>
+                <div>
+                    <span>可租</span>
+                    <a href="#">立即预订</a>
+                </div>
+                <br>
+            </div>
+        {% empty %}
+            <p>暂无可用的滑板车</p>
+        {% endfor %}
+    </div>
 </body>
 </html>

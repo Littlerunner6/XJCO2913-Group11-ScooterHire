@@ -1,22 +1,23 @@
-{% extends "base.html" %}
-
-{% block title %}首页{% endblock %}
-
-{% block content %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <title>首页</title>
+    <!-- <link rel="stylesheet" href="../static/css/style.css"> -->
+</head>
+<body>
     <div>
         <h1>欢迎你，{{ username }}</h1>
-        <a href="{% url 'my_orders' %}">我的订单</a>
         <form action="{% url 'logout' %}" method="post">
             {% csrf_token %}
             <button type="submit">退出登录</button>
         </form>
     </div>
     <br>
-    <div>
+    <div class="scooter-list">
         <h2>可租赁滑板车列表</h2>
         {% for scooter in scooters %}
             <div>
-                <div>滑板车编号：{{ scooter.name }}</div>
+                <div>滑板车ID：{{ scooter.name }}</div>
                 <div>
                     <div>1小时：¥{{ scooter.price_1h }}</div>
                     <div>4小时：¥{{ scooter.price_4h }}</div>
@@ -25,7 +26,7 @@
                 </div>
                 <div>
                     <span>可租</span>
-                    <a href="{% url 'create_order_page' scooter.id %}">立即预订</a>
+                    <a href="#">立即预订</a>
                 </div>
                 <br>
             </div>
@@ -33,4 +34,5 @@
             <p>暂无可用的滑板车</p>
         {% endfor %}
     </div>
-{% endblock %}
+</body>
+</html>

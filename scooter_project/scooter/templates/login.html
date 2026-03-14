@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <title>登录</title>
-    <!-- <link rel="stylesheet" href="../static/css/style.css"> -->
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}登录{% endblock %}
+
+{% block content %}
     <h1>登录</h1>
     <form method="post">
         {% csrf_token %}
@@ -23,5 +21,4 @@
         </div>
         <button type="submit">登录</button>
     </form>
-</body>
-</html>
+{% endblock %}

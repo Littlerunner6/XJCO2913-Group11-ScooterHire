@@ -1,9 +1,0 @@
-{% extends "base.html" %}
-
-{% block title %}错误！{% endblock %}
-
-{% block content %}
-    <h1>操作失败</h1>
-    <div>{{ msg }}</div>
-    <a href="{% url 'index' %}">返回首页</a>
-{% endblock %}

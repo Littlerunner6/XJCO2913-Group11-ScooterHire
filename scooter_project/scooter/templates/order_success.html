@@ -6,11 +6,15 @@
     <h1>预订成功！</h1>
     <div>您已成功预订滑板车，待支付后生效</div>
     <div>
-        <p>滑板车编号：{{ scooter_name }}</p>
-        <p>租赁时长：{{ hire_period }}</p>
-        <p>订单总价：¥{{ total_price }}</p>
+        <p>滑板车编号：{{ order.scooter.name }}</p>
+        <p>租赁时长：{{ order.hire_period_cn }}</p>
+        <p>订单总价：¥{{ order.total_price }}</p>
     </div>
 
     <a href="{% url 'index' %}">返回首页</a>
+    <form action="{% url 'cancel_order' order.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit">取消订单</button>
+    </form>
     <a href="{% url 'pay_order' order_id %}">去支付</a>
 {% endblock %}

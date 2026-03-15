@@ -5,13 +5,14 @@
 {% block content %}
     <div>
         <h1>欢迎你，{{ username }}</h1>
+        <a href="{% url 'my_orders' %}">我的订单</a>
         <form action="{% url 'logout' %}" method="post">
             {% csrf_token %}
             <button type="submit">退出登录</button>
         </form>
     </div>
     <br>
-    <div class="scooter-list">
+    <div>
         <h2>可租赁滑板车列表</h2>
         {% for scooter in scooters %}
             <div>

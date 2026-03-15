@@ -7,9 +7,9 @@
     <div>
         <p>订单ID：{{ order.id }}</p>
         <p>滑板车编号：{{ order.scooter.name }}</p>
-        <p>租赁时长：{{ hire_period }}</p>
+        <p>租赁时长：{{ order.hire_period_cn }}</p>
         <p>订单总价：¥{{ order.total_price }}</p>
-        <p>当前状态：{{ pay_status }}</p>
+        <p>当前状态：{{ order.pay_status_cn }}</p>
     </div>
 
     <form method="post">
@@ -17,5 +17,6 @@
         <button type="submit">确认支付</button>
     </form>
 
+    <a href="{% url 'my_orders' %}">返回我的订单</a> | 
     <a href="{% url 'index' %}">返回首页</a>
 {% endblock %}

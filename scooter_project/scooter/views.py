@@ -55,10 +55,7 @@ def submit_order(request):
     scooter.save()
     
     return render(request, 'order_success.html', {
-        'scooter_name': scooter.name,
-        'hire_period': dict(Order.HIRE_PERIOD_CHOICES)[hire_period],
-        'total_price': total_price,
-        'order_id': new_order.id
+        'order': new_order
     })
 
 @login_required
@@ -77,13 +74,41 @@ def pay_order(request, order_id):
         order.pay_status = 'paid'
         order.save()
         return render(request, 'pay_success.html', {
-            'order_id': order.id,
-            'scooter_name': order.scooter.name,
-            'total_price': order.total_price
+            'order': order
         })
     
     return render(request, 'pay_order.html', {
-        'order': order,
-        'hire_period': dict(Order.HIRE_PERIOD_CHOICES)[order.hire_period],
-        'pay_status': dict(order.ORDER_STATUS_CHOICES)[order.pay_status]
+        'order': order
+    })
+
+@login_required
+def my_orders(request):
+    orders = Order.objects.filter(user=request.user).order_by('-order_time')
+    return render(request, 'my_orders.html', {
+        'username': request.user.username,
+        'orders': orders
+    })
+
+@login_required
+def cancel_order(request, order_id):
+    if request.method != 'POST':
+        return render(request, 'error.html', {'msg': '该页面仅支持表单提交，请勿直接访问！'})
+    
+    try:
+        order = Order.objects.get(
+            id=order_id, 
+            user=request.user, 
+            pay_status='unpaid'
+        )
+    except Order.DoesNotExist:
+        return render(request, 'error.html', {'msg': '无法取消该订单（订单不存在/已支付/已取消）！'})
+    
+    order.pay_status = 'cancelled'
+    order.save()
+    scooter = order.scooter
+    scooter.is_available = True
+    scooter.save()
+    
+    return render(request, 'cancel_success.html', {
+        'order': order
     })

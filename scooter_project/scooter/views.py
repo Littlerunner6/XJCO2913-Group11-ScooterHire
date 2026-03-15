@@ -1,6 +1,5 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseBadRequest
 from .models import Scooter, Order
 
 @login_required
@@ -45,7 +44,7 @@ def submit_order(request):
         case _:
             return render(request, 'error.html', {'msg': '无效的租赁时长！'})
     
-    Order.objects.create(
+    new_order = Order.objects.create(
         user=request.user,
         scooter=scooter,
         hire_period=hire_period,
@@ -58,5 +57,33 @@ def submit_order(request):
     return render(request, 'order_success.html', {
         'scooter_name': scooter.name,
         'hire_period': dict(Order.HIRE_PERIOD_CHOICES)[hire_period],
-        'total_price': total_price
+        'total_price': total_price,
+        'order_id': new_order.id
+    })
+
+@login_required
+def pay_order(request, order_id):
+    try:
+        order = Order.objects.get(id=order_id, user=request.user)
+    except Order.DoesNotExist:
+        return render(request, 'error.html', {'msg': '订单不存在！'})
+    
+    if order.pay_status == 'paid':
+        return render(request, 'error.html', {'msg': '该订单已支付，无需重复支付！'})
+    if order.pay_status == 'cancelled':
+        return render(request, 'error.html', {'msg': '该订单已取消，无法支付！'})
+    
+    if request.method == 'POST':
+        order.pay_status = 'paid'
+        order.save()
+        return render(request, 'pay_success.html', {
+            'order_id': order.id,
+            'scooter_name': order.scooter.name,
+            'total_price': order.total_price
+        })
+    
+    return render(request, 'pay_order.html', {
+        'order': order,
+        'hire_period': dict(Order.HIRE_PERIOD_CHOICES)[order.hire_period],
+        'pay_status': dict(order.ORDER_STATUS_CHOICES)[order.pay_status]
     })

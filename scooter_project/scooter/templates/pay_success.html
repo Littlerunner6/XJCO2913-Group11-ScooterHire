@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}支付成功{% endblock %}
+
+{% block content %}
+    <h1>支付成功！</h1>
+    <div class="order-info">
+        <p>订单ID：{{ order_id }}</p>
+        <p>滑板车编号：{{ scooter_name }}</p>
+        <p>支付金额：¥{{ total_price }}</p>
+    </div>
+    <a href="{% url 'index' %}">返回首页</a>
+{% endblock %}

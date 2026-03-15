@@ -5,6 +5,10 @@
 {% block content %}
     <div>
         <h1>欢迎你，{{ username }}</h1>
+        {% if user.is_superuser %}
+            <a href="/admin/">管理员后台</a>
+            <a href="{% url 'weekly_income' %}">周收入统计</a>
+        {% endif %}
         <form action="{% url 'logout' %}" method="post">
             {% csrf_token %}
             <button type="submit">退出登录</button>

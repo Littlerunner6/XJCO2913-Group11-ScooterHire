@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}{{ username }}的订单{% endblock %}
+
+{% block content %}
+    <h1>我的订单</h1>
+    <a href="{% url 'index' %}">返回首页</a>
+    {% if orders %}
+        <table>
+            <thead>
+                <tr>
+                    <th>订单ID</th>
+                    <th>滑板车编号</th>
+                    <th>租赁时长</th>
+                    <th>订单总价</th>
+                    <th>下单时间</th>
+                    <th>支付状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <td>{{ order.id }}</td>
+                        <td>{{ order.scooter.name }}</td>
+                        <td>{{ order.hire_period_cn }}</td>
+                        <td>¥{{ order.total_price }}</td>
+                        <td>{{ order.order_time|date:"Y-m-d H:i:s" }}</td>
+                        <td>
+                            {% if order.pay_status == 'paid' %}
+                                <span>已支付</span>
+                            {% elif order.pay_status == 'unpaid' %}
+                                <span>未支付</span>
+                            {% else %}
+                                <span>已取消</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if order.pay_status == 'unpaid' %}
+                                <a href="{% url 'pay_order' order.id %}">去支付</a>
+                                <form action="{% url 'cancel_order' order.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit">取消订单</button>
+                                </form>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>暂无订单记录</p>
+    {% endif %}
+{% endblock %}

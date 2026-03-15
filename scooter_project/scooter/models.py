@@ -39,14 +39,6 @@ class Order(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.scooter.name} - {self.order_time}"
     
-    @property
-    def hire_period_cn(self):
-        return dict(self.HIRE_PERIOD_CHOICES).get(self.hire_period, "未知时长")
-    
-    @property
-    def pay_status_cn(self):
-        return dict(self.ORDER_STATUS_CHOICES).get(self.pay_status, "未知状态")
-    
     class Meta:
         verbose_name = "订单"
         verbose_name_plural = "订单"

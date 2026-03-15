@@ -56,7 +56,7 @@ def submit_order(request):
     
     return render(request, 'order_success.html', {
         'scooter_name': scooter.name,
-        'hire_period': new_order.hire_period_cn,
+        'hire_period': dict(Order.HIRE_PERIOD_CHOICES)[hire_period],
         'total_price': total_price,
         'order_id': new_order.id
     })
@@ -77,17 +77,13 @@ def pay_order(request, order_id):
         order.pay_status = 'paid'
         order.save()
         return render(request, 'pay_success.html', {
-            'order': order
+            'order_id': order.id,
+            'scooter_name': order.scooter.name,
+            'total_price': order.total_price
         })
     
     return render(request, 'pay_order.html', {
-        'order': order
-    })
-
-@login_required
-def my_orders(request):
-    orders = Order.objects.filter(user=request.user).order_by('-order_time')
-    return render(request, 'my_orders.html', {
-        'username': request.user.username,
-        'orders': orders
+        'order': order,
+        'hire_period': dict(Order.HIRE_PERIOD_CHOICES)[order.hire_period],
+        'pay_status': dict(order.ORDER_STATUS_CHOICES)[order.pay_status]
     })

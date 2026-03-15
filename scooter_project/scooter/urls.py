@@ -9,4 +9,7 @@ urlpatterns = [
     path('order/create/<int:scooter_id>/', views.create_order_page, name='create_order_page'),
     path('order/submit/', views.submit_order, name='submit_order'),
     path('order/pay/<int:order_id>/', views.pay_order, name='pay_order'),
+    path('order/my/', views.my_orders, name='my_orders'),
+    path('order/cancel/<int:order_id>/', views.cancel_order, name='cancel_order'),
+    path('income/weekly/', views.weekly_income, name='weekly_income'),
 ]

@@ -16,5 +16,5 @@
         {% csrf_token %}
         <button type="submit">取消订单</button>
     </form>
-    <a href="{% url 'pay_order' order_id %}">去支付</a>
+    <a href="{% url 'pay_order' order.id %}">去支付</a>
 {% endblock %}

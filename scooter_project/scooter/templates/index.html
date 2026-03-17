@@ -6,7 +6,8 @@
     <div>
         <h1>欢迎你，{{ username }}</h1>
         {% if user.is_superuser %}
-            <a href="/admin/">管理员页面</a>
+            <a href="/admin/">管理员后台</a>
+            <a href="{% url 'weekly_income' %}">周收入统计</a>
         {% endif %}
         <a href="{% url 'my_orders' %}">我的订单</a>
         <form action="{% url 'logout' %}" method="post">

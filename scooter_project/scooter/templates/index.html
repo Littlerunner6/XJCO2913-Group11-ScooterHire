@@ -22,10 +22,8 @@
             <div>
                 <div>滑板车编号：{{ scooter.name }}</div>
                 <div>
-                    <div>1小时：¥{{ scooter.price_1h }}</div>
-                    <div>4小时：¥{{ scooter.price_4h }}</div>
-                    <div>1天：¥{{ scooter.price_1d }}</div>
-                    <div>1周：¥{{ scooter.price_1w }}</div>
+                    <div>基础小时单价（¥/小时）：¥{{ scooter.price_per_hour }}</div>
+                    <div>最低起租小时数：¥{{ scooter.min_hire_hours }}</div>
                 </div>
                 <div>
                     <span>可租</span>

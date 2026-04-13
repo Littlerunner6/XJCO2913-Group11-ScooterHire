@@ -4,30 +4,13 @@ from django.contrib.auth.models import User
 
 class Scooter(models.Model):
     name = models.CharField(max_length=50, verbose_name="编号", unique=True)
-    price_1h = models.DecimalField(
+    price_per_hour = models.DecimalField(
         max_digits=8,
         decimal_places=2,
-        default=0.00,
-        verbose_name="1小时价格"
+        default=10.00,
+        verbose_name="基础小时单价（¥/小时）"
     )
-    price_4h = models.DecimalField(
-        max_digits=8,
-        decimal_places=2,
-        default=0.00,
-        verbose_name="4小时价格"
-    )
-    price_1d = models.DecimalField(
-        max_digits=8,
-        decimal_places=2,
-        default=0.00,
-        verbose_name="1天价格"
-    )
-    price_1w = models.DecimalField(
-        max_digits=8,
-        decimal_places=2,
-        default=0.00,
-        verbose_name="1周价格"
-    )
+    min_hire_hours = models.PositiveIntegerField(default=1, verbose_name="最低起租小时数")
     is_available = models.BooleanField(default=True, verbose_name="是否可用")
 
     def __str__(self):
@@ -35,24 +18,16 @@ class Scooter(models.Model):
     
     def clean_fields(self, exclude=None):
         super().clean_fields(exclude=exclude)
-        
-        price_fields = ['price_1h', 'price_4h', 'price_1d', 'price_1w']
-        for field in price_fields:
-            value = getattr(self, field)
-            if value < 0:
-                raise ValidationError(f"{self._meta.get_field(field).verbose_name} 不可为负数")
+        if self.price_per_hour < 0:
+            raise ValidationError("小时单价不能为负数！")
+        if self.min_hire_hours < 1:
+            raise ValidationError("最低起租小时数不能小于1！")
     
     class Meta:
         verbose_name = "滑板车"
         verbose_name_plural = "滑板车"
 
 class Order(models.Model):
-    HIRE_PERIOD_CHOICES = (
-        ('1h', '1小时'),
-        ('4h', '4小时'),
-        ('1d', '1天'),
-        ('1w', '1周'),
-    )
     ORDER_STATUS_CHOICES = (
         ('unpaid', '未支付'),
         ('paid', '已支付'),
@@ -61,7 +36,7 @@ class Order(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="下单用户")
     scooter = models.ForeignKey(Scooter, on_delete=models.CASCADE, verbose_name="租赁滑板车")
-    hire_period = models.CharField(default='1h', max_length=2, choices=HIRE_PERIOD_CHOICES, verbose_name="租赁时长")
+    hire_period = models.PositiveIntegerField(default=1, verbose_name="租赁小时数")
     total_price = models.DecimalField(
         max_digits=8,
         decimal_places=2,
@@ -81,7 +56,7 @@ class Order(models.Model):
     
     @property
     def hire_period_cn(self):
-        return dict(self.HIRE_PERIOD_CHOICES).get(self.hire_period, "未知时长")
+        return f"{self.hire_period} 小时"
     
     @property
     def pay_status_cn(self):

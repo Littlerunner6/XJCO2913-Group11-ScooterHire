@@ -65,3 +65,17 @@ class Order(models.Model):
     class Meta:
         verbose_name = "订单"
         verbose_name_plural = "订单"
+
+class Card(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="用户")
+    card_last4 = models.CharField(max_length=4, verbose_name="卡号后4位")
+    bank_name = models.CharField(max_length=50, verbose_name="银行名称")
+    is_default = models.BooleanField(default=False, verbose_name="设为默认")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="添加时间")
+
+    def __str__(self):
+        return f"{self.bank_name} (*{self.card_last4})"
+
+    class Meta:
+        verbose_name = "银行卡"
+        verbose_name_plural = "银行卡"

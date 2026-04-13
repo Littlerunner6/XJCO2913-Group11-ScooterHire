@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}我的银行卡{% endblock %}
+
+{% block content %}
+    <h1>我的银行卡</h1>
+    <a href="{% url 'card_add' %}">添加银行卡</a>
+
+    <ul style="margin-top:20px;">
+    {% for c in cards %}
+        <li>
+            {{ c }} 
+            {% if c.is_default %}
+                <span style="color:green; margin-left:8px;">【默认卡】</span>
+            {% else %}
+                <form method="post" action="{% url 'set_default_card' c.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" style="margin-left:5px;">设为默认</button>
+                </form>
+            {% endif %}
+
+            <form method="post" action="{% url 'card_delete' c.id %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" style="color:red; margin-left:5px;">删除</button>
+            </form>
+        </li>
+    {% empty %}
+        <li>暂无银行卡</li>
+    {% endfor %}
+    </ul>
+    
+    <a href="{% url 'index' %}">返回首页</a>
+{% endblock %}

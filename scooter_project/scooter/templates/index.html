@@ -10,6 +10,7 @@
             <a href="{% url 'weekly_income' %}">周收入统计</a>
         {% endif %}
         <a href="{% url 'my_orders' %}">我的订单</a>
+        <a href="{% url 'card_list' %}">我的银行卡</a>
         <form action="{% url 'logout' %}" method="post">
             {% csrf_token %}
             <button type="submit">退出登录</button>

@@ -37,23 +37,22 @@ def submit_order(request):
     
     if not scooter_id or not hire_period:
         return render(request, 'error.html', {'msg': '请选择租赁时长！'})
-    
-    try:
-        hire_period = int(hire_period)
-    except:
-        return render(request, 'error.html', {'msg': '小时数必须是数字'})
-    
     scooter = get_object_or_404(Scooter, id=scooter_id)
     if not scooter.is_available:
         return render(request, 'error.html', {'msg': '该滑板车不可预订！'})
     
-    if hire_period < scooter.min_hire_hours:
-        return render(request, 'error.html', {
-            'msg': f'最低起租 {scooter.min_hire_hours} 小时'
-        })
-
-    total_price = scooter.price_per_hour * hire_period
-
+    match hire_period:
+        case '1h':
+            total_price = scooter.price_1h
+        case '4h':
+            total_price = scooter.price_4h
+        case '1d':
+            total_price = scooter.price_1d
+        case '1w':
+            total_price = scooter.price_1w
+        case _:
+            return render(request, 'error.html', {'msg': '无效的租赁时长！'})
+    
     new_order = Order.objects.create(
         user=request.user,
         scooter=scooter,
@@ -131,46 +130,36 @@ def weekly_income(request):
     start_datetime = datetime.datetime.combine(monday, datetime.time.min)
     end_datetime = datetime.datetime.combine(sunday, datetime.time.max)
 
-    STANDARD_PERIODS = [
-        ('1h', '1小时档', 1, 4),
-        ('4h', '4小时档', 4, 24),
-        ('1d', '1天档(24h)', 24, 168),
-        ('1w', '1周档(168h)', 168, 9999),
-    ]
-    all_period_keys = [p[0] for p in STANDARD_PERIODS]
-
-    paid_orders = Order.objects.filter(
+    income_stats = Order.objects.filter(
         pay_status='paid',
         order_time__gte=start_datetime,
         order_time__lte=end_datetime
-    )
+    ).values('hire_period').annotate(
+        order_count=Count('id'),
+        total_income=Sum('total_price')
+    ).order_by('hire_period')
 
+    all_periods = ['1h', '4h', '1d', '1w']
     stat_data = []
     max_order_count = 0
-    for period_key, period_name, min_h, max_h in STANDARD_PERIODS:
-        period_orders = paid_orders.filter(
-            hire_period__gte=min_h,
-            hire_period__lt=max_h
-        )
-        
-        order_count = period_orders.count()
-        total_income = period_orders.aggregate(Sum('total_price'))['total_price__sum'] or 0.00
-        
-        total_income = round(float(total_income), 2)
-        
+
+    for period in all_periods:
+        period_stat = next((item for item in income_stats if item['hire_period'] == period), None)
+        order_count = period_stat['order_count'] if period_stat else 0
+        total_income = period_stat['total_income'] if period_stat else 0.00
+
         if order_count > max_order_count:
             max_order_count = order_count
-        
+
         stat_data.append({
-            'period': period_key,
-            'period_name': period_name,
+            'period': period,
+            'period_name': dict(Order.HIRE_PERIOD_CHOICES).get(period, "未知时长"),
             'order_count': order_count,
-            'total_income': total_income,
+            'total_income': round(float(total_income), 2),
             'is_hot': order_count == max_order_count and max_order_count > 0
         })
-    
+
     total_weekly_income = sum([item['total_income'] for item in stat_data])
-    total_weekly_income = round(total_weekly_income, 2)
 
     return render(request, 'admin/weekly_income.html', {
         'monday': monday.strftime('%Y-%m-%d'),

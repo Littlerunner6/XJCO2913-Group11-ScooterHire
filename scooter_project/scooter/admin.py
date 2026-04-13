@@ -3,7 +3,7 @@ from .models import Scooter, Order
 
 @admin.register(Scooter)
 class ScooterAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price_per_hour', 'min_hire_hours', 'is_available')
+    list_display = ('name', 'price_1h', 'price_4h', 'price_1d', 'price_1w', 'is_available')
     search_fields = ('name',)
     list_filter = ('is_available',)
     ordering = ('name',)
@@ -12,7 +12,8 @@ class ScooterAdmin(admin.ModelAdmin):
             'fields': ('name', 'is_available')
         }),
         ('租赁价格配置', {
-            'fields': ('price_per_hour', 'min_hire_hours')
+            'fields': ('price_1h', 'price_4h', 'price_1d', 'price_1w'),
+            'description': '单位：元'
         }),
     )
 

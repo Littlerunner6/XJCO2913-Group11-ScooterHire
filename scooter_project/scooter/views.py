@@ -1,5 +1,9 @@
+from django import forms
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+from django.contrib.auth.models import User
 from django.db.models import Sum, Count
 from .models import Scooter, Order, Card
 import datetime
@@ -10,6 +14,58 @@ def admin_required(view_func):
             return render(request, 'error.html', {'msg': '无管理员权限'})
         return view_func(request, *args, **kwargs)
     return login_required(wrapper)
+
+class RegisterForm(forms.ModelForm):
+    username = forms.CharField(label="用户名")
+    password1 = forms.CharField(label="密码", widget=forms.PasswordInput)
+    password2 = forms.CharField(label="确认密码", widget=forms.PasswordInput)
+
+    class Meta:
+        model = User
+        fields = ["username"]
+
+    def clean_username(self):
+        username = self.cleaned_data.get("username")
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError("用户名已存在")
+        return username
+    
+    def clean_password1(self):
+        pwd = self.cleaned_data.get("password1")
+
+        if len(pwd) < 8:
+            raise forms.ValidationError("密码长度不能小于8位")
+        if not any(c.isalpha() for c in pwd):
+            raise forms.ValidationError("密码必须包含字母")
+        if not any(c.isdigit() for c in pwd):
+            raise forms.ValidationError("密码必须包含数字")
+
+        return pwd
+
+    def clean_password2(self):
+        pwd1 = self.cleaned_data.get("password1")
+        pwd2 = self.cleaned_data.get("password2")
+        if pwd1 and pwd2 != pwd1:
+            raise forms.ValidationError("两次输入的密码不一致")
+        return pwd2
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data["password1"])
+        if commit:
+            user.save()
+        return user
+
+def register(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('index')
+    else:
+        form = RegisterForm()
+    return render(request, 'registration/register.html', {'form': form})
 
 @login_required
 def index(request):

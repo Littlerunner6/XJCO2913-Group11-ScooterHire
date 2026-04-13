@@ -1,11 +1,13 @@
-from django.urls import path
+from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
+    path('register/', views.register, name='register'),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('order/create/<int:scooter_id>/', views.create_order_page, name='create_order_page'),
     path('order/submit/', views.submit_order, name='submit_order'),
     path('order/pay/<int:order_id>/', views.pay_order, name='pay_order'),

@@ -1,7 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum, Count
-from .models import Scooter, Order
+from .models import Scooter, Order, Card
 import datetime
 
 def admin_required(view_func):
@@ -168,3 +168,44 @@ def weekly_income(request):
         'total_weekly_income': round(total_weekly_income, 2),
         'has_data': total_weekly_income > 0
     })
+
+@login_required
+def card_list(request):
+    cards = Card.objects.filter(user=request.user).order_by('-is_default', '-created_at')
+    return render(request, 'card/list.html', {'cards': cards})
+
+@login_required
+def card_add(request):
+    if request.method == 'POST':
+        card_num = request.POST.get('card_num', '').strip()
+        bank_name = request.POST.get('bank_name', '').strip()
+
+        if len(card_num) < 4:
+            return render(request, 'card/add.html', {'msg': '卡号至少4位'})
+
+        last4 = card_num[-4:]
+
+        Card.objects.create(
+            user=request.user,
+            card_last4=last4,
+            bank_name=bank_name
+        )
+        return redirect('card_list')
+
+    return render(request, 'card/add.html')
+
+@login_required
+def card_delete(request, card_id):
+    if request.method == 'POST':
+        card = get_object_or_404(Card, id=card_id, user=request.user)
+        card.delete()
+    return redirect('card_list')
+
+@login_required
+def set_default_card(request, card_id):
+    if request.method == 'POST':
+        Card.objects.filter(user=request.user).update(is_default=False)
+        card = get_object_or_404(Card, id=card_id, user=request.user)
+        card.is_default = True
+        card.save()
+    return redirect('card_list')

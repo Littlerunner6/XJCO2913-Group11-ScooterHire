@@ -6,6 +6,9 @@ from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.db.models import Sum, Count
 from .models import Scooter, Order, Card
+from django.core.mail import send_mail
+from django.conf import settings
+from threading import Thread
 import datetime
 
 def admin_required(view_func):
@@ -17,12 +20,13 @@ def admin_required(view_func):
 
 class RegisterForm(forms.ModelForm):
     username = forms.CharField(label="用户名")
+    email = forms.EmailField(label="邮箱", required=True)
     password1 = forms.CharField(label="密码", widget=forms.PasswordInput)
     password2 = forms.CharField(label="确认密码", widget=forms.PasswordInput)
 
     class Meta:
         model = User
-        fields = ["username"]
+        fields = ["username", "email"] 
 
     def clean_username(self):
         username = self.cleaned_data.get("username")
@@ -83,6 +87,28 @@ def create_order_page(request, scooter_id):
         return render(request, 'error.html', {'msg': '该滑板车不可预订！'})
     return render(request, 'create_order.html', {'scooter': scooter})
 
+def send_confirmation_email(order):
+    subject = "滑板车预订确认"
+    message = f"""
+你好 {order.user.username}：
+
+你已成功预订电动滑板车！
+订单编号：{order.id}
+滑板车编号：{order.scooter.name}
+租赁时长：{order.hire_period} 小时
+订单总价：¥{order.total_price}
+下单时间：{order.order_time.strftime('%Y-%m-%d %H:%M')}
+
+请尽快完成支付。
+"""
+    send_mail(
+        subject=subject,
+        message=message,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[order.user.email],
+        fail_silently=True,
+    )
+
 @login_required
 def submit_order(request):
     if request.method != 'POST':
@@ -120,6 +146,11 @@ def submit_order(request):
     scooter.is_available = False
     scooter.save()
     
+    Thread(
+        target=send_confirmation_email,
+        args=(new_order,)
+    ).start()
+
     return render(request, 'order_success.html', {
         'order': new_order
     })
@@ -139,6 +170,7 @@ def pay_order(request, order_id):
     if request.method == 'POST':
         order.pay_status = 'paid'
         order.save()
+
         return render(request, 'pay_success.html', {
             'order': order
         })

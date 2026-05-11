@@ -34,7 +34,9 @@ class Order(models.Model):
         ('cancelled', '已取消'),
     )
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="下单用户")
+    guest_name = models.CharField(max_length=100, blank=True, null=True, verbose_name="访客姓名")
+    guest_email = models.EmailField(blank=True, null=True, verbose_name="访客邮箱")
+    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE, verbose_name="下单用户")
     scooter = models.ForeignKey(Scooter, on_delete=models.CASCADE, verbose_name="租赁滑板车")
     hire_period = models.PositiveIntegerField(default=1, verbose_name="租赁小时数")
     total_price = models.DecimalField(

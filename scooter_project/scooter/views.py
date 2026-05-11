@@ -88,7 +88,7 @@ def create_order_page(request, scooter_id):
     scooter = get_object_or_404(Scooter, id=scooter_id)
     if not scooter.is_available:
         return render(request, 'error.html', {'msg': '该滑板车不可预订！'})
-    return render(request, 'create_order.html', {'scooter': scooter})
+    return render(request, 'order/create_order.html', {'scooter': scooter})
 
 def send_confirmation_email(order):
     subject = "滑板车预订确认"
@@ -175,14 +175,14 @@ def pay_order(request, order_id):
             'order': order
         })
     
-    return render(request, 'pay_order.html', {
+    return render(request, 'order/pay_order.html', {
         'order': order
     })
 
 @login_required
 def my_orders(request):
     orders = Order.objects.filter(user=request.user).order_by('-order_time')
-    return render(request, 'my_orders.html', {
+    return render(request, 'order/my_orders.html', {
         'username': request.user.username,
         'orders': orders
     })
@@ -376,4 +376,40 @@ def staff_create_booking(request):
     scooters = Scooter.objects.filter(is_available=True).order_by('name')
     return render(request, "staff/staff_booking.html", {
         "scooters": scooters
+    })
+
+@login_required
+def extend_booking(request, order_id):
+    order = get_object_or_404(
+        Order,
+        id=order_id,
+        user=request.user,
+        pay_status='unpaid'
+    )
+
+    if request.method == 'POST':
+        extra_hours = request.POST.get('extra_hours')
+
+        if not extra_hours:
+            return render(request, 'error.html', {'msg': '请输入延长小时数'})
+
+        try:
+            extra_hours = int(extra_hours)
+        except:
+            return render(request, 'error.html', {'msg': '小时数必须是数字'})
+
+        if extra_hours <= 0:
+            return render(request, 'error.html', {'msg': '延长时间必须大于0'})
+
+        scooter = order.scooter
+        extra_price = scooter.price_per_hour * extra_hours
+
+        order.hire_period += extra_hours
+        order.total_price += extra_price
+        order.save()
+
+        return redirect('my_orders')
+
+    return render(request, 'order/extend.html', {
+        'order': order
     })

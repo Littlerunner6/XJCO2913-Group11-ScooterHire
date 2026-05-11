@@ -19,4 +19,5 @@ urlpatterns = [
     path('card/delete/<int:card_id>/', views.card_delete, name='card_delete'), 
     path('card/set-default/<int:card_id>/', views.set_default_card, name='set_default_card'),
     path("staff/create-booking/", views.staff_create_booking, name="staff_create_booking"),
+    path('order/extend/<int:order_id>/', views.extend_booking, name='extend_booking'),
 ]

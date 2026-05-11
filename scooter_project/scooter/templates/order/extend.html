@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}延长租赁{% endblock %}
+
+{% block content %}
+<h1>延长租赁时长</h1>
+
+<p>订单：{{ order.scooter.name }}</p>
+<p>当前时长：{{ order.hire_period }} 小时</p>
+<p>当前总价：{{ order.total_price }} 元</p>
+<p>单价：{{ order.scooter.price_per_hour }} 元/小时</p>
+
+<form method="post">
+    {% csrf_token %}
+    <div>
+        <label>延长小时数：</label>
+        <input type="number" name="extra_hours" min="1" required>
+    </div>
+
+    <button type="submit">确认延长</button>
+</form>
+{% endblock %}

@@ -1,6 +1,6 @@
 from django import forms
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.models import User
@@ -17,6 +17,9 @@ def admin_required(view_func):
             return render(request, 'error.html', {'msg': '无管理员权限'})
         return view_func(request, *args, **kwargs)
     return login_required(wrapper)
+
+def is_staff(user):
+    return user.is_staff
 
 class RegisterForm(forms.ModelForm):
     username = forms.CharField(label="用户名")
@@ -146,10 +149,7 @@ def submit_order(request):
     scooter.is_available = False
     scooter.save()
     
-    Thread(
-        target=send_confirmation_email,
-        args=(new_order,)
-    ).start()
+    Thread(target=send_confirmation_email, args=(new_order,)).start()
 
     return render(request, 'order_success.html', {
         'order': new_order
@@ -308,3 +308,72 @@ def set_default_card(request, card_id):
         card.is_default = True
         card.save()
     return redirect('card_list')
+
+def send_guest_booking_email(order):
+    subject = "滑板车预订确认（代下单）"
+    message = f"""
+您好 {order.guest_name}：
+
+员工已为您代预订滑板车！
+订单编号：{order.id}
+滑板车编号：{order.scooter.name}
+租赁时长：{order.hire_period} 小时
+
+感谢使用！
+"""
+    send_mail(
+        subject=subject,
+        message=message,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[order.guest_email],
+        fail_silently=True,
+    )
+
+@login_required
+@user_passes_test(is_staff)  # 仅员工可访问
+def staff_create_booking(request):
+    if request.method == "POST":
+        guest_name = request.POST.get("guest_name")
+        guest_email = request.POST.get("guest_email")
+        scooter_id = request.POST.get('scooter_id')
+        hire_period = request.POST.get('hire_period')
+        
+        if not scooter_id or not hire_period:
+            return render(request, 'error.html', {'msg': '请选择租赁时长！'})
+        
+        try:
+            hire_period = int(hire_period)
+        except:
+            return render(request, 'error.html', {'msg': '小时数必须是数字'})
+        
+        scooter = get_object_or_404(Scooter, id=scooter_id)
+        if not scooter.is_available:
+            return render(request, 'error.html', {'msg': '该滑板车不可预订！'})
+        
+        if hire_period < scooter.min_hire_hours:
+            return render(request, 'error.html', {
+                'msg': f'最低起租 {scooter.min_hire_hours} 小时'
+            })
+
+        total_price = scooter.price_per_hour * hire_period
+
+        new_order = Order.objects.create(
+            guest_name=guest_name,
+            guest_email=guest_email,
+            user=None,
+            scooter=scooter,
+            hire_period=hire_period,
+            total_price=total_price
+        )
+        
+        scooter.is_available = False
+        scooter.save()
+
+        Thread(target=send_guest_booking_email, args=(new_order,)).start()
+
+        return redirect("index") 
+
+    scooters = Scooter.objects.filter(is_available=True).order_by('name')
+    return render(request, "staff/staff_booking.html", {
+        "scooters": scooters
+    })

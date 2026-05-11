@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}员工代客下单{% endblock %}
+
+{% block content %}
+    <h1>员工代客下单</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div>
+            <label>客户姓名：</label>
+            <input type="text" name="guest_name" required>
+        </div>
+
+        <div>
+            <label>客户邮箱：</label>
+            <input type="email" name="guest_email" required>
+        </div>
+
+        <div>
+            <label>选择滑板车：</label>
+            <select name="scooter_id" required>
+                {% for s in scooters %}
+                    <option value="{{ s.id }}">{{ s.id }} - {{ s.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <label>租赁时长：</label>
+            <input type="number" name="hire_period" required> 小时
+        </div>
+
+        <button type="submit">提交预订</button>
+    </form>
+
+    <a href="{% url 'index' %}">返回首页</a>
+{% endblock %}

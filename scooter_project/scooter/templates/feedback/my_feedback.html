@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}我的反馈{% endblock %}
+
+{% block content %}
+    <h1>我的故障反馈</h1>
+
+    <a href="{% url 'feedback_create' %}">提交新反馈</a>
+
+    {% for fb in feedbacks %}
+    <div>
+        <h3>车辆：{{ fb.scooter.name }}</h3>
+        <p>问题：{{ fb.content }}</p>
+        <p>状态：{{ fb.get_status_display }}</p>
+        <p>时间：{{ fb.created_at }}</p>
+        <hr>
+    </div>
+    {% empty %}
+    <p>暂无反馈记录</p>
+    {% endfor %}
+
+    <br>
+    <a href="{% url 'index' %}">返回首页</a>
+{% endblock %}

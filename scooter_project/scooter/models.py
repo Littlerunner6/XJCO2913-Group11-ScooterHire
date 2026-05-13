@@ -81,3 +81,21 @@ class Card(models.Model):
     class Meta:
         verbose_name = "银行卡"
         verbose_name_plural = "银行卡"
+
+class Feedback(models.Model):
+    STATUS_CHOICES = (
+        ('pending', '待处理'),
+        ('resolved', '已解决'),
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="用户")
+    scooter = models.ForeignKey(Scooter, on_delete=models.CASCADE, verbose_name="故障车辆")
+    content = models.TextField(verbose_name="问题描述")
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending', verbose_name="处理状态")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="提交时间")
+
+    def __str__(self):
+        return f"{self.user.username} - {self.scooter.name} - {self.created_at.strftime('%m-%d %H:%M')}"
+
+    class Meta:
+        verbose_name = "故障反馈"
+        verbose_name_plural = "故障反馈"

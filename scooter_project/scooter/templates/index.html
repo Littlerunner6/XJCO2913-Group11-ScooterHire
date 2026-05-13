@@ -14,6 +14,8 @@
         {% endif %}
         <a href="{% url 'my_orders' %}">我的订单</a>
         <a href="{% url 'card_list' %}">我的银行卡</a>
+        <a href="{% url 'feedback_create' %}">提交故障反馈</a>
+        <a href="{% url 'my_feedback' %}">查看我的反馈</a>
         <form action="{% url 'logout' %}" method="post">
             {% csrf_token %}
             <button type="submit">退出登录</button>

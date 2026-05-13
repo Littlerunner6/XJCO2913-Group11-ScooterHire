@@ -20,4 +20,6 @@ urlpatterns = [
     path('card/set-default/<int:card_id>/', views.set_default_card, name='set_default_card'),
     path("staff/create-booking/", views.staff_create_booking, name="staff_create_booking"),
     path('order/extend/<int:order_id>/', views.extend_booking, name='extend_booking'),
+    path('feedback/create/', views.feedback_create, name='feedback_create'),
+    path('feedback/my/', views.my_feedback, name='my_feedback'),
 ]

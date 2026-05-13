@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}提交故障反馈{% endblock %}
+
+{% block content %}
+    <h1>提交故障反馈</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        
+        <div>
+            <label>选择车辆：</label>
+            <select name="scooter_id" required>
+                {% for scooter in scooters %}
+                <option value="{{ scooter.id }}">{{ scooter.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <label>问题描述：</label><br>
+            <textarea name="content" rows="5" required placeholder="请描述问题"></textarea>
+        </div>
+
+        <button type="submit">提交反馈</button>
+    </form>
+
+    <br>
+    <a href="{% url 'index' %}">返回首页</a>
+{% endblock %}

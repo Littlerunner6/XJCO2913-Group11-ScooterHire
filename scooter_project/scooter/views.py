@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.db.models import Sum, Count
-from .models import Scooter, Order, Card
+from .models import Scooter, Order, Card, Feedback
 from django.core.mail import send_mail
 from django.conf import settings
 from threading import Thread
@@ -413,3 +413,31 @@ def extend_booking(request, order_id):
     return render(request, 'order/extend.html', {
         'order': order
     })
+
+@login_required
+def feedback_create(request):
+    if request.method == 'POST':
+        scooter_id = request.POST.get('scooter_id')
+        content = request.POST.get('content', '').strip()
+
+        if not scooter_id:
+            return render(request, 'error.html', {'msg': '请选择车辆'})
+        if not content:
+            return render(request, 'error.html', {'msg': '请填写问题描述'})
+
+        scooter = get_object_or_404(Scooter, id=scooter_id)
+
+        Feedback.objects.create(
+            user=request.user,
+            scooter=scooter,
+            content=content
+        )
+        return render(request, 'feedback/success.html', {'msg': '反馈提交成功！'})
+
+    scooters = Scooter.objects.all().order_by('name')
+    return render(request, 'feedback/create.html', {'scooters': scooters})
+
+@login_required
+def my_feedback(request):
+    feedbacks = Feedback.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'feedback/my_feedback.html', {'feedbacks': feedbacks})

@@ -8,8 +8,9 @@ from django.db.models import Sum, Count
 from .models import Scooter, Order, Card, Feedback
 from django.core.mail import send_mail
 from django.conf import settings
+from django.core.serializers.json import DjangoJSONEncoder
 from threading import Thread
-import datetime
+import datetime, json
 
 def admin_required(view_func):
     def wrapper(request, *args, **kwargs):
@@ -78,9 +79,15 @@ def register(request):
 def index(request):
     scooters = Scooter.objects.filter(is_available=True).order_by('name')
 
+    scooters_json = json.dumps(
+        list(scooters.values('id', 'name', 'address', 'latitude', 'longitude')),
+        cls=DjangoJSONEncoder
+    )
+
     return render(request, 'index.html', {
         'username': request.user.username,
         'scooters': scooters,
+        'scooters_json': scooters_json
     })
 
 @login_required

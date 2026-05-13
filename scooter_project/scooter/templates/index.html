@@ -29,7 +29,8 @@
                 <div>滑板车编号：{{ scooter.name }}</div>
                 <div>
                     <div>基础小时单价（¥/小时）：¥{{ scooter.price_per_hour }}</div>
-                    <div>最低起租小时数：¥{{ scooter.min_hire_hours }}</div>
+                    <div>最低起租小时数：{{ scooter.min_hire_hours }} 小时</div>
+                    <div>位置：{{ scooter.address }}</div>
                 </div>
                 <div>
                     <span>可租</span>
@@ -41,4 +42,25 @@
             <p>暂无可用的滑板车</p>
         {% endfor %}
     </div>
+    
+    <h2>滑板车位置地图</h2>
+    <div id="map" style="height: 400px;"></div>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([0, 0], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors',
+            referrerPolicy: 'origin'
+        }).addTo(map);
+
+        var scooters = JSON.parse('{{ scooters_json|escapejs }}');
+        scooters.forEach(function(s) {
+            L.marker([s.latitude, s.longitude])
+             .addTo(map)
+             .bindPopup(s.name + "<br>" + s.address);
+        });
+    </script>
 {% endblock %}

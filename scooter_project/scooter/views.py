@@ -267,12 +267,41 @@ def weekly_income(request):
     total_weekly_income = sum([item['total_income'] for item in stat_data])
     total_weekly_income = round(total_weekly_income, 2)
 
+    daily_income = []
+    for i in range(7):
+        day = monday + datetime.timedelta(days=i)
+        day_start = datetime.datetime.combine(day, datetime.time.min)
+        day_end = datetime.datetime.combine(day, datetime.time.max)
+        day_total = Order.objects.filter(
+            pay_status='paid',
+            order_time__gte=day_start,
+            order_time__lte=day_end
+        ).aggregate(Sum('total_price'))['total_price__sum'] or 0.00
+        day_orders = Order.objects.filter(
+            pay_status='paid',
+            order_time__gte=day_start,
+            order_time__lte=day_end
+        )
+        day_count = day_orders.count()
+        daily_income.append({
+            'date': day,
+            'income': round(float(day_total), 2),
+            'order_count': day_count
+        })
+
+    max_count = max([d['order_count'] for d in daily_income], default=0)
+    for d in daily_income:
+        d['is_popular'] = (d['order_count'] == max_count) and (max_count > 0)
+    
     return render(request, 'admin/weekly_income.html', {
         'monday': monday.strftime('%Y-%m-%d'),
         'sunday': sunday.strftime('%Y-%m-%d'),
         'stat_data': stat_data,
         'total_weekly_income': round(total_weekly_income, 2),
-        'has_data': total_weekly_income > 0
+        'has_data': total_weekly_income > 0,
+        'daily_income': daily_income,
+        'stat_json': json.dumps(stat_data, cls=DjangoJSONEncoder),
+        'daily_json': json.dumps(daily_income, cls=DjangoJSONEncoder)
     })
 
 @login_required

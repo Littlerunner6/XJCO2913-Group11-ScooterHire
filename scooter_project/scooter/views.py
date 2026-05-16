@@ -22,6 +22,21 @@ def admin_required(view_func):
 def is_staff(user):
     return user.is_staff
 
+def get_discount(user):
+    if not user or not user.is_authenticated:
+        return 1.0
+    
+    groups = user.groups.values_list('name', flat=True)
+    
+    if "FrequentUser" in groups:
+        return 0.8
+    elif "Elderly" in groups:
+        return 0.85
+    elif "Student" in groups:
+        return 0.9
+    
+    return 1.0
+
 class RegisterForm(forms.ModelForm):
     username = forms.CharField(label="用户名")
     email = forms.EmailField(label="邮箱", required=True)
@@ -174,16 +189,22 @@ def pay_order(request, order_id):
     if order.pay_status == 'cancelled':
         return render(request, 'error.html', {'msg': '该订单已取消，无法支付！'})
     
+    origin_price = order.scooter.price_per_hour * order.hire_period
+    discount = get_discount(request.user)
+    order.total_price = round(float(origin_price) * discount, 2)
+
     if request.method == 'POST':
         order.pay_status = 'paid'
         order.save()
 
-        return render(request, 'pay_success.html', {
-            'order': order
+        return render(request, 'order/pay_success.html', {
+            'order': order,
+            'origin_price': origin_price
         })
-    
+
     return render(request, 'order/pay_order.html', {
-        'order': order
+        'order': order,
+        'origin_price': origin_price
     })
 
 @login_required

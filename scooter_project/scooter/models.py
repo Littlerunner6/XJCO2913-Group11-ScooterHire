@@ -13,6 +13,10 @@ class Scooter(models.Model):
     min_hire_hours = models.PositiveIntegerField(default=1, verbose_name="最低起租小时数")
     is_available = models.BooleanField(default=True, verbose_name="是否可用")
 
+    address = models.CharField(max_length=100, default="City Centre", verbose_name="地址")
+    latitude = models.DecimalField(max_digits=10, decimal_places=6, default=0, verbose_name="纬度")
+    longitude = models.DecimalField(max_digits=10, decimal_places=6, default=0, verbose_name="经度")
+
     def __str__(self):
         return self.name
     

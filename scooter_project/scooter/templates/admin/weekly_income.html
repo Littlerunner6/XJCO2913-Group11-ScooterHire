@@ -7,6 +7,7 @@
     <div>统计周期：{{ monday }} 至 {{ sunday }}（本周）</div>
     <div>本周总收入：¥{{ total_weekly_income }}</div>
 
+    <h2>按租赁时长统计</h2>
     {% if has_data %}
         <table>
             <thead>
@@ -38,8 +39,84 @@
         <div>本周暂无已支付订单</div>
     {% endif %}
 
-    <div>
+    <br>
+    <h3>租赁时长收入图表</h3>
+    <div style="width:40%">
+        <canvas id="periodChart"></canvas>
+    </div>
+
+    <br>
+    <h2>按每日收入统计</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>日期</th>
+                <th>订单量（笔）</th>
+                <th>收入（¥）</th>
+                <th>是否为热门日期</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for day in daily_income %}
+                <tr>
+                    <td>{{ day.date }}</td>
+                    <td>{{ day.order_count }}</td>
+                    <td>{{ day.income }}</td>
+                    <td>
+                        {% if day.is_popular %}
+                            <span>热门</span>
+                        {% else %}
+                            —
+                        {% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td>暂无数据</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- 每日图表 -->
+    <br>
+    <h3>每日收入图表</h3>
+    <div style="width:40%">
+        <canvas id="dailyChart"></canvas>
+    </div>
+
+    <div style="margin-top:20px;">
         <a href="/admin/">返回管理员后台</a>
         <a href="{% url 'index' %}">返回主页</a>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const statData = JSON.parse('{{ stat_json|escapejs }}');
+        const dailyData = JSON.parse('{{ daily_json|escapejs }}');
+
+        new Chart(document.getElementById('periodChart'), {
+            type: 'bar',
+            data: {
+                labels: statData.map(s => s.period_name),
+                datasets: [{
+                    label: '收入（¥）',
+                    data: statData.map(s => s.total_income),
+                    backgroundColor: '#36A2EB'
+                }]
+            },
+            options: { responsive: true, scales: { y: { beginAtZero: true } } }
+        });
+
+        new Chart(document.getElementById('dailyChart'), {
+            type: 'bar',
+            data: {
+                labels: dailyData.map(d => d.date.substring(5)),
+                datasets: [{
+                    label: '收入（¥）',
+                    data: dailyData.map(d => d.income),
+                    backgroundColor: '#36A2EB'
+                }]
+            },
+            options: { responsive: true, scales: { y: { beginAtZero: true } } }
+        });
+    </script>
 {% endblock %}

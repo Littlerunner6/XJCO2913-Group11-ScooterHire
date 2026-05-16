@@ -53,7 +53,8 @@ class Order(models.Model):
     pay_status = models.CharField(default='unpaid', max_length=10, choices=ORDER_STATUS_CHOICES, verbose_name="订单状态")
 
     def __str__(self):
-        return f"{self.user.username} - {self.scooter.name} - {self.order_time}"
+        username = self.user.username if self.user else "Staff Booking"
+        return f"{username} - {self.scooter.name} - {self.order_time}"
     
     def clean_fields(self, exclude=None):
         super().clean_fields(exclude=exclude)

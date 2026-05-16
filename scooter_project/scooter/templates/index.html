@@ -2,65 +2,147 @@
 
 {% block title %}首页{% endblock %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+{% endblock %}
+
 {% block content %}
-    <div>
-        <h1>欢迎你，{{ username }}</h1>
-        {% if user.is_superuser %}
-            <a href="/admin/">管理员后台</a>
-            <a href="{% url 'weekly_income' %}">周收入统计</a>
-        {% endif %}
-        {% if user.is_staff %}
-            <a href="{% url 'staff_create_booking' %}">员工代客下单</a>
-        {% endif %}
-        <a href="{% url 'my_orders' %}">我的订单</a>
-        <a href="{% url 'card_list' %}">我的银行卡</a>
-        <a href="{% url 'feedback_create' %}">提交故障反馈</a>
-        <a href="{% url 'my_feedback' %}">查看我的反馈</a>
-        <form action="{% url 'logout' %}" method="post">
-            {% csrf_token %}
-            <button type="submit">退出登录</button>
-        </form>
-    </div>
-    <br>
-    <div>
-        <h2>可租赁滑板车列表</h2>
-        {% for scooter in scooters %}
-            <div>
-                <div>滑板车编号：{{ scooter.name }}</div>
+<section class="section">
+    <div class="card card--glass">
+        <div class="card__body stack">
+            <div class="section__head">
                 <div>
-                    <div>基础小时单价（¥/小时）：¥{{ scooter.price_per_hour }}</div>
-                    <div>最低起租小时数：{{ scooter.min_hire_hours }} 小时</div>
-                    <div>位置：{{ scooter.address }}</div>
+                    <h1>欢迎回来，{{ username }}</h1>
+                    <p class="text-muted mt-2">选择车辆，快速完成预订和支付流程。</p>
                 </div>
-                <div>
-                    <span>可租</span>
-                    <a href="{% url 'create_order_page' scooter.id %}">立即预订</a>
+                <div class="toolbar">
+                    <a href="{% url 'feedback_create' %}" class="btn btn--ghost">提交反馈</a>
+                    {% if user.is_staff %}
+                        <a href="{% url 'staff_create_booking' %}" class="btn btn--secondary">代客下单</a>
+                    {% endif %}
+                    {% if user.is_superuser %}
+                        <a href="{% url 'weekly_income' %}" class="btn btn--secondary">周收入统计</a>
+                        <a href="/admin/" class="btn btn--ghost">管理员后台</a>
+                    {% endif %}
                 </div>
-                <br>
             </div>
-        {% empty %}
-            <p>暂无可用的滑板车</p>
-        {% endfor %}
+
+            <div class="stack">
+                <h3 class="text-lg">进行中订单</h3>
+                {% if ongoing_orders %}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        {% for order in ongoing_orders %}
+                            <a href="{% url 'my_orders' %}" class="card block p-3 text-primary">
+                                <div class="meta-list">
+                                    <div class="meta-item">
+                                        <span class="text-secondary">订单 ID</span>
+                                        <span class="font-medium">#{{ order.id }}</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <span class="text-secondary">滑板车</span>
+                                        <span class="font-medium">{{ order.scooter.name }}</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <span class="text-secondary">租赁时长</span>
+                                        <span class="font-medium">{{ order.hire_period_cn }}</span>
+                                    </div>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <a href="{% url 'my_orders' %}" class="alert alert--info">
+                        <strong>暂无进行中订单</strong>
+                        <span>点击查看我的订单，或前往下方立即预订。</span>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
     </div>
-    
-    <h2>滑板车位置地图</h2>
-    <div id="map" style="height: 400px;"></div>
+</section>
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script>
-        var map = L.map('map').setView([0, 0], 13);
+<section class="section">
+    <div class="section__head">
+        <h2>可租赁滑板车</h2>
+        <a href="{% url 'my_feedback' %}" class="btn btn--ghost btn--sm">查看我的反馈</a>
+    </div>
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap contributors',
-            referrerPolicy: 'origin'
-        }).addTo(map);
+    {% if scooters %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            {% for scooter in scooters %}
+                <article class="card scooter-card">
+                    <div class="card__body">
+                        <h3>{{ scooter.name }}</h3>
+                        <div class="meta-list">
+                            <div class="meta-item">
+                                <span class="text-secondary">价格</span>
+                                <span class="font-medium">¥{{ scooter.price_per_hour }}/小时</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="text-secondary">最低起租</span>
+                                <span class="font-medium">{{ scooter.min_hire_hours }} 小时</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="text-secondary">位置</span>
+                                <span class="font-medium">{{ scooter.address }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card__footer flex justify-between items-center gap-3 flex-wrap">
+                        <span class="badge badge--success">可租</span>
+                        <a href="{% url 'create_order_page' scooter.id %}" class="btn btn--primary btn--sm">立即预订</a>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert--info" role="status">
+            <strong>暂无可用车辆</strong>
+            <span>请稍后刷新页面，或联系管理员补充车辆。</span>
+        </div>
+    {% endif %}
+</section>
 
-        var scooters = JSON.parse('{{ scooters_json|escapejs }}');
-        scooters.forEach(function(s) {
-            L.marker([s.latitude, s.longitude])
-             .addTo(map)
-             .bindPopup(s.name + "<br>" + s.address);
-        });
-    </script>
+<section class="section">
+    <div class="section__head">
+        <h2>车辆位置地图</h2>
+        <p class="text-muted">地图支持缩放与拖拽查看。</p>
+    </div>
+    <div class="map-shell">
+        <div id="map" aria-label="滑板车位置地图"></div>
+    </div>
+</section>
+
+{{ scooters_data|json_script:"scooters-data" }}
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  (function () {
+    var scooters = JSON.parse(document.getElementById('scooters-data').textContent || '[]');
+    var firstValid = scooters.find(function (scooter) {
+      var lat = Number(scooter.latitude);
+      var lng = Number(scooter.longitude);
+      return Number.isFinite(lat) && Number.isFinite(lng);
+    });
+    var defaultCenter = firstValid
+      ? [Number(firstValid.latitude), Number(firstValid.longitude)]
+      : [51.5074, -0.1278];
+
+    var map = L.map('map').setView(defaultCenter, 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors',
+      referrerPolicy: 'origin'
+    }).addTo(map);
+
+    scooters.forEach(function (scooter) {
+      var lat = Number(scooter.latitude);
+      var lng = Number(scooter.longitude);
+      if (Number.isFinite(lat) && Number.isFinite(lng)) {
+        L.marker([lat, lng]).addTo(map).bindPopup('<strong>' + scooter.name + '</strong><br>' + scooter.address);
+      }
+    });
+  })();
+</script>
 {% endblock %}

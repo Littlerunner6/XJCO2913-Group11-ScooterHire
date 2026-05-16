@@ -3,28 +3,37 @@
 {% block title %}提交故障反馈{% endblock %}
 
 {% block content %}
-    <h1>提交故障反馈</h1>
+<section class="section">
+    <div class="container container--narrow">
+        <article class="card">
+            <div class="card__body stack">
+                <h1>提交故障反馈</h1>
+                <p class="text-muted">描述车辆问题后，管理员可在后台跟进处理。</p>
 
-    <form method="post">
-        {% csrf_token %}
-        
-        <div>
-            <label>选择车辆：</label>
-            <select name="scooter_id" required>
-                {% for scooter in scooters %}
-                <option value="{{ scooter.id }}">{{ scooter.name }}</option>
-                {% endfor %}
-            </select>
-        </div>
+                <form method="post" class="form" aria-label="故障反馈表单">
+                    {% csrf_token %}
 
-        <div>
-            <label>问题描述：</label><br>
-            <textarea name="content" rows="5" required placeholder="请描述问题"></textarea>
-        </div>
+                    <div class="form-group">
+                        <label for="scooter_id" class="form-label">选择车辆</label>
+                        <select id="scooter_id" name="scooter_id" class="form-select" required>
+                            {% for scooter in scooters %}
+                                <option value="{{ scooter.id }}">{{ scooter.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
 
-        <button type="submit">提交反馈</button>
-    </form>
+                    <div class="form-group">
+                        <label for="content" class="form-label">问题描述</label>
+                        <textarea id="content" name="content" rows="5" class="form-textarea" required placeholder="请描述问题，例如刹车异常、车灯损坏等"></textarea>
+                    </div>
 
-    <br>
-    <a href="{% url 'index' %}">返回首页</a>
+                    <div class="toolbar">
+                        <button type="submit" class="btn btn--primary">提交反馈</button>
+                        <a href="{% url 'my_feedback' %}" class="btn btn--ghost">查看我的反馈</a>
+                    </div>
+                </form>
+            </div>
+        </article>
+    </div>
+</section>
 {% endblock %}

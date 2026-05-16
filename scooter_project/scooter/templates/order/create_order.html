@@ -1,25 +1,36 @@
 {% extends "base.html" %}
 
-{% block title %}预订滑板车-{{ scooter.name }}{% endblock %}
+{% block title %}预订滑板车 - {{ scooter.name }}{% endblock %}
 
 {% block content %}
-    <h1>预订滑板车：{{ scooter.name }}</h1>
-    <div>
-        <div>基础小时单价（¥/小时）：¥{{ scooter.price_per_hour }}</div>
-        <div>最低起租小时数：¥{{ scooter.min_hire_hours }}</div>
+<section class="section">
+    <div class="container container--narrow">
+        <article class="card">
+            <div class="card__body stack">
+                <h1>预订滑板车 {{ scooter.name }}</h1>
+
+                <div class="meta-list">
+                    <div class="meta-item"><span>基础小时单价</span><span class="font-medium">¥{{ scooter.price_per_hour }}/小时</span></div>
+                    <div class="meta-item"><span>最低起租</span><span class="font-medium">{{ scooter.min_hire_hours }} 小时</span></div>
+                </div>
+
+                <form action="{% url 'submit_order' %}" method="post" class="form" aria-label="创建订单表单">
+                    {% csrf_token %}
+                    <input type="hidden" name="scooter_id" value="{{ scooter.id }}">
+
+                    <div class="form-group">
+                        <label for="hire_period" class="form-label">租赁时长（小时）</label>
+                        <input id="hire_period" name="hire_period" type="number" class="form-input" min="{{ scooter.min_hire_hours }}" value="{{ scooter.min_hire_hours }}" required>
+                        <p class="form-hint">最低 {{ scooter.min_hire_hours }} 小时。</p>
+                    </div>
+
+                    <div class="toolbar">
+                        <button type="submit" class="btn btn--primary">确认预订</button>
+                        <a href="{% url 'index' %}" class="btn btn--ghost">返回首页</a>
+                    </div>
+                </form>
+            </div>
+        </article>
     </div>
-
-    <form action="{% url 'submit_order' %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="scooter_id" value="{{ scooter.id }}">
-
-        <div>
-            <label>选择租赁时长：</label>
-            <input type="number" name="hire_period" min="{{ scooter.min_hire_hours }}" value="{{ scooter.min_hire_hours }}" required>小时（最低 {{ scooter.min_hire_hours }} 小时）
-        </div>
-
-        <button type="submit">确认预订</button>
-    </form>
-
-    <a href="{% url 'index' %}">返回首页</a>
+</section>
 {% endblock %}

@@ -1,9 +1,22 @@
 {% extends "base.html" %}
 
-{% block title %}错误！{% endblock %}
+{% block title %}操作失败{% endblock %}
 
 {% block content %}
-    <h1>操作失败</h1>
-    <div>{{ msg }}</div>
-    <a href="{% url 'index' %}">返回首页</a>
+<section class="section">
+    <div class="container container--narrow">
+        <article class="card">
+            <div class="card__body stack">
+                <h1>操作失败</h1>
+                <div class="alert alert--error" role="alert">
+                    <strong>请求未完成</strong>
+                    <span>{{ msg }}</span>
+                </div>
+                <div class="toolbar">
+                    <a href="{% url 'index' %}" class="btn btn--primary">返回首页</a>
+                </div>
+            </div>
+        </article>
+    </div>
+</section>
 {% endblock %}

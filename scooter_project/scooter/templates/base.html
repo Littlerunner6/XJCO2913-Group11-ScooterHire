@@ -1,10 +1,121 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <title>{% block title %}{% endblock %}</title>
-    <!-- <link rel="stylesheet" href="../static/css/style.css"> -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Scooter Hire{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'scooter/css/main.css' %}">
+    {% block extra_head %}{% endblock %}
 </head>
-<body>
-    {% block content %}{% endblock %}
+<body class="page">
+    <a href="#main-content" class="skip-link">跳到主内容</a>
+
+    <header class="page__header" aria-label="主导航">
+        <div class="container">
+            <nav class="nav" aria-label="网站导航">
+                <a href="{% if user.is_authenticated %}{% url 'index' %}{% else %}{% url 'login' %}{% endif %}" class="nav__brand">
+                    <span class="nav__dot" aria-hidden="true"></span>
+                    <span>ScooterHire</span>
+                </a>
+
+                <button
+                    class="nav__toggle"
+                    type="button"
+                    aria-label="打开用户菜单"
+                    aria-controls="user-menu"
+                    aria-expanded="false"
+                    aria-haspopup="menu"
+                    data-mobile-nav-toggle>
+                    <span class="nav__toggle-avatar {% if not user.is_authenticated %}nav__toggle-avatar--guest{% endif %}" aria-hidden="true">
+                        {% if user.is_authenticated %}
+                            {{ user.username|first|upper }}
+                        {% else %}
+                            ☰
+                        {% endif %}
+                    </span>
+                    <span class="nav__toggle-status" aria-hidden="true"></span>
+                    <span class="sr-only">切换导航菜单</span>
+                </button>
+
+                <div class="nav__links" id="mobile-nav" data-mobile-nav>
+                        {% if user.is_authenticated %}
+                            <a class="nav__link" href="{% url 'index' %}">首页</a>
+                            <a class="nav__link" href="{% url 'my_orders' %}">我的订单</a>
+                            <a class="nav__link" href="{% url 'card_list' %}">银行卡</a>
+                            <a class="nav__link" href="{% url 'my_feedback' %}">反馈记录</a>
+                        {% if user.is_staff %}
+                            <a class="nav__link nav__link--desktop-hide" href="{% url 'staff_create_booking' %}">代客下单</a>
+                        {% endif %}
+                        {% if user.is_superuser %}
+                            <a class="nav__link nav__link--desktop-hide" href="{% url 'weekly_income' %}">收入统计</a>
+                        {% endif %}
+                    {% else %}
+                        <a class="nav__link" href="{% url 'login' %}">登录</a>
+                        <a class="nav__link" href="{% url 'register' %}">注册</a>
+                    {% endif %}
+                </div>
+
+                <div class="nav__user-menu" id="user-menu" data-user-menu role="dialog" aria-label="用户菜单" aria-hidden="true">
+                    <div class="nav__user-header">
+                        <span class="nav__user-avatar {% if not user.is_authenticated %}nav__user-avatar--guest{% endif %}" aria-hidden="true">
+                            {% if user.is_authenticated %}
+                                {{ user.username|first|upper }}
+                            {% else %}
+                                ☰
+                            {% endif %}
+                        </span>
+                        <div>
+                            {% if user.is_authenticated %}
+                                <p class="nav__user-name">{{ user.username }}</p>
+                                <p class="nav__user-sub">账户菜单</p>
+                            {% else %}
+                                <p class="nav__user-name">欢迎使用</p>
+                                <p class="nav__user-sub">请先登录或注册</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="nav__user-body">
+                        {% if user.is_authenticated %}
+                            <a class="nav__user-item" href="{% url 'my_orders' %}">我的订单</a>
+                            <a class="nav__user-item" href="{% url 'card_list' %}">银行卡管理</a>
+                            <a class="nav__user-item" href="{% url 'my_feedback' %}">反馈记录</a>
+                            {% if user.is_staff %}
+                                <a class="nav__user-item" href="{% url 'staff_create_booking' %}">员工代客下单</a>
+                            {% endif %}
+                            {% if user.is_superuser %}
+                                <a class="nav__user-item" href="{% url 'weekly_income' %}">周收入统计</a>
+                                <a class="nav__user-item" href="/admin/">管理后台</a>
+                            {% endif %}
+                            <form action="{% url 'logout' %}" method="post" class="nav__user-logout">
+                                {% csrf_token %}
+                                <button type="submit" class="nav__user-item nav__user-item--danger">退出登录</button>
+                            </form>
+                        {% else %}
+                            <a class="nav__user-item" href="{% url 'login' %}">登录</a>
+                            <a class="nav__user-item" href="{% url 'register' %}">注册</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content" class="page__main" tabindex="-1">
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <footer class="page__footer">
+        <div class="container flex justify-between items-center gap-3 flex-wrap">
+            <p>Electric Scooter Hire System</p>
+            <p class="text-muted">© {% now "Y" %} Group 11</p>
+        </div>
+    </footer>
+
+    <script src="{% static 'scooter/js/mobile-nav.js' %}" defer></script>
+    <script src="{% static 'scooter/js/interactions.js' %}" defer></script>
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

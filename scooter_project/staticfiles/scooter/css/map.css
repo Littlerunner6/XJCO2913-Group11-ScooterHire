@@ -1,0 +1,24 @@
+#map {
+  height: 360px;
+  width: 100%;
+}
+
+.leaflet-container {
+  font-family: var(--font-primary);
+  background: var(--gray-100);
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+.leaflet-popup-content {
+  margin: var(--space-3);
+  color: var(--gray-800);
+  line-height: var(--line-normal);
+}
+
+.leaflet-control-zoom a {
+  color: var(--uber-black);
+}

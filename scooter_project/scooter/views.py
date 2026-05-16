@@ -93,16 +93,22 @@ def register(request):
 @login_required
 def index(request):
     scooters = Scooter.objects.filter(is_available=True).order_by('name')
+    ongoing_orders = (
+        Order.objects
+        .filter(user=request.user, pay_status='unpaid')
+        .select_related('scooter')
+        .order_by('-order_time')[:3]
+    )
 
-    scooters_json = json.dumps(
-        list(scooters.values('id', 'name', 'address', 'latitude', 'longitude')),
-        cls=DjangoJSONEncoder
+    scooters_data = list(
+        scooters.values('id', 'name', 'address', 'latitude', 'longitude')
     )
 
     return render(request, 'index.html', {
         'username': request.user.username,
         'scooters': scooters,
-        'scooters_json': scooters_json
+        'ongoing_orders': ongoing_orders,
+        'scooters_data': scooters_data
     })
 
 @login_required

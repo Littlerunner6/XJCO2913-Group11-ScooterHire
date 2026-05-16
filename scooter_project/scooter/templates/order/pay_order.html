@@ -3,21 +3,29 @@
 {% block title %}订单支付{% endblock %}
 
 {% block content %}
-    <h1>订单支付</h1>
-    <div>
-        <p>订单ID：{{ order.id }}</p>
-        <p>滑板车编号：{{ order.scooter.name }}</p>
-        <p>租赁时长：{{ order.hire_period_cn }}</p>
-        <p>订单原价：¥{{ origin_price }}</p>
-        <p>订单折后价：¥{{ order.total_price }}</p>
-        <p>当前状态：{{ order.pay_status_cn }}</p>
+<section class="section">
+    <div class="container container--narrow">
+        <article class="card">
+            <div class="card__body stack">
+                <h1>确认支付</h1>
+
+                <div class="meta-list">
+                    <div class="meta-item"><span>订单 ID</span><span class="font-medium">#{{ order.id }}</span></div>
+                    <div class="meta-item"><span>滑板车</span><span class="font-medium">{{ order.scooter.name }}</span></div>
+                    <div class="meta-item"><span>租赁时长</span><span class="font-medium">{{ order.hire_period_cn }}</span></div>
+                    <div class="meta-item"><span>订单原价</span><span class="font-medium">¥{{ origin_price }}</span></div>
+                    <div class="meta-item"><span>折后金额</span><span class="font-medium">¥{{ order.total_price }}</span></div>
+                    <div class="meta-item"><span>当前状态</span><span class="badge badge--warning">{{ order.pay_status_cn }}</span></div>
+                </div>
+
+                <form method="post" class="toolbar" data-confirm="确认支付该订单吗？">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn--primary">确认支付</button>
+                    <a href="{% url 'my_orders' %}" class="btn btn--ghost">返回我的订单</a>
+                    <a href="{% url 'index' %}" class="btn btn--ghost">返回首页</a>
+                </form>
+            </div>
+        </article>
     </div>
-
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit">确认支付</button>
-    </form>
-
-    <a href="{% url 'my_orders' %}">返回我的订单</a> | 
-    <a href="{% url 'index' %}">返回首页</a>
+</section>
 {% endblock %}

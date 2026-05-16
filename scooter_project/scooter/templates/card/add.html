@@ -1,23 +1,39 @@
 {% extends "base.html" %}
 
-{% block title %}我的银行卡{% endblock %}
+{% block title %}添加银行卡{% endblock %}
 
 {% block content %}
-    <h1>添加银行卡</h1>
-    {% if msg %}<p style="color:red">{{ msg }}</p>{% endif %}
-    <form method="post">
-        {% csrf_token %}
-        <div>
-            <label>银行名称：</label>
-            <input type="text" name="bank_name" required>
-        </div>
-        <div>
-            <label>银行卡号：</label>
-            <input type="text" name="card_num" required>
-            <small>我们仅安全保存后4位</small>
-        </div>
-        <button type="submit">保存</button>
-    </form>
-    
-    <a href="{% url 'index' %}">返回首页</a>
+<section class="section">
+    <div class="container container--narrow">
+        <article class="card">
+            <div class="card__body stack">
+                <h1>添加银行卡</h1>
+                <p class="text-muted">系统仅保存卡号后四位用于展示。</p>
+
+                {% if msg %}
+                    <div class="alert alert--error" role="alert">{{ msg }}</div>
+                {% endif %}
+
+                <form method="post" class="form" aria-label="添加银行卡表单">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="bank_name" class="form-label">银行名称</label>
+                        <input id="bank_name" type="text" name="bank_name" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="card_num" class="form-label">银行卡号</label>
+                        <input id="card_num" type="text" name="card_num" class="form-input" required>
+                        <p class="form-hint">至少输入 4 位，实际只保留后四位。</p>
+                    </div>
+
+                    <div class="toolbar">
+                        <button type="submit" class="btn btn--primary">保存</button>
+                        <a href="{% url 'card_list' %}" class="btn btn--ghost">返回银行卡列表</a>
+                    </div>
+                </form>
+            </div>
+        </article>
+    </div>
+</section>
 {% endblock %}

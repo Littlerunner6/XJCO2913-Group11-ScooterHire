@@ -3,10 +3,18 @@
 {% block title %}反馈成功{% endblock %}
 
 {% block content %}
-    <h1>操作成功</h1>
-    <div>{{ msg }}</div>
-    <br>
-    <a href="{% url 'my_feedback' %}">查看我的反馈</a>
-    <br><br>
-    <a href="{% url 'index' %}">返回首页</a>
+<section class="section">
+    <div class="container container--narrow">
+        <article class="card">
+            <div class="card__body stack">
+                <h1>反馈提交成功</h1>
+                <div class="alert alert--success" role="status">{{ msg }}</div>
+                <div class="toolbar">
+                    <a href="{% url 'my_feedback' %}" class="btn btn--primary">查看我的反馈</a>
+                    <a href="{% url 'index' %}" class="btn btn--ghost">返回首页</a>
+                </div>
+            </div>
+        </article>
+    </div>
+</section>
 {% endblock %}

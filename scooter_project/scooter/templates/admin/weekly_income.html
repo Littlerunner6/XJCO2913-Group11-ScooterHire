@@ -3,120 +3,171 @@
 {% block title %}周收入统计{% endblock %}
 
 {% block content %}
-    <h1>周收入统计</h1>
-    <div>统计周期：{{ monday }} 至 {{ sunday }}（本周）</div>
-    <div>本周总收入：¥{{ total_weekly_income }}</div>
+<section class="section">
+    <div class="section__head">
+        <div>
+            <h1>周收入统计</h1>
+            <p class="text-muted mt-2">统计周期：{{ monday }} 至 {{ sunday }}</p>
+        </div>
+        <div class="toolbar">
+            <a href="/admin/" class="btn btn--ghost">管理员后台</a>
+            <a href="{% url 'index' %}" class="btn btn--ghost">返回主页</a>
+        </div>
+    </div>
 
-    <h2>按租赁时长统计</h2>
+    <div class="panel-grid mb-6">
+        <article class="card">
+            <div class="card__body kpi">
+                <span class="kpi__label">本周总收入</span>
+                <span class="kpi__value">¥{{ total_weekly_income }}</span>
+            </div>
+        </article>
+        <article class="card">
+            <div class="card__body kpi">
+                <span class="kpi__label">统计状态</span>
+                {% if has_data %}
+                    <span class="kpi__value">有数据</span>
+                {% else %}
+                    <span class="kpi__value">暂无数据</span>
+                {% endif %}
+            </div>
+        </article>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section__head">
+        <h2>按租赁时长统计</h2>
+    </div>
+
     {% if has_data %}
-        <table>
+        <div class="responsive-table mb-4">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>租赁时长</th>
+                        <th>订单量（笔）</th>
+                        <th>总收入（¥）</th>
+                        <th>标签</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in stat_data %}
+                        <tr>
+                            <td>{{ item.period_name }}</td>
+                            <td>{{ item.order_count }}</td>
+                            <td>{{ item.total_income }}</td>
+                            <td>
+                                {% if item.is_hot %}
+                                    <span class="badge badge--warning">热门</span>
+                                {% else %}
+                                    <span class="text-secondary">-</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert--info" role="status">本周暂无已支付订单。</div>
+    {% endif %}
+
+    <div class="chart-shell">
+        <canvas id="periodChart" aria-label="租赁时长收入图表"></canvas>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section__head">
+        <h2>按每日统计</h2>
+    </div>
+
+    <div class="responsive-table mb-4">
+        <table class="table">
             <thead>
                 <tr>
-                    <th>租赁时长</th>
+                    <th>日期</th>
                     <th>订单量（笔）</th>
-                    <th>该时长总收入（¥）</th>
-                    <th>是否为热门时长</th>
+                    <th>收入（¥）</th>
+                    <th>标签</th>
                 </tr>
             </thead>
             <tbody>
-                {% for item in stat_data %}
+                {% for day in daily_income %}
                     <tr>
-                        <td>{{ item.period_name }}</td>
-                        <td>{{ item.order_count }}</td>
-                        <td>{{ item.total_income }}</td>
+                        <td>{{ day.date }}</td>
+                        <td>{{ day.order_count }}</td>
+                        <td>{{ day.income }}</td>
                         <td>
-                            {% if item.is_hot %}
-                                <span>热门</span>
+                            {% if day.is_popular %}
+                                <span class="badge badge--warning">热门</span>
                             {% else %}
-                                —
+                                <span class="text-secondary">-</span>
                             {% endif %}
                         </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4">暂无数据</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
-    {% else %}
-        <div>本周暂无已支付订单</div>
-    {% endif %}
-
-    <br>
-    <h3>租赁时长收入图表</h3>
-    <div style="width:40%">
-        <canvas id="periodChart"></canvas>
     </div>
 
-    <br>
-    <h2>按每日收入统计</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>日期</th>
-                <th>订单量（笔）</th>
-                <th>收入（¥）</th>
-                <th>是否为热门日期</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for day in daily_income %}
-                <tr>
-                    <td>{{ day.date }}</td>
-                    <td>{{ day.order_count }}</td>
-                    <td>{{ day.income }}</td>
-                    <td>
-                        {% if day.is_popular %}
-                            <span>热门</span>
-                        {% else %}
-                            —
-                        {% endif %}
-                    </td>
-                </tr>
-            {% empty %}
-                <tr><td>暂无数据</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <!-- 每日图表 -->
-    <br>
-    <h3>每日收入图表</h3>
-    <div style="width:40%">
-        <canvas id="dailyChart"></canvas>
+    <div class="chart-shell">
+        <canvas id="dailyChart" aria-label="每日收入图表"></canvas>
     </div>
+</section>
+{% endblock %}
 
-    <div style="margin-top:20px;">
-        <a href="/admin/">返回管理员后台</a>
-        <a href="{% url 'index' %}">返回主页</a>
-    </div>
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  (function () {
+    var statData = JSON.parse('{{ stat_json|escapejs }}');
+    var dailyData = JSON.parse('{{ daily_json|escapejs }}');
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        const statData = JSON.parse('{{ stat_json|escapejs }}');
-        const dailyData = JSON.parse('{{ daily_json|escapejs }}');
+    var chartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color: '#38404a' } }
+      },
+      scales: {
+        x: { ticks: { color: '#4f5863' }, grid: { color: 'rgba(79,88,99,0.1)' } },
+        y: { beginAtZero: true, ticks: { color: '#4f5863' }, grid: { color: 'rgba(79,88,99,0.1)' } }
+      }
+    };
 
-        new Chart(document.getElementById('periodChart'), {
-            type: 'bar',
-            data: {
-                labels: statData.map(s => s.period_name),
-                datasets: [{
-                    label: '收入（¥）',
-                    data: statData.map(s => s.total_income),
-                    backgroundColor: '#36A2EB'
-                }]
-            },
-            options: { responsive: true, scales: { y: { beginAtZero: true } } }
-        });
+    new Chart(document.getElementById('periodChart'), {
+      type: 'bar',
+      data: {
+        labels: statData.map(function (s) { return s.period_name; }),
+        datasets: [{
+          label: '收入（¥）',
+          data: statData.map(function (s) { return s.total_income; }),
+          backgroundColor: '#276EF1',
+          borderRadius: 8
+        }]
+      },
+      options: chartOptions
+    });
 
-        new Chart(document.getElementById('dailyChart'), {
-            type: 'bar',
-            data: {
-                labels: dailyData.map(d => d.date.substring(5)),
-                datasets: [{
-                    label: '收入（¥）',
-                    data: dailyData.map(d => d.income),
-                    backgroundColor: '#36A2EB'
-                }]
-            },
-            options: { responsive: true, scales: { y: { beginAtZero: true } } }
-        });
-    </script>
+    new Chart(document.getElementById('dailyChart'), {
+      type: 'bar',
+      data: {
+        labels: dailyData.map(function (d) { return String(d.date).substring(5); }),
+        datasets: [{
+          label: '收入（¥）',
+          data: dailyData.map(function (d) { return d.income; }),
+          backgroundColor: '#000000',
+          borderRadius: 8
+        }]
+      },
+      options: chartOptions
+    });
+  })();
+</script>
 {% endblock %}

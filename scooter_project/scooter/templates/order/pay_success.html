@@ -3,16 +3,31 @@
 {% block title %}支付成功{% endblock %}
 
 {% block content %}
-    <h1>支付成功！</h1>
-    <div>
-        <p>订单ID：{{ order.id }}</p>
-        <p>滑板车编号：{{ order.scooter.name }}</p>
-        <p>租赁时长：{{ order.hire_period_cn }}</p>
-        <p>订单原价：¥{{ origin_price }}</p>
-        <p>订单折后价：¥{{ order.total_price }}</p>
-        <p>当前状态：{{ order.pay_status_cn }}</p>
-    </div>
+<section class="section">
+    <div class="container container--narrow">
+        <article class="card">
+            <div class="card__body stack">
+                <h1>支付成功</h1>
 
-    <a href="{% url 'my_orders' %}">查看我的订单</a>
-    <a href="{% url 'index' %}">返回首页</a>
+                <div class="alert alert--success" role="status">
+                    <strong>付款已完成</strong>
+                    <span>订单状态：{{ order.pay_status_cn }}</span>
+                </div>
+
+                <div class="meta-list">
+                    <div class="meta-item"><span>订单 ID</span><span class="font-medium">#{{ order.id }}</span></div>
+                    <div class="meta-item"><span>滑板车</span><span class="font-medium">{{ order.scooter.name }}</span></div>
+                    <div class="meta-item"><span>租赁时长</span><span class="font-medium">{{ order.hire_period_cn }}</span></div>
+                    <div class="meta-item"><span>订单原价</span><span class="font-medium">¥{{ origin_price }}</span></div>
+                    <div class="meta-item"><span>支付金额</span><span class="font-medium">¥{{ order.total_price }}</span></div>
+                </div>
+
+                <div class="toolbar">
+                    <a href="{% url 'my_orders' %}" class="btn btn--primary">查看我的订单</a>
+                    <a href="{% url 'index' %}" class="btn btn--ghost">返回首页</a>
+                </div>
+            </div>
+        </article>
+    </div>
+</section>
 {% endblock %}

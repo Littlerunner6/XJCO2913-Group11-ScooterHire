@@ -1,0 +1,8 @@
+.chart-shell canvas {
+  max-height: 100%;
+}
+
+.chart-note {
+  color: var(--gray-500);
+  font-size: var(--text-sm);
+}

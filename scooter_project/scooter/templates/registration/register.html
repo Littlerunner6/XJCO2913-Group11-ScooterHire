@@ -3,40 +3,54 @@
 {% block title %}注册{% endblock %}
 
 {% block content %}
-    <h1>注册</h1>
-    <form method="post">
-        {% csrf_token %}
+<section class="section">
+    <div class="container container--narrow">
+        <article class="card card--glass">
+            <div class="card__body stack">
+                <h1>创建账号</h1>
+                <p class="text-muted">注册后可直接下单、支付与反馈车辆问题。</p>
 
-        {% if form.errors %}
-            <div>
-                {% for field, msg in form.errors.items %}
-                    {{ msg|striptags }}<br>
-                {% endfor %}
+                {% if form.errors %}
+                    <div class="alert alert--error" role="alert" aria-live="assertive">
+                        <strong>提交失败</strong>
+                        <div>
+                            {% for field, msgs in form.errors.items %}
+                                <p>{{ msgs|striptags }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+
+                <form method="post" class="form" aria-label="注册表单">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label for="id_username" class="form-label">用户名</label>
+                        <input id="id_username" name="username" type="text" class="form-input" required value="{{ form.data.username|default_if_none:'' }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_email" class="form-label">邮箱</label>
+                        <input id="id_email" name="email" type="email" class="form-input" required value="{{ form.data.email|default_if_none:'' }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_password1" class="form-label">密码</label>
+                        <input id="id_password1" name="password1" type="password" class="form-input" required>
+                        <p class="form-hint">至少 8 位，需同时包含字母与数字。</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_password2" class="form-label">确认密码</label>
+                        <input id="id_password2" name="password2" type="password" class="form-input" required>
+                    </div>
+
+                    <button type="submit" class="btn btn--primary btn--full">注册</button>
+                </form>
+
+                <p class="text-sm text-secondary">已有账号？<a href="{% url 'login' %}">立即登录</a></p>
             </div>
-        {% endif %}
-
-        <div>
-            <label>用户名：</label>
-            {{ form.username }}
-        </div>
-        <div>
-            <label>邮箱：</label>
-            {{ form.email }}
-        </div>
-        <div>
-            <label>密码：</label>
-            {{ form.password1 }}
-            <small>（至少8位，必须含字母+数字）</small>
-        </div>
-        <div>
-            <label>确认密码：</label>
-            {{ form.password2 }}
-        </div>
-
-        <button type="submit">注册</button>
-    </form>
-
-    <div>
-        已有账号？<a href="{% url 'login' %}">立即登录</a>
+        </article>
     </div>
+</section>
 {% endblock %}

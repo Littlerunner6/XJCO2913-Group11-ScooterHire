@@ -1,57 +1,72 @@
 {% extends "base.html" %}
 
-{% block title %}{{ username }}的订单{% endblock %}
+{% block title %}我的订单{% endblock %}
 
 {% block content %}
-    <h1>我的订单</h1>
-    <a href="{% url 'index' %}">返回首页</a>
+<section class="section">
+    <div class="section__head">
+        <div>
+            <h1>我的订单</h1>
+            <p class="text-muted mt-2">查看历史订单、支付状态和可执行操作。</p>
+        </div>
+        <a href="{% url 'index' %}" class="btn btn--ghost">返回首页</a>
+    </div>
+
     {% if orders %}
-        <table>
-            <thead>
-                <tr>
-                    <th>订单ID</th>
-                    <th>滑板车编号</th>
-                    <th>租赁时长</th>
-                    <th>订单总价</th>
-                    <th>下单时间</th>
-                    <th>支付状态</th>
-                    <th>操作</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for order in orders %}
+        <div class="responsive-table">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>{{ order.id }}</td>
-                        <td>{{ order.scooter.name }}</td>
-                        <td>{{ order.hire_period_cn }}</td>
-                        <td>¥{{ order.total_price }}</td>
-                        <td>{{ order.order_time|date:"Y-m-d H:i:s" }}</td>
-                        <td>
-                            {% if order.pay_status == 'paid' %}
-                                <span>已支付</span>
-                            {% elif order.pay_status == 'unpaid' %}
-                                <span>未支付</span>
-                            {% else %}
-                                <span>已取消</span>
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if order.pay_status == 'unpaid' %}
-                                <a href="{% url 'pay_order' order.id %}">去支付</a>
-                                <form action="{% url 'cancel_order' order.id %}" method="post">
-                                    {% csrf_token %}
-                                    <button type="submit">取消订单</button>
-                                </form>
-                                <a href="{% url 'extend_booking' order.id %}">延长租赁</a>
-                            {% else %}
-                                -
-                            {% endif %}
-                        </td>
+                        <th>订单 ID</th>
+                        <th>滑板车</th>
+                        <th>租赁时长</th>
+                        <th>订单金额</th>
+                        <th>下单时间</th>
+                        <th>支付状态</th>
+                        <th>操作</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            <td>#{{ order.id }}</td>
+                            <td>{{ order.scooter.name }}</td>
+                            <td>{{ order.hire_period_cn }}</td>
+                            <td>¥{{ order.total_price }}</td>
+                            <td>{{ order.order_time|date:"Y-m-d H:i:s" }}</td>
+                            <td>
+                                {% if order.pay_status == 'paid' %}
+                                    <span class="badge badge--success">已支付</span>
+                                {% elif order.pay_status == 'unpaid' %}
+                                    <span class="badge badge--warning">未支付</span>
+                                {% else %}
+                                    <span class="badge badge--error">已取消</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if order.pay_status == 'unpaid' %}
+                                    <div class="actions-col">
+                                        <a href="{% url 'pay_order' order.id %}" class="btn btn--primary btn--sm">去支付</a>
+                                        <a href="{% url 'extend_booking' order.id %}" class="btn btn--ghost btn--sm">延长租赁</a>
+                                        <form action="{% url 'cancel_order' order.id %}" method="post" class="inline-form" data-confirm="确认取消该订单吗？">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn--danger btn--sm">取消订单</button>
+                                        </form>
+                                    </div>
+                                {% else %}
+                                    <span class="text-secondary">无可用操作</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     {% else %}
-        <p>暂无订单记录</p>
+        <div class="alert alert--info" role="status">
+            <strong>暂无订单记录</strong>
+            <span>你还没有创建订单，可前往首页开始预订。</span>
+        </div>
     {% endif %}
+</section>
 {% endblock %}

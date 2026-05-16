@@ -3,20 +3,33 @@
 {% block title %}延长租赁{% endblock %}
 
 {% block content %}
-<h1>延长租赁时长</h1>
+<section class="section">
+    <div class="container container--narrow">
+        <article class="card">
+            <div class="card__body stack">
+                <h1>延长租赁时长</h1>
 
-<p>订单：{{ order.scooter.name }}</p>
-<p>当前时长：{{ order.hire_period }} 小时</p>
-<p>当前总价：{{ order.total_price }} 元</p>
-<p>单价：{{ order.scooter.price_per_hour }} 元/小时</p>
+                <div class="meta-list">
+                    <div class="meta-item"><span>订单车辆</span><span class="font-medium">{{ order.scooter.name }}</span></div>
+                    <div class="meta-item"><span>当前时长</span><span class="font-medium">{{ order.hire_period }} 小时</span></div>
+                    <div class="meta-item"><span>当前金额</span><span class="font-medium">¥{{ order.total_price }}</span></div>
+                    <div class="meta-item"><span>小时单价</span><span class="font-medium">¥{{ order.scooter.price_per_hour }}</span></div>
+                </div>
 
-<form method="post">
-    {% csrf_token %}
-    <div>
-        <label>延长小时数：</label>
-        <input type="number" name="extra_hours" min="1" required>
+                <form method="post" class="form" aria-label="延长租赁表单">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="extra_hours" class="form-label">增加小时数</label>
+                        <input id="extra_hours" name="extra_hours" type="number" min="1" class="form-input" required>
+                    </div>
+
+                    <div class="toolbar">
+                        <button type="submit" class="btn btn--primary">确认延长</button>
+                        <a href="{% url 'my_orders' %}" class="btn btn--ghost">返回我的订单</a>
+                    </div>
+                </form>
+            </div>
+        </article>
     </div>
-
-    <button type="submit">确认延长</button>
-</form>
+</section>
 {% endblock %}

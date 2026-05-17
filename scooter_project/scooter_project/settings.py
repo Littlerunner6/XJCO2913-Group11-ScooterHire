@@ -143,3 +143,6 @@ EMAIL_USE_SSL = True
 EMAIL_HOST_USER = '1335400340@qq.com'
 EMAIL_HOST_PASSWORD = 'feqqeaybmdwjjcbb'
 DEFAULT_FROM_EMAIL = '1335400340@qq.com'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

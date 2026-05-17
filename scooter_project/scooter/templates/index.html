@@ -19,6 +19,7 @@
                     <a href="{% url 'feedback_create' %}" class="btn btn--ghost">提交反馈</a>
                     {% if user.is_staff %}
                         <a href="{% url 'staff_create_booking' %}" class="btn btn--secondary">代客下单</a>
+                        <a href="{% url 'feedback_list' %}" class="btn btn--secondary">反馈列表</a>
                     {% endif %}
                     {% if user.is_superuser %}
                         <a href="{% url 'weekly_income' %}" class="btn btn--secondary">周收入统计</a>

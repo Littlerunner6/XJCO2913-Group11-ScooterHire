@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}处理故障反馈{% endblock %}
+
+{% block content %}
+
+<h2>处理故障反馈</h2>
+
+<div style="border:1px solid #ccc; padding:15px; margin-bottom:20px;">
+    <p><strong>车辆：</strong>{{ feedback.scooter.name }}</p>
+    <p><strong>用户：</strong>{{ feedback.user.username }}</p>
+    <p><strong>提交时间：</strong>{{ feedback.created_at|date:"m-d H:i" }}</p>
+    <p><strong>问题描述：</strong></p>
+    <p style="background:#f9f9f9; padding:10px;">{{ feedback.content }}</p>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>优先级：</label>
+    <select name="priority">
+        <option value="low" {% if feedback.priority == 'low' %}selected{% endif %}>低优先级</option>
+        <option value="high" {% if feedback.priority == 'high' %}selected{% endif %}>高优先级</option>
+    </select>
+
+    <br><br>
+
+    <label>处理状态：</label>
+    <select name="status">
+        <option value="pending" {% if feedback.status == 'pending' %}selected{% endif %}>待处理</option>
+        <option value="resolved" {% if feedback.status == 'resolved' %}selected{% endif %}>已解决</option>
+    </select>
+
+    <br><br>
+    <button type="submit">保存修改</button>
+</form>
+
+{% endblock %}

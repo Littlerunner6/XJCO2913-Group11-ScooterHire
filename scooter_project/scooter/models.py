@@ -92,11 +92,23 @@ class Feedback(models.Model):
         ('pending', '待处理'),
         ('resolved', '已解决'),
     )
+    PRIORITY_CHOICES = (
+        ('low', '低优先级'),
+        ('high', '高优先级'),
+    )
+
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="用户")
     scooter = models.ForeignKey(Scooter, on_delete=models.CASCADE, verbose_name="故障车辆")
     content = models.TextField(verbose_name="问题描述")
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending', verbose_name="处理状态")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="提交时间")
+
+    priority = models.CharField(
+        max_length=10,
+        choices=PRIORITY_CHOICES,
+        default='low',
+        verbose_name="优先级"
+    )
 
     def __str__(self):
         return f"{self.user.username} - {self.scooter.name} - {self.created_at.strftime('%m-%d %H:%M')}"

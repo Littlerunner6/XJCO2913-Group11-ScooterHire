@@ -22,4 +22,6 @@ urlpatterns = [
     path('order/extend/<int:order_id>/', views.extend_booking, name='extend_booking'),
     path('feedback/create/', views.feedback_create, name='feedback_create'),
     path('feedback/my/', views.my_feedback, name='my_feedback'),
+    path('feedback/list/', views.feedback_list, name='feedback_list'),
+    path('feedback/update/<int:feedback_id>/', views.feedback_update, name='feedback_update'),
 ]

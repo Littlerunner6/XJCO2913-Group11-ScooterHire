@@ -19,6 +19,13 @@ def admin_required(view_func):
         return view_func(request, *args, **kwargs)
     return login_required(wrapper)
 
+def staff_required(view_func):
+    def wrapper(request, *args, **kwargs):
+        if not request.user.is_staff:
+            return render(request, 'error.html', {'msg': '无员工权限'})
+        return view_func(request, *args, **kwargs)
+    return login_required(wrapper)
+
 def is_staff(user):
     return user.is_staff
 
@@ -393,7 +400,7 @@ def send_guest_booking_email(order):
     )
 
 @login_required
-@user_passes_test(is_staff)  # 仅员工可访问
+@staff_required
 def staff_create_booking(request):
     if request.method == "POST":
         guest_name = request.POST.get("guest_name")
@@ -490,10 +497,23 @@ def feedback_create(request):
 
         scooter = get_object_or_404(Scooter, id=scooter_id)
 
+        high_keywords = [
+            '坏', '故障', '不能用', '动不了', '碎'
+            '爆胎', '危险', '失灵', '报错', '无法',
+            '用不了', '没反应', '失控', '异常'
+        ]
+
+        priority = 'low'
+        for word in high_keywords:
+            if word in content:
+                priority = 'high'
+                break
+
         Feedback.objects.create(
             user=request.user,
             scooter=scooter,
-            content=content
+            content=content,
+            priority=priority
         )
         return render(request, 'feedback/success.html', {'msg': '反馈提交成功！'})
 
@@ -504,3 +524,46 @@ def feedback_create(request):
 def my_feedback(request):
     feedbacks = Feedback.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'feedback/my_feedback.html', {'feedbacks': feedbacks})
+
+@login_required
+@staff_required
+def feedback_list(request):
+    priority = request.GET.get('priority', '')
+    status = request.GET.get('status', '')
+
+    feedbacks = Feedback.objects.all()
+
+    if priority == 'high':
+        feedbacks = feedbacks.filter(priority='high')
+    elif priority == 'low':
+        feedbacks = feedbacks.filter(priority='low')
+
+    if status == 'pending':
+        feedbacks = feedbacks.filter(status='pending')
+    elif status == 'resolved':
+        feedbacks = feedbacks.filter(status='resolved')
+
+    feedbacks = feedbacks.order_by('-created_at')
+
+    return render(request, 'feedback/list.html', {
+        'feedbacks': feedbacks,
+        'priority': priority,
+        'status': status,
+    })
+
+@login_required
+@staff_required
+def feedback_update(request, feedback_id):
+    feedback = get_object_or_404(Feedback, id=feedback_id)
+
+    if request.method == 'POST':
+        priority = request.POST.get('priority')
+        status = request.POST.get('status')
+
+        feedback.priority = priority
+        feedback.status = status
+        feedback.save()
+
+        return redirect('feedback_list')
+
+    return render(request, 'feedback/edit.html', {'feedback': feedback})

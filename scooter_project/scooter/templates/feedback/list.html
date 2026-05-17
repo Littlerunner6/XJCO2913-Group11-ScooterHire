@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}故障反馈管理{% endblock %}
+
+{% block content %}
+
+<h2>故障反馈管理</h2>
+
+<div style="margin-bottom:10px;">
+    <strong>优先级：</strong>
+    <a href="?priority=&status={{ status }}">全部</a> |
+    <a href="?priority=high&status={{ status }}">高优先级</a> |
+    <a href="?priority=low&status={{ status }}">低优先级</a>
+</div>
+
+<div style="margin-bottom:15px;">
+    <strong>处理状态：</strong>
+    <a href="?priority={{ priority }}&status=">全部</a> |
+    <a href="?priority={{ priority }}&status=pending">待处理</a> |
+    <a href="?priority={{ priority }}&status=resolved">已解决</a>
+</div>
+
+<table>
+    <tr>
+        <th>车辆</th>
+        <th>用户</th>
+        <th>内容</th>
+        <th>优先级</th>
+        <th>状态</th>
+        <th>操作</th>
+    </tr>
+    {% for fb in feedbacks %}
+    <tr>
+        <td>{{ fb.scooter.name }}</td>
+        <td>{{ fb.user.username }}</td>
+        <td>{{ fb.content|truncatechars:30 }}</td>
+        <td>{{ fb.get_priority_display }}</td>
+        <td>{{ fb.get_status_display }}</td>
+        <td><a href="{% url 'feedback_update' fb.id %}">处理</a></td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="6">暂无符合条件的反馈</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

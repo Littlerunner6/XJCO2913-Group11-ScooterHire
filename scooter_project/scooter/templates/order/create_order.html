@@ -8,6 +8,25 @@
         <article class="card">
             <div class="card__body stack">
                 <h1>预订滑板车 {{ scooter.name }}</h1>
+                
+                {% if scooter.image %}
+                <div style="text-align:center; margin:10px 0;">
+                    <img 
+                        src="{{ scooter.image.url }}" 
+                        width="280"
+                        style="border-radius:8px; cursor:pointer;"
+                        onclick="window.open(this.src)"
+                    >
+                    <p style="font-size:12px; color:#666;">点击图片可放大查看</p>
+                </div>
+                {% endif %}
+
+                {% if scooter.performance %}
+                <div style="background:#f7f7f7; padding:12px; border-radius:8px; margin:10px 0;">
+                    <h4 style="margin:0 0 6px 0; font-size:16px;">车辆性能</h4>
+                    <p style="margin:0; font-size:14px; line-height:1.5;">{{ scooter.performance }}</p>
+                </div>
+                {% endif %}
 
                 <div class="meta-list">
                     <div class="meta-item"><span>基础小时单价</span><span class="font-medium">¥{{ scooter.price_per_hour }}/小时</span></div>
@@ -33,4 +52,13 @@
         </article>
     </div>
 </section>
+
+<div style="border:1px solid #ddd; padding:12px; background:#f9f9f9; margin:15px 0;">
+    <h4 style="margin:0 0 8px 0; color:#c00;">安全责任与免责声明</h4>
+    <p style="margin:4px 0; font-size:14px;">1. 租车人需遵守交通规则，文明骑行，安全责任由租车人自行承担。</p>
+    <p style="margin:4px 0; font-size:14px;">2. 车辆已购买基础交通保险，意外事故需按保险流程处理。</p>
+    <p style="margin:4px 0; font-size:14px;">3. 因人为操作不当、违规骑行造成的损失，需由租车人承担赔偿责任。</p>
+    <p style="margin:4px 0; font-size:14px;">4. 还车时如发现车辆损坏、故障，本店有权根据实际情况收取维修费用。</p>
+    <p style="margin:4px 0; font-size:14px;">5. 租车即表示已阅读并同意以上条款。</p>
+</div>
 {% endblock %}

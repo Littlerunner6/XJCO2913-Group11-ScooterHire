@@ -11,6 +11,9 @@ class ScooterAdmin(admin.ModelAdmin):
         ('基础信息', {
             'fields': ('name', 'is_available')
         }),
+        ('车辆图片与性能', {
+            'fields': ('image', 'performance')
+        }),
         ('租赁价格配置', {
             'fields': ('price_per_hour', 'min_hire_hours')
         }),

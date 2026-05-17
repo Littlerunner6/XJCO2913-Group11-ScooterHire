@@ -17,6 +17,10 @@ class Scooter(models.Model):
     latitude = models.DecimalField(max_digits=10, decimal_places=6, default=0, verbose_name="纬度")
     longitude = models.DecimalField(max_digits=10, decimal_places=6, default=0, verbose_name="经度")
 
+    image = models.ImageField(upload_to='scooters/', null=True, blank=True, verbose_name="车辆图片")
+
+    performance = models.TextField(blank=True, default="", verbose_name="性能描述")
+
     def __str__(self):
         return self.name
     

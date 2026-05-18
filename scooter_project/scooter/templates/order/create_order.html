@@ -1,36 +1,40 @@
 {% extends "base.html" %}
 
-{% block title %}预订滑板车 - {{ scooter.name }}{% endblock %}
+{% block title %}预订 - {{ scooter.name }}{% endblock %}
 
 {% block content %}
 <section class="section">
     <div class="container container--narrow">
-        <article class="card">
-            <div class="card__body stack">
-                <h1>预订滑板车 {{ scooter.name }}</h1>
-                
-                {% if scooter.image %}
-                <div style="text-align:center; margin:10px 0;">
-                    <img 
-                        src="{{ scooter.image.url }}" 
-                        width="280"
-                        style="border-radius:8px; cursor:pointer;"
-                        onclick="window.open(this.src)"
-                    >
-                    <p style="font-size:12px; color:#666;">点击图片可放大查看</p>
-                </div>
-                {% endif %}
+        <article class="card order-layout">
+            {% if scooter.image %}
+            <div class="order-layout__img" style="background:#f1f5f9;">
+                <img src="{{ scooter.image.url }}" alt="{{ scooter.name }}"
+                     id="scooter-thumb"
+                     style="width:100%; height:100%; object-fit:contain; display:block; cursor:zoom-in;">
+            </div>
+            {% endif %}
 
+            <div class="card__header order-layout__header">
+                <h1>预订 {{ scooter.name }}</h1>
+            </div>
+
+            <div class="card__body stack order-layout__body" style="overflow-y:auto;">
                 {% if scooter.performance %}
-                <div style="background:#f7f7f7; padding:12px; border-radius:8px; margin:10px 0;">
-                    <h4 style="margin:0 0 6px 0; font-size:16px;">车辆性能</h4>
-                    <p style="margin:0; font-size:14px; line-height:1.5;">{{ scooter.performance }}</p>
+                <div class="alert alert--info">
+                    <strong>车辆性能</strong>
+                    <span>{{ scooter.performance }}</span>
                 </div>
                 {% endif %}
 
                 <div class="meta-list">
-                    <div class="meta-item"><span>基础小时单价</span><span class="font-medium">¥{{ scooter.price_per_hour }}/小时</span></div>
-                    <div class="meta-item"><span>最低起租</span><span class="font-medium">{{ scooter.min_hire_hours }} 小时</span></div>
+                    <div class="meta-item">
+                        <span>基础小时单价</span>
+                        <span class="font-medium">¥{{ scooter.price_per_hour }}/小时</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>最低起租</span>
+                        <span class="font-medium">{{ scooter.min_hire_hours }} 小时</span>
+                    </div>
                 </div>
 
                 <form action="{% url 'submit_order' %}" method="post" class="form" aria-label="创建订单表单">
@@ -39,7 +43,8 @@
 
                     <div class="form-group">
                         <label for="hire_period" class="form-label">租赁时长（小时）</label>
-                        <input id="hire_period" name="hire_period" type="number" class="form-input" min="{{ scooter.min_hire_hours }}" value="{{ scooter.min_hire_hours }}" required>
+                        <input id="hire_period" name="hire_period" type="number" class="form-input"
+                               min="{{ scooter.min_hire_hours }}" value="{{ scooter.min_hire_hours }}" required>
                         <p class="form-hint">最低 {{ scooter.min_hire_hours }} 小时。</p>
                     </div>
 
@@ -48,17 +53,67 @@
                         <a href="{% url 'index' %}" class="btn btn--ghost">返回首页</a>
                     </div>
                 </form>
+
+                <div class="alert alert--error" role="note">
+                    <strong>安全责任与免责声明</strong>
+                    <span>租车人需遵守交通规则，安全责任自行承担。车辆已购买基础交通保险，人为损失需赔偿。租车即表示同意以上条款。</span>
+                </div>
             </div>
         </article>
     </div>
 </section>
+{% endblock %}
 
-<div style="border:1px solid #ddd; padding:12px; background:#f9f9f9; margin:15px 0;">
-    <h4 style="margin:0 0 8px 0; color:#c00;">安全责任与免责声明</h4>
-    <p style="margin:4px 0; font-size:14px;">1. 租车人需遵守交通规则，文明骑行，安全责任由租车人自行承担。</p>
-    <p style="margin:4px 0; font-size:14px;">2. 车辆已购买基础交通保险，意外事故需按保险流程处理。</p>
-    <p style="margin:4px 0; font-size:14px;">3. 因人为操作不当、违规骑行造成的损失，需由租车人承担赔偿责任。</p>
-    <p style="margin:4px 0; font-size:14px;">4. 还车时如发现车辆损坏、故障，本店有权根据实际情况收取维修费用。</p>
-    <p style="margin:4px 0; font-size:14px;">5. 租车即表示已阅读并同意以上条款。</p>
+{% block extra_js %}
+<style>
+.order-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+}
+.order-layout__img   { grid-row: 1 / 3; }
+.order-layout__header,
+.order-layout__body  { grid-column: 2; }
+@media (max-width: 640px) {
+  .order-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+  .order-layout__img    { grid-row: auto; aspect-ratio: 16/9; }
+  .order-layout__header,
+  .order-layout__body   { grid-column: 1; }
+}
+</style>
+<style>
+#lightbox {
+  display:none; position:fixed; inset:0; z-index:1000;
+  background:rgba(0,0,0,0.85); align-items:center; justify-content:center; cursor:zoom-out;
+}
+#lightbox.open { display:flex; }
+#lightbox img { width:60vw; height:60vh; object-fit:contain; border-radius:8px; }
+</style>
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="图片预览">
+  <img id="lightbox-img" src="" alt="">
 </div>
+<script>
+(function(){
+  var thumb = document.getElementById('scooter-thumb');
+  var lb = document.getElementById('lightbox');
+  var lbImg = document.getElementById('lightbox-img');
+  if (!thumb) return;
+  thumb.addEventListener('click', function(){
+    lbImg.src = thumb.src;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+  lb.addEventListener('click', function(){
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') { lb.classList.remove('open'); document.body.style.overflow = ''; }
+  });
+})();
+</script>
 {% endblock %}

@@ -3,46 +3,72 @@
 {% block title %}故障反馈管理{% endblock %}
 
 {% block content %}
+<section class="section">
+    <div class="section__head">
+        <div>
+            <h1>故障反馈管理</h1>
+            <p class="text-muted mt-2">筛选并处理用户提交的车辆故障反馈。</p>
+        </div>
+        <a href="{% url 'index' %}" class="btn btn--ghost">返回首页</a>
+    </div>
 
-<h2>故障反馈管理</h2>
+    <div class="toolbar" style="margin-bottom: var(--space-4);">
+        <span class="text-secondary">优先级：</span>
+        <a href="?priority=&status={{ status }}" class="btn btn--sm {% if not priority %}btn--primary{% else %}btn--ghost{% endif %}">全部</a>
+        <a href="?priority=high&status={{ status }}" class="btn btn--sm {% if priority == 'high' %}btn--primary{% else %}btn--ghost{% endif %}">高优先级</a>
+        <a href="?priority=low&status={{ status }}" class="btn btn--sm {% if priority == 'low' %}btn--primary{% else %}btn--ghost{% endif %}">低优先级</a>
 
-<div style="margin-bottom:10px;">
-    <strong>优先级：</strong>
-    <a href="?priority=&status={{ status }}">全部</a> |
-    <a href="?priority=high&status={{ status }}">高优先级</a> |
-    <a href="?priority=low&status={{ status }}">低优先级</a>
-</div>
+        <span class="text-secondary" style="margin-left: var(--space-4);">状态：</span>
+        <a href="?priority={{ priority }}&status=" class="btn btn--sm {% if not status %}btn--primary{% else %}btn--ghost{% endif %}">全部</a>
+        <a href="?priority={{ priority }}&status=pending" class="btn btn--sm {% if status == 'pending' %}btn--primary{% else %}btn--ghost{% endif %}">待处理</a>
+        <a href="?priority={{ priority }}&status=resolved" class="btn btn--sm {% if status == 'resolved' %}btn--primary{% else %}btn--ghost{% endif %}">已解决</a>
+    </div>
 
-<div style="margin-bottom:15px;">
-    <strong>处理状态：</strong>
-    <a href="?priority={{ priority }}&status=">全部</a> |
-    <a href="?priority={{ priority }}&status=pending">待处理</a> |
-    <a href="?priority={{ priority }}&status=resolved">已解决</a>
-</div>
-
-<table>
-    <tr>
-        <th>车辆</th>
-        <th>用户</th>
-        <th>内容</th>
-        <th>优先级</th>
-        <th>状态</th>
-        <th>操作</th>
-    </tr>
-    {% for fb in feedbacks %}
-    <tr>
-        <td>{{ fb.scooter.name }}</td>
-        <td>{{ fb.user.username }}</td>
-        <td>{{ fb.content|truncatechars:30 }}</td>
-        <td>{{ fb.get_priority_display }}</td>
-        <td>{{ fb.get_status_display }}</td>
-        <td><a href="{% url 'feedback_update' fb.id %}">处理</a></td>
-    </tr>
-    {% empty %}
-    <tr>
-        <td colspan="6">暂无符合条件的反馈</td>
-    </tr>
-    {% endfor %}
-</table>
-
+    <div class="table-scroll">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>车辆</th>
+                    <th>用户</th>
+                    <th>内容</th>
+                    <th>优先级</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fb in feedbacks %}
+                <tr>
+                    <td>{{ fb.scooter.name }}</td>
+                    <td>{{ fb.user.username }}</td>
+                    <td>{{ fb.content|truncatechars:40 }}</td>
+                    <td>
+                        {% if fb.priority == 'high' %}
+                            <span class="badge badge--error">{{ fb.get_priority_display }}</span>
+                        {% else %}
+                            <span class="badge badge--info">{{ fb.get_priority_display }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if fb.status == 'resolved' %}
+                            <span class="badge badge--success">{{ fb.get_status_display }}</span>
+                        {% else %}
+                            <span class="badge badge--warning">{{ fb.get_status_display }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'feedback_update' fb.id %}" class="btn btn--secondary btn--sm">处理</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">
+                        <div class="alert alert--info" role="status">暂无符合条件的反馈</div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
 {% endblock %}

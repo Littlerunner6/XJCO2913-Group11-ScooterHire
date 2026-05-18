@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}预订 - {{ scooter.name }}{% endblock %}
+{% block title %}{% trans "预订" %} - {{ scooter.name }}{% endblock %}
 
 {% block content %}
 <section class="section">
@@ -15,48 +15,53 @@
             {% endif %}
 
             <div class="card__header order-layout__header">
-                <h1>预订 {{ scooter.name }}</h1>
+                <h1>{% trans "预订" %} {{ scooter.name }}</h1>
             </div>
 
             <div class="card__body stack order-layout__body" style="overflow-y:auto;">
                 {% if scooter.performance %}
                 <div class="alert alert--info">
-                    <strong>车辆性能</strong>
-                    <span>{{ scooter.performance }}</span>
+                    <strong>{% trans "车辆性能" %}</strong>
+                    {% get_current_language as LANGUAGE_CODE %}
+                    {% if LANGUAGE_CODE == 'en' and scooter.performance_en %}
+                        <span>{{ scooter.performance_en }}</span>
+                    {% else %}
+                        <span>{{ scooter.performance }}</span>
+                    {% endif %}
                 </div>
                 {% endif %}
 
                 <div class="meta-list">
                     <div class="meta-item">
-                        <span>基础小时单价</span>
-                        <span class="font-medium">¥{{ scooter.price_per_hour }}/小时</span>
+                        <span>{% trans "基础小时单价" %}</span>
+                        <span class="font-medium">¥{{ scooter.price_per_hour }}/{% trans "小时" %}</span>
                     </div>
                     <div class="meta-item">
-                        <span>最低起租</span>
-                        <span class="font-medium">{{ scooter.min_hire_hours }} 小时</span>
+                        <span>{% trans "最低起租" %}</span>
+                        <span class="font-medium">{{ scooter.min_hire_hours }} {% trans "小时" %}</span>
                     </div>
                 </div>
 
-                <form action="{% url 'submit_order' %}" method="post" class="form" aria-label="创建订单表单">
+                <form action="{% url 'submit_order' %}" method="post" class="form" aria-label="{% trans "创建订单表单" %}">
                     {% csrf_token %}
                     <input type="hidden" name="scooter_id" value="{{ scooter.id }}">
 
                     <div class="form-group">
-                        <label for="hire_period" class="form-label">租赁时长（小时）</label>
+                        <label for="hire_period" class="form-label">{% trans "租赁时长（小时）" %}</label>
                         <input id="hire_period" name="hire_period" type="number" class="form-input"
                                min="{{ scooter.min_hire_hours }}" value="{{ scooter.min_hire_hours }}" required>
-                        <p class="form-hint">最低 {{ scooter.min_hire_hours }} 小时。</p>
+                        <p class="form-hint">{% blocktrans %}最低 {{ scooter.min_hire_hours }} 小时。{% endblocktrans %}</p>
                     </div>
 
                     <div class="toolbar">
-                        <button type="submit" class="btn btn--primary">确认预订</button>
-                        <a href="{% url 'index' %}" class="btn btn--ghost">返回首页</a>
+                        <button type="submit" class="btn btn--primary">{% trans "确认预订" %}</button>
+                        <a href="{% url 'index' %}" class="btn btn--ghost">{% trans "返回首页" %}</a>
                     </div>
                 </form>
 
                 <div class="alert alert--error" role="note">
-                    <strong>安全责任与免责声明</strong>
-                    <span>租车人需遵守交通规则，安全责任自行承担。车辆已购买基础交通保险，人为损失需赔偿。租车即表示同意以上条款。</span>
+                    <strong>{% trans "安全责任与免责声明" %}</strong>
+                    <span>{% trans "租车人需遵守交通规则，安全责任自行承担。车辆已购买基础交通保险，人为损失需赔偿。租车即表示同意以上条款。" %}</span>
                 </div>
             </div>
         </article>

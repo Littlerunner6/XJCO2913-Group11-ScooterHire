@@ -1,20 +1,20 @@
 {% extends "base.html" %}
 
-{% block title %}提交故障反馈{% endblock %}
+{% block title %}{% trans "提交故障反馈" %}{% endblock %}
 
 {% block content %}
 <section class="section">
     <div class="container container--narrow">
         <article class="card">
             <div class="card__body stack">
-                <h1>提交故障反馈</h1>
-                <p class="text-muted">描述车辆问题后，管理员可在后台跟进处理。</p>
+                <h1>{% trans "提交故障反馈" %}</h1>
+                <p class="text-muted">{% trans "描述车辆问题后，管理员可在后台跟进处理。" %}</p>
 
-                <form method="post" class="form" aria-label="故障反馈表单">
+                <form method="post" class="form" aria-label="{% trans '故障反馈表单' %}">
                     {% csrf_token %}
 
                     <div class="form-group">
-                        <label for="scooter_id" class="form-label">选择车辆</label>
+                        <label for="scooter_id" class="form-label">{% trans "选择车辆" %}</label>
                         <select id="scooter_id" name="scooter_id" class="form-select" required>
                             {% for scooter in scooters %}
                                 <option value="{{ scooter.id }}">{{ scooter.name }}</option>
@@ -23,13 +23,13 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="content" class="form-label">问题描述</label>
-                        <textarea id="content" name="content" rows="5" class="form-textarea" required placeholder="请描述问题，例如刹车异常、车灯损坏等"></textarea>
+                        <label for="content" class="form-label">{% trans "问题描述" %}</label>
+                        <textarea id="content" name="content" rows="5" class="form-textarea" required placeholder="{% trans '请描述问题，例如刹车异常、车灯损坏等' %}"></textarea>
                     </div>
 
                     <div class="toolbar">
-                        <button type="submit" class="btn btn--primary">提交反馈</button>
-                        <a href="{% url 'my_feedback' %}" class="btn btn--ghost">查看我的反馈</a>
+                        <button type="submit" class="btn btn--primary">{% trans "提交反馈" %}</button>
+                        <a href="{% url 'my_feedback' %}" class="btn btn--ghost">{% trans "查看我的反馈" %}</a>
                     </div>
                 </form>
             </div>

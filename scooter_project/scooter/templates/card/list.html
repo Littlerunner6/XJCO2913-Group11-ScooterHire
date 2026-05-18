@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 
-{% block title %}我的银行卡{% endblock %}
+{% block title %}{% trans "我的银行卡" %}{% endblock %}
 
 {% block content %}
 <section class="section">
     <div class="section__head">
         <div>
-            <h1>我的银行卡</h1>
-            <p class="text-muted mt-2">你可以管理默认卡和删除不再使用的银行卡。</p>
+            <h1>{% trans "我的银行卡" %}</h1>
+            <p class="text-muted mt-2">{% trans "你可以管理默认卡和删除不再使用的银行卡。" %}</p>
         </div>
         <div class="toolbar">
-            <a href="{% url 'card_add' %}" class="btn btn--primary">添加银行卡</a>
-            <a href="{% url 'index' %}" class="btn btn--ghost">返回首页</a>
+            <a href="{% url 'card_add' %}" class="btn btn--primary">{% trans "添加银行卡" %}</a>
+            <a href="{% url 'index' %}" class="btn btn--ghost">{% trans "返回首页" %}</a>
         </div>
     </div>
 
@@ -21,21 +21,21 @@
                 <article class="card">
                     <div class="card__body stack">
                         <h3>{{ c.bank_name }}</h3>
-                        <p class="text-secondary">卡号后四位：*{{ c.card_last4 }}</p>
+                        <p class="text-secondary">{% trans "卡号后四位：" %}*{{ c.card_last4 }}</p>
 
                         <div class="toolbar">
                             {% if c.is_default %}
-                                <span class="badge badge--success">默认卡</span>
+                                <span class="badge badge--success">{% trans "默认卡" %}</span>
                             {% else %}
                                 <form method="post" action="{% url 'set_default_card' c.id %}" class="inline-form">
                                     {% csrf_token %}
-                                    <button type="submit" class="btn btn--secondary btn--sm">设为默认</button>
+                                    <button type="submit" class="btn btn--secondary btn--sm">{% trans "设为默认" %}</button>
                                 </form>
                             {% endif %}
 
-                            <form method="post" action="{% url 'card_delete' c.id %}" class="inline-form" data-confirm="确认删除该银行卡吗？">
+                            <form method="post" action="{% url 'card_delete' c.id %}" class="inline-form" data-confirm="{% trans '确认删除该银行卡吗？' %}">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn--danger btn--sm">删除</button>
+                                <button type="submit" class="btn btn--danger btn--sm">{% trans "删除" %}</button>
                             </form>
                         </div>
                     </div>
@@ -44,8 +44,8 @@
         </div>
     {% else %}
         <div class="alert alert--info" role="status">
-            <strong>暂无银行卡</strong>
-            <span>点击“添加银行卡”以便后续支付操作。</span>
+            <strong>{% trans "暂无银行卡" %}</strong>
+            <span>{% trans "点击“添加银行卡”以便后续支付操作。" %}</span>
         </div>
     {% endif %}
 </section>

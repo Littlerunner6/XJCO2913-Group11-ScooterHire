@@ -1,6 +1,7 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}首页{% endblock %}
+{% block title %}{% trans "首页" %}{% endblock %}
 
 {% block extra_head %}
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -12,39 +13,47 @@
         <div class="card__body stack">
             <div class="section__head">
                 <div>
-                    <h1>欢迎回来，{{ username }}</h1>
-                    <p class="text-muted mt-2">选择车辆，快速完成预订和支付流程。</p>
+                    <h1 class="welcome-title">
+                        <span>{% trans "欢迎回来，" %}</span>
+                        {% if membership_groups %}
+                            {% for group in membership_groups %}
+                                <span class="badge badge--info membership-tags__badge">{{ group }}</span>
+                            {% endfor %}
+                        {% endif %}
+                        <span>{{ username }}</span>
+                    </h1>
+                    <p class="text-muted mt-2">{% trans "选择车辆，快速完成预订和支付流程。" %}</p>
                 </div>
                 <div class="toolbar">
-                    <a href="{% url 'feedback_create' %}" class="btn btn--ghost">提交反馈</a>
+                    <a href="{% url 'feedback_create' %}" class="btn btn--ghost">{% trans "提交反馈" %}</a>
                     {% if user.is_staff %}
-                        <a href="{% url 'staff_create_booking' %}" class="btn btn--secondary">代客下单</a>
-                        <a href="{% url 'feedback_list' %}" class="btn btn--secondary">反馈列表</a>
+                        <a href="{% url 'staff_create_booking' %}" class="btn btn--secondary">{% trans "代客下单" %}</a>
+                        <a href="{% url 'feedback_list' %}" class="btn btn--secondary">{% trans "反馈列表" %}</a>
                     {% endif %}
                     {% if user.is_superuser %}
-                        <a href="{% url 'weekly_income' %}" class="btn btn--secondary">周收入统计</a>
-                        <a href="/admin/" class="btn btn--ghost">管理员后台</a>
+                        <a href="{% url 'weekly_income' %}" class="btn btn--secondary">{% trans "周收入统计" %}</a>
+                        <a href="/admin/" class="btn btn--ghost">{% trans "管理员后台" %}</a>
                     {% endif %}
                 </div>
             </div>
 
             <div class="stack">
-                <h3 class="text-lg">进行中订单</h3>
+                <h3 class="text-lg">{% trans "进行中订单" %}</h3>
                 {% if ongoing_orders %}
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                         {% for order in ongoing_orders %}
                             <a href="{% url 'my_orders' %}" class="card block p-3 text-primary">
                                 <div class="meta-list">
                                     <div class="meta-item">
-                                        <span class="text-secondary">订单 ID</span>
+                                        <span class="text-secondary">{% trans "订单 ID" %}</span>
                                         <span class="font-medium">#{{ order.id }}</span>
                                     </div>
                                     <div class="meta-item">
-                                        <span class="text-secondary">滑板车</span>
+                                        <span class="text-secondary">{% trans "滑板车" %}</span>
                                         <span class="font-medium">{{ order.scooter.name }}</span>
                                     </div>
                                     <div class="meta-item">
-                                        <span class="text-secondary">租赁时长</span>
+                                        <span class="text-secondary">{% trans "租赁时长" %}</span>
                                         <span class="font-medium">{{ order.hire_period_cn }}</span>
                                     </div>
                                 </div>
@@ -53,8 +62,8 @@
                     </div>
                 {% else %}
                     <a href="{% url 'my_orders' %}" class="alert alert--info">
-                        <strong>暂无进行中订单</strong>
-                        <span>点击查看我的订单，或前往下方立即预订。</span>
+                        <strong>{% trans "暂无进行中订单" %}</strong>
+                        <span>{% trans "点击查看我的订单，或前往下方立即预订。" %}</span>
                     </a>
                 {% endif %}
             </div>
@@ -64,8 +73,8 @@
 
 <section class="section">
     <div class="section__head">
-        <h2>可租赁滑板车</h2>
-        <a href="{% url 'my_feedback' %}" class="btn btn--ghost btn--sm">查看我的反馈</a>
+        <h2>{% trans "可租赁滑板车" %}</h2>
+        <a href="{% url 'my_feedback' %}" class="btn btn--ghost btn--sm">{% trans "查看我的反馈" %}</a>
     </div>
 
     {% if scooters %}
@@ -76,41 +85,41 @@
                         <h3>{{ scooter.name }}</h3>
                         <div class="meta-list">
                             <div class="meta-item">
-                                <span class="text-secondary">价格</span>
-                                <span class="font-medium">¥{{ scooter.price_per_hour }}/小时</span>
+                                <span class="text-secondary">{% trans "价格" %}</span>
+                                <span class="font-medium">¥{{ scooter.price_per_hour }}/{% trans "小时" %}</span>
                             </div>
                             <div class="meta-item">
-                                <span class="text-secondary">最低起租</span>
-                                <span class="font-medium">{{ scooter.min_hire_hours }} 小时</span>
+                                <span class="text-secondary">{% trans "最低起租" %}</span>
+                                <span class="font-medium">{{ scooter.min_hire_hours }} {% trans "小时" %}</span>
                             </div>
                             <div class="meta-item">
-                                <span class="text-secondary">位置</span>
+                                <span class="text-secondary">{% trans "位置" %}</span>
                                 <span class="font-medium">{{ scooter.address }}</span>
                             </div>
                         </div>
                     </div>
                     <div class="card__footer flex justify-between items-center gap-3 flex-wrap">
-                        <span class="badge badge--success">可租</span>
-                        <a href="{% url 'create_order_page' scooter.id %}" class="btn btn--primary btn--sm">立即预订</a>
+                        <span class="badge badge--success">{% trans "可租" %}</span>
+                        <a href="{% url 'create_order_page' scooter.id %}" class="btn btn--primary btn--sm">{% trans "立即预订" %}</a>
                     </div>
                 </article>
             {% endfor %}
         </div>
     {% else %}
         <div class="alert alert--info" role="status">
-            <strong>暂无可用车辆</strong>
-            <span>请稍后刷新页面，或联系管理员补充车辆。</span>
+            <strong>{% trans "暂无可用车辆" %}</strong>
+            <span>{% trans "请稍后刷新页面，或联系管理员补充车辆。" %}</span>
         </div>
     {% endif %}
 </section>
 
 <section class="section">
     <div class="section__head">
-        <h2>车辆位置地图</h2>
-        <p class="text-muted">地图支持缩放与拖拽查看。</p>
+        <h2>{% trans "车辆位置地图" %}</h2>
+        <p class="text-muted">{% trans "地图支持缩放与拖拽查看。" %}</p>
     </div>
     <div class="map-shell">
-        <div id="map" aria-label="滑板车位置地图"></div>
+        <div id="map" aria-label="{% trans '滑板车位置地图' %}"></div>
     </div>
 </section>
 

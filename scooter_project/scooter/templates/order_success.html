@@ -1,31 +1,32 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}预订成功{% endblock %}
+{% block title %}{% trans "预订成功" %}{% endblock %}
 
 {% block content %}
 <section class="section">
     <div class="container container--narrow">
         <article class="card">
             <div class="card__body stack">
-                <h1>预订成功</h1>
+                <h1>{% trans "预订成功" %}</h1>
                 <div class="alert alert--success" role="status">
-                    <strong>订单已创建</strong>
-                    <span>请尽快完成支付，订单生效后车辆将被锁定。</span>
+                    <strong>{% trans "订单已创建" %}</strong>
+                    <span>{% trans "请尽快完成支付，订单生效后车辆将被锁定。" %}</span>
                 </div>
 
                 <div class="meta-list">
-                    <div class="meta-item"><span>滑板车</span><span class="font-medium">{{ order.scooter.name }}</span></div>
-                    <div class="meta-item"><span>租赁时长</span><span class="font-medium">{{ order.hire_period_cn }}</span></div>
-                    <div class="meta-item"><span>订单金额</span><span class="font-medium">¥{{ order.total_price }}</span></div>
+                    <div class="meta-item"><span>{% trans "滑板车" %}</span><span class="font-medium">{{ order.scooter.name }}</span></div>
+                    <div class="meta-item"><span>{% trans "租赁时长" %}</span><span class="font-medium">{{ order.hire_period_cn }}</span></div>
+                    <div class="meta-item"><span>{% trans "订单金额" %}</span><span class="font-medium">¥{{ order.total_price }}</span></div>
                 </div>
 
                 <div class="toolbar">
-                    <a href="{% url 'pay_order' order.id %}" class="btn btn--primary">去支付</a>
-                    <form action="{% url 'cancel_order' order.id %}" method="post" class="inline-form" data-confirm="确认取消该订单吗？">
+                    <a href="{% url 'pay_order' order.id %}" class="btn btn--primary">{% trans "去支付" %}</a>
+                    <form action="{% url 'cancel_order' order.id %}" method="post" class="inline-form" data-confirm="{% trans '确认取消该订单吗？' %}">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn--danger">取消订单</button>
+                        <button type="submit" class="btn btn--danger">{% trans "取消订单" %}</button>
                     </form>
-                    <a href="{% url 'index' %}" class="btn btn--ghost">返回首页</a>
+                    <a href="{% url 'index' %}" class="btn btn--ghost">{% trans "返回首页" %}</a>
                 </div>
             </div>
         </article>

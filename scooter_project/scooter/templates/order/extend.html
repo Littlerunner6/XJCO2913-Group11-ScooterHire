@@ -1,31 +1,31 @@
 {% extends "base.html" %}
 
-{% block title %}延长租赁{% endblock %}
+{% block title %}{% trans "延长租赁" %}{% endblock %}
 
 {% block content %}
 <section class="section">
     <div class="container container--narrow">
         <article class="card">
             <div class="card__body stack">
-                <h1>延长租赁时长</h1>
+                <h1>{% trans "延长租赁时长" %}</h1>
 
                 <div class="meta-list">
-                    <div class="meta-item"><span>订单车辆</span><span class="font-medium">{{ order.scooter.name }}</span></div>
-                    <div class="meta-item"><span>当前时长</span><span class="font-medium">{{ order.hire_period }} 小时</span></div>
-                    <div class="meta-item"><span>当前金额</span><span class="font-medium">¥{{ order.total_price }}</span></div>
-                    <div class="meta-item"><span>小时单价</span><span class="font-medium">¥{{ order.scooter.price_per_hour }}</span></div>
+                    <div class="meta-item"><span>{% trans "订单车辆" %}</span><span class="font-medium">{{ order.scooter.name }}</span></div>
+                    <div class="meta-item"><span>{% trans "当前时长" %}</span><span class="font-medium">{{ order.hire_period }} {% trans "小时" %}</span></div>
+                    <div class="meta-item"><span>{% trans "当前金额" %}</span><span class="font-medium">¥{{ order.total_price }}</span></div>
+                    <div class="meta-item"><span>{% trans "小时单价" %}</span><span class="font-medium">¥{{ order.scooter.price_per_hour }}</span></div>
                 </div>
 
-                <form method="post" class="form" aria-label="延长租赁表单">
+                <form method="post" class="form" aria-label="{% trans "延长租赁表单" %}">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label for="extra_hours" class="form-label">增加小时数</label>
+                        <label for="extra_hours" class="form-label">{% trans "增加小时数" %}</label>
                         <input id="extra_hours" name="extra_hours" type="number" min="1" class="form-input" required>
                     </div>
 
                     <div class="toolbar">
-                        <button type="submit" class="btn btn--primary">确认延长</button>
-                        <a href="{% url 'my_orders' %}" class="btn btn--ghost">返回我的订单</a>
+                        <button type="submit" class="btn btn--primary">{% trans "确认延长" %}</button>
+                        <a href="{% url 'my_orders' %}" class="btn btn--ghost">{% trans "返回我的订单" %}</a>
                     </div>
                 </form>
             </div>

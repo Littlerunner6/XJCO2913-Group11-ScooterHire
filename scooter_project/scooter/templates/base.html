@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -9,11 +10,12 @@
     {% block extra_head %}{% endblock %}
 </head>
 <body class="page">
-    <a href="#main-content" class="skip-link">跳到主内容</a>
+    <a href="#main-content" class="skip-link">{% trans "跳到主内容" %}</a>
+    {% get_current_language as LANGUAGE_CODE %}
 
-    <header class="page__header" aria-label="主导航">
+    <header class="page__header" aria-label="{% trans '主导航' %}">
         <div class="container">
-            <nav class="nav" aria-label="网站导航">
+            <nav class="nav" aria-label="{% trans '网站导航' %}">
                 <a href="{% if user.is_authenticated %}{% url 'index' %}{% else %}{% url 'login' %}{% endif %}" class="nav__brand">
                     <span class="nav__dot" aria-hidden="true"></span>
                     <span>ScooterHire</span>
@@ -22,7 +24,7 @@
                 <button
                     class="nav__toggle"
                     type="button"
-                    aria-label="打开用户菜单"
+                    aria-label="{% trans '打开用户菜单' %}"
                     aria-controls="user-menu"
                     aria-expanded="false"
                     aria-haspopup="menu"
@@ -35,28 +37,51 @@
                         {% endif %}
                     </span>
                     <span class="nav__toggle-status" aria-hidden="true"></span>
-                    <span class="sr-only">切换导航菜单</span>
+                    <span class="sr-only">{% trans "切换导航菜单" %}</span>
                 </button>
 
                 <div class="nav__links" id="mobile-nav" data-mobile-nav>
                         {% if user.is_authenticated %}
-                            <a class="nav__link" href="{% url 'index' %}">首页</a>
-                            <a class="nav__link" href="{% url 'my_orders' %}">我的订单</a>
-                            <a class="nav__link" href="{% url 'card_list' %}">银行卡</a>
-                            <a class="nav__link" href="{% url 'my_feedback' %}">反馈记录</a>
+                            <a class="nav__link" href="{% url 'index' %}">{% trans "首页" %}</a>
+                            <a class="nav__link" href="{% url 'my_orders' %}">{% trans "我的订单" %}</a>
+                            <a class="nav__link" href="{% url 'card_list' %}">{% trans "银行卡" %}</a>
+                            <a class="nav__link" href="{% url 'my_feedback' %}">{% trans "反馈记录" %}</a>
                         {% if user.is_staff %}
-                            <a class="nav__link nav__link--desktop-hide" href="{% url 'staff_create_booking' %}">代客下单</a>
+                            <a class="nav__link nav__link--desktop-hide" href="{% url 'staff_create_booking' %}">{% trans "代客下单" %}</a>
                         {% endif %}
                         {% if user.is_superuser %}
-                            <a class="nav__link nav__link--desktop-hide" href="{% url 'weekly_income' %}">收入统计</a>
+                            <a class="nav__link nav__link--desktop-hide" href="{% url 'weekly_income' %}">{% trans "收入统计" %}</a>
                         {% endif %}
                     {% else %}
-                        <a class="nav__link" href="{% url 'login' %}">登录</a>
-                        <a class="nav__link" href="{% url 'register' %}">注册</a>
+                        <a class="nav__link" href="{% url 'login' %}">{% trans "登录" %}</a>
+                        <a class="nav__link" href="{% url 'register' %}">{% trans "注册" %}</a>
                     {% endif %}
                 </div>
 
-                <div class="nav__user-menu" id="user-menu" data-user-menu role="dialog" aria-label="用户菜单" aria-hidden="true">
+                <form action="{% url 'set_language' %}" method="post" class="language-switcher {% if LANGUAGE_CODE == 'en' %}language-switcher--en{% else %}language-switcher--zh{% endif %}" aria-label="{% trans '语言切换' %}">
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                    <button
+                        type="submit"
+                        name="language"
+                        value="en"
+                        class="language-switcher__option {% if LANGUAGE_CODE == 'en' %}is-active{% endif %}"
+                        aria-pressed="{% if LANGUAGE_CODE == 'en' %}true{% else %}false{% endif %}">
+                        EN
+                        <span class="sr-only">English</span>
+                    </button>
+                    <button
+                        type="submit"
+                        name="language"
+                        value="zh-hans"
+                        class="language-switcher__option {% if LANGUAGE_CODE == 'zh-hans' %}is-active{% endif %}"
+                        aria-pressed="{% if LANGUAGE_CODE == 'zh-hans' %}true{% else %}false{% endif %}">
+                        ZH
+                        <span class="sr-only">简体中文</span>
+                    </button>
+                </form>
+
+                <div class="nav__user-menu" id="user-menu" data-user-menu role="dialog" aria-label="{% trans '用户菜单' %}" aria-hidden="true">
                     <div class="nav__user-header">
                         <span class="nav__user-avatar {% if not user.is_authenticated %}nav__user-avatar--guest{% endif %}" aria-hidden="true">
                             {% if user.is_authenticated %}
@@ -68,32 +93,32 @@
                         <div>
                             {% if user.is_authenticated %}
                                 <p class="nav__user-name">{{ user.username }}</p>
-                                <p class="nav__user-sub">账户菜单</p>
+                                <p class="nav__user-sub">{% trans "账户菜单" %}</p>
                             {% else %}
-                                <p class="nav__user-name">欢迎使用</p>
-                                <p class="nav__user-sub">请先登录或注册</p>
+                                <p class="nav__user-name">{% trans "欢迎使用" %}</p>
+                                <p class="nav__user-sub">{% trans "请先登录或注册" %}</p>
                             {% endif %}
                         </div>
                     </div>
                     <div class="nav__user-body">
                         {% if user.is_authenticated %}
-                            <a class="nav__user-item" href="{% url 'my_orders' %}">我的订单</a>
-                            <a class="nav__user-item" href="{% url 'card_list' %}">银行卡管理</a>
-                            <a class="nav__user-item" href="{% url 'my_feedback' %}">反馈记录</a>
+                            <a class="nav__user-item" href="{% url 'my_orders' %}">{% trans "我的订单" %}</a>
+                            <a class="nav__user-item" href="{% url 'card_list' %}">{% trans "银行卡管理" %}</a>
+                            <a class="nav__user-item" href="{% url 'my_feedback' %}">{% trans "反馈记录" %}</a>
                             {% if user.is_staff %}
-                                <a class="nav__user-item" href="{% url 'staff_create_booking' %}">员工代客下单</a>
+                                <a class="nav__user-item" href="{% url 'staff_create_booking' %}">{% trans "员工代客下单" %}</a>
                             {% endif %}
                             {% if user.is_superuser %}
-                                <a class="nav__user-item" href="{% url 'weekly_income' %}">周收入统计</a>
-                                <a class="nav__user-item" href="/admin/">管理后台</a>
+                                <a class="nav__user-item" href="{% url 'weekly_income' %}">{% trans "周收入统计" %}</a>
+                                <a class="nav__user-item" href="/admin/">{% trans "管理后台" %}</a>
                             {% endif %}
                             <form action="{% url 'logout' %}" method="post" class="nav__user-logout">
                                 {% csrf_token %}
-                                <button type="submit" class="nav__user-item nav__user-item--danger">退出登录</button>
+                                <button type="submit" class="nav__user-item nav__user-item--danger">{% trans "退出登录" %}</button>
                             </form>
                         {% else %}
-                            <a class="nav__user-item" href="{% url 'login' %}">登录</a>
-                            <a class="nav__user-item" href="{% url 'register' %}">注册</a>
+                            <a class="nav__user-item" href="{% url 'login' %}">{% trans "登录" %}</a>
+                            <a class="nav__user-item" href="{% url 'register' %}">{% trans "注册" %}</a>
                         {% endif %}
                     </div>
                 </div>
@@ -109,7 +134,7 @@
 
     <footer class="page__footer">
         <div class="container flex justify-between items-center gap-3 flex-wrap">
-            <p>Electric Scooter Hire System</p>
+            <p>{% trans "Electric Scooter Hire System" %}</p>
             <p class="text-muted">© {% now "Y" %} Group 11</p>
         </div>
     </footer>

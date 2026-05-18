@@ -271,6 +271,19 @@
   border-color: var(--badge-info-border);
 }
 
+.welcome-title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.membership-tags__badge {
+  min-height: 26px;
+  padding-inline: var(--space-3);
+  font-size: inherit;
+}
+
 .alert {
   display: grid;
   gap: var(--space-1);

@@ -1,33 +1,33 @@
 {% extends "base.html" %}
 
-{% block title %}处理反馈{% endblock %}
+{% block title %}{% trans "处理反馈" %}{% endblock %}
 
 {% block content %}
 <section class="section">
     <div class="container container--narrow">
         <article class="card">
             <div class="card__header">
-                <h1>处理故障反馈</h1>
+                <h1>{% trans "处理故障反馈" %}</h1>
             </div>
 
             <div class="card__body stack">
                 <div class="meta-list">
                     <div class="meta-item">
-                        <span>车辆</span>
+                        <span>{% trans "车辆" %}</span>
                         <span class="font-medium">{{ feedback.scooter.name }}</span>
                     </div>
                     <div class="meta-item">
-                        <span>用户</span>
+                        <span>{% trans "用户" %}</span>
                         <span class="font-medium">{{ feedback.user.username }}</span>
                     </div>
                     <div class="meta-item">
-                        <span>提交时间</span>
+                        <span>{% trans "提交时间" %}</span>
                         <span class="font-medium">{{ feedback.created_at|date:"m-d H:i" }}</span>
                     </div>
                 </div>
 
                 <div class="alert alert--info">
-                    <strong>问题描述</strong>
+                    <strong>{% trans "问题描述" %}</strong>
                     <span>{{ feedback.content }}</span>
                 </div>
 
@@ -35,24 +35,24 @@
                     {% csrf_token %}
 
                     <div class="form-group">
-                        <label for="priority" class="form-label">优先级</label>
+                        <label for="priority" class="form-label">{% trans "优先级" %}</label>
                         <select id="priority" name="priority" class="form-select">
-                            <option value="low" {% if feedback.priority == 'low' %}selected{% endif %}>低优先级</option>
-                            <option value="high" {% if feedback.priority == 'high' %}selected{% endif %}>高优先级</option>
+                            <option value="low" {% if feedback.priority == 'low' %}selected{% endif %}>{% trans "低优先级" %}</option>
+                            <option value="high" {% if feedback.priority == 'high' %}selected{% endif %}>{% trans "高优先级" %}</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="status" class="form-label">处理状态</label>
+                        <label for="status" class="form-label">{% trans "处理状态" %}</label>
                         <select id="status" name="status" class="form-select">
-                            <option value="pending" {% if feedback.status == 'pending' %}selected{% endif %}>待处理</option>
-                            <option value="resolved" {% if feedback.status == 'resolved' %}selected{% endif %}>已解决</option>
+                            <option value="pending" {% if feedback.status == 'pending' %}selected{% endif %}>{% trans "待处理" %}</option>
+                            <option value="resolved" {% if feedback.status == 'resolved' %}selected{% endif %}>{% trans "已解决" %}</option>
                         </select>
                     </div>
 
                     <div class="toolbar">
-                        <button type="submit" class="btn btn--primary">保存修改</button>
-                        <a href="{% url 'feedback_list' %}" class="btn btn--ghost">返回列表</a>
+                        <button type="submit" class="btn btn--primary">{% trans "保存修改" %}</button>
+                        <a href="{% url 'feedback_list' %}" class="btn btn--ghost">{% trans "返回列表" %}</a>
                     </div>
                 </form>
             </div>

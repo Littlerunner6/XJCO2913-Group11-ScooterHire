@@ -1,34 +1,34 @@
 {% extends "base.html" %}
 
-{% block title %}周收入统计{% endblock %}
+{% block title %}{% trans "周收入统计" %}{% endblock %}
 
 {% block content %}
 <section class="section">
     <div class="section__head">
         <div>
-            <h1>周收入统计</h1>
-            <p class="text-muted mt-2">统计周期：{{ monday }} 至 {{ sunday }}</p>
+            <h1>{% trans "周收入统计" %}</h1>
+            <p class="text-muted mt-2">{% trans "统计周期：" %}{{ monday }} {% trans "至" %} {{ sunday }}</p>
         </div>
         <div class="toolbar">
-            <a href="/admin/" class="btn btn--ghost">管理员后台</a>
-            <a href="{% url 'index' %}" class="btn btn--ghost">返回主页</a>
+            <a href="/admin/" class="btn btn--ghost">{% trans "管理员后台" %}</a>
+            <a href="{% url 'index' %}" class="btn btn--ghost">{% trans "返回主页" %}</a>
         </div>
     </div>
 
     <div class="panel-grid mb-6">
         <article class="card">
             <div class="card__body kpi">
-                <span class="kpi__label">本周总收入</span>
+                <span class="kpi__label">{% trans "本周总收入" %}</span>
                 <span class="kpi__value">¥{{ total_weekly_income }}</span>
             </div>
         </article>
         <article class="card">
             <div class="card__body kpi">
-                <span class="kpi__label">统计状态</span>
+                <span class="kpi__label">{% trans "统计状态" %}</span>
                 {% if has_data %}
-                    <span class="kpi__value">有数据</span>
+                    <span class="kpi__value">{% trans "有数据" %}</span>
                 {% else %}
-                    <span class="kpi__value">暂无数据</span>
+                    <span class="kpi__value">{% trans "暂无数据" %}</span>
                 {% endif %}
             </div>
         </article>
@@ -37,7 +37,7 @@
 
 <section class="section">
     <div class="section__head">
-        <h2>按租赁时长统计</h2>
+        <h2>{% trans "按租赁时长统计" %}</h2>
     </div>
 
     {% if has_data %}
@@ -45,10 +45,10 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>租赁时长</th>
-                        <th>订单量（笔）</th>
-                        <th>总收入（¥）</th>
-                        <th>标签</th>
+                        <th>{% trans "租赁时长" %}</th>
+                        <th>{% trans "订单量（笔）" %}</th>
+                        <th>{% trans "总收入（¥）" %}</th>
+                        <th>{% trans "标签" %}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -59,7 +59,7 @@
                             <td>{{ item.total_income }}</td>
                             <td>
                                 {% if item.is_hot %}
-                                    <span class="badge badge--warning">热门</span>
+                                    <span class="badge badge--warning">{% trans "热门" %}</span>
                                 {% else %}
                                     <span class="text-secondary">-</span>
                                 {% endif %}
@@ -70,27 +70,27 @@
             </table>
         </div>
     {% else %}
-        <div class="alert alert--info" role="status">本周暂无已支付订单。</div>
+        <div class="alert alert--info" role="status">{% trans "本周暂无已支付订单。" %}</div>
     {% endif %}
 
     <div class="chart-shell">
-        <canvas id="periodChart" aria-label="租赁时长收入图表"></canvas>
+        <canvas id="periodChart" aria-label="{% trans '租赁时长收入图表' %}"></canvas>
     </div>
 </section>
 
 <section class="section">
     <div class="section__head">
-        <h2>按每日统计</h2>
+        <h2>{% trans "按每日统计" %}</h2>
     </div>
 
     <div class="responsive-table mb-4">
         <table class="table">
             <thead>
                 <tr>
-                    <th>日期</th>
-                    <th>订单量（笔）</th>
-                    <th>收入（¥）</th>
-                    <th>标签</th>
+                    <th>{% trans "日期" %}</th>
+                    <th>{% trans "订单量（笔）" %}</th>
+                    <th>{% trans "收入（¥）" %}</th>
+                    <th>{% trans "标签" %}</th>
                 </tr>
             </thead>
             <tbody>
@@ -101,7 +101,7 @@
                         <td>{{ day.income }}</td>
                         <td>
                             {% if day.is_popular %}
-                                <span class="badge badge--warning">热门</span>
+                                <span class="badge badge--warning">{% trans "热门" %}</span>
                             {% else %}
                                 <span class="text-secondary">-</span>
                             {% endif %}
@@ -109,7 +109,7 @@
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="4">暂无数据</td>
+                        <td colspan="4">{% trans "暂无数据" %}</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -117,7 +117,7 @@
     </div>
 
     <div class="chart-shell">
-        <canvas id="dailyChart" aria-label="每日收入图表"></canvas>
+        <canvas id="dailyChart" aria-label="{% trans '每日收入图表' %}"></canvas>
     </div>
 </section>
 {% endblock %}
@@ -146,7 +146,7 @@
       data: {
         labels: statData.map(function (s) { return s.period_name; }),
         datasets: [{
-          label: '收入（¥）',
+          label: '{% trans "收入（¥）" %}',
           data: statData.map(function (s) { return s.total_income; }),
           backgroundColor: '#276EF1',
           borderRadius: 8
@@ -160,7 +160,7 @@
       data: {
         labels: dailyData.map(function (d) { return String(d.date).substring(5); }),
         datasets: [{
-          label: '收入（¥）',
+          label: '{% trans "收入（¥）" %}',
           data: dailyData.map(function (d) { return d.income; }),
           backgroundColor: '#000000',
           borderRadius: 8

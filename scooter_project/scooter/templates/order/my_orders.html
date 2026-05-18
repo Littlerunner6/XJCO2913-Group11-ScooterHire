@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 
-{% block title %}我的订单{% endblock %}
+{% block title %}{% trans "我的订单" %}{% endblock %}
 
 {% block content %}
 <section class="section">
     <div class="section__head">
         <div>
-            <h1>我的订单</h1>
-            <p class="text-muted mt-2">查看历史订单、支付状态和可执行操作。</p>
+            <h1>{% trans "我的订单" %}</h1>
+            <p class="text-muted mt-2">{% trans "查看历史订单、支付状态和可执行操作。" %}</p>
         </div>
-        <a href="{% url 'index' %}" class="btn btn--ghost">返回首页</a>
+        <a href="{% url 'index' %}" class="btn btn--ghost">{% trans "返回首页" %}</a>
     </div>
 
     {% if orders %}
@@ -17,13 +17,13 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>订单 ID</th>
-                        <th>滑板车</th>
-                        <th>租赁时长</th>
-                        <th>订单金额</th>
-                        <th>下单时间</th>
-                        <th>支付状态</th>
-                        <th>操作</th>
+                        <th>{% trans "订单 ID" %}</th>
+                        <th>{% trans "滑板车" %}</th>
+                        <th>{% trans "租赁时长" %}</th>
+                        <th>{% trans "订单金额" %}</th>
+                        <th>{% trans "下单时间" %}</th>
+                        <th>{% trans "支付状态" %}</th>
+                        <th>{% trans "操作" %}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,25 +36,25 @@
                             <td>{{ order.order_time|date:"Y-m-d H:i:s" }}</td>
                             <td>
                                 {% if order.pay_status == 'paid' %}
-                                    <span class="badge badge--success">已支付</span>
+                                    <span class="badge badge--success">{% trans "已支付" %}</span>
                                 {% elif order.pay_status == 'unpaid' %}
-                                    <span class="badge badge--warning">未支付</span>
+                                    <span class="badge badge--warning">{% trans "未支付" %}</span>
                                 {% else %}
-                                    <span class="badge badge--error">已取消</span>
+                                    <span class="badge badge--error">{% trans "已取消" %}</span>
                                 {% endif %}
                             </td>
                             <td>
                                 {% if order.pay_status == 'unpaid' %}
                                     <div class="actions-col">
-                                        <a href="{% url 'pay_order' order.id %}" class="btn btn--primary btn--sm">去支付</a>
-                                        <a href="{% url 'extend_booking' order.id %}" class="btn btn--ghost btn--sm">延长租赁</a>
-                                        <form action="{% url 'cancel_order' order.id %}" method="post" class="inline-form" data-confirm="确认取消该订单吗？">
+                                        <a href="{% url 'pay_order' order.id %}" class="btn btn--primary btn--sm">{% trans "去支付" %}</a>
+                                        <a href="{% url 'extend_booking' order.id %}" class="btn btn--ghost btn--sm">{% trans "延长租赁" %}</a>
+                                        <form action="{% url 'cancel_order' order.id %}" method="post" class="inline-form" data-confirm="{% trans "确认取消该订单吗？" %}">
                                             {% csrf_token %}
-                                            <button type="submit" class="btn btn--danger btn--sm">取消订单</button>
+                                            <button type="submit" class="btn btn--danger btn--sm">{% trans "取消订单" %}</button>
                                         </form>
                                     </div>
                                 {% else %}
-                                    <span class="text-secondary">无可用操作</span>
+                                    <span class="text-secondary">{% trans "无可用操作" %}</span>
                                 {% endif %}
                             </td>
                         </tr>
@@ -64,8 +64,8 @@
         </div>
     {% else %}
         <div class="alert alert--info" role="status">
-            <strong>暂无订单记录</strong>
-            <span>你还没有创建订单，可前往首页开始预订。</span>
+            <strong>{% trans "暂无订单记录" %}</strong>
+            <span>{% trans "你还没有创建订单，可前往首页开始预订。" %}</span>
         </div>
     {% endif %}
 </section>

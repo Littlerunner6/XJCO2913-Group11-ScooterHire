@@ -653,6 +653,10 @@ msgid "欢迎回来，%(username)s"
 msgstr ""
 
 #: .\scooter\templates\index.html:17
+msgid "欢迎回来，"
+msgstr "欢迎回来，"
+
+#: .\scooter\templates\index.html:17
 msgid "选择车辆，快速完成预订和支付流程。"
 msgstr ""
 

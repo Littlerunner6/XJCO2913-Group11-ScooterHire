@@ -1,0 +1,1138 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-08 00:24+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+#: .\scooter\models.py:7
+msgid "编号"
+msgstr ""
+
+#: .\scooter\models.py:12
+msgid "基础小时单价（¥/小时）"
+msgstr ""
+
+#: .\scooter\models.py:14
+msgid "最低起租小时数"
+msgstr ""
+
+#: .\scooter\models.py:15
+msgid "是否可用"
+msgstr ""
+
+#: .\scooter\models.py:17
+msgid "地址"
+msgstr ""
+
+#: .\scooter\models.py:18
+msgid "纬度"
+msgstr ""
+
+#: .\scooter\models.py:19
+msgid "经度"
+msgstr ""
+
+#: .\scooter\models.py:21
+msgid "车辆图片"
+msgstr ""
+
+#: .\scooter\models.py:23
+msgid "性能描述"
+msgstr ""
+
+#: .\scooter\models.py:31
+msgid "小时单价不能为负数！"
+msgstr ""
+
+#: .\scooter\models.py:33
+msgid "最低起租小时数不能小于1！"
+msgstr ""
+
+#: .\scooter\models.py:36 .\scooter\models.py:37
+#: .\scooter\templates\cancel_success.html:19 .\scooter\templates\index.html:44
+#: .\scooter\templates\order\my_orders.html:21
+#: .\scooter\templates\order\pay_order.html:14
+#: .\scooter\templates\order\pay_success.html:19
+#: .\scooter\templates\order_success.html:18
+msgid "滑板车"
+msgstr ""
+
+#: .\scooter\models.py:42 .\scooter\templates\order\my_orders.html:41
+msgid "未支付"
+msgstr ""
+
+#: .\scooter\models.py:43 .\scooter\templates\order\my_orders.html:39
+msgid "已支付"
+msgstr ""
+
+#: .\scooter\models.py:44 .\scooter\templates\order\my_orders.html:43
+msgid "已取消"
+msgstr ""
+
+#: .\scooter\models.py:47
+msgid "访客姓名"
+msgstr ""
+
+#: .\scooter\models.py:48
+msgid "访客邮箱"
+msgstr ""
+
+#: .\scooter\models.py:49
+msgid "下单用户"
+msgstr ""
+
+#: .\scooter\models.py:50
+msgid "租赁滑板车"
+msgstr ""
+
+#: .\scooter\models.py:51
+msgid "租赁小时数"
+msgstr ""
+
+#: .\scooter\models.py:56
+msgid "订单总价"
+msgstr ""
+
+#: .\scooter\models.py:58 .\scooter\templates\order\my_orders.html:24
+msgid "下单时间"
+msgstr ""
+
+#: .\scooter\models.py:59
+msgid "订单状态"
+msgstr ""
+
+#: .\scooter\models.py:63
+msgid "Staff Booking"
+msgstr ""
+
+#: .\scooter\models.py:69
+msgid "订单总价不能为负数！"
+msgstr ""
+
+#: .\scooter\models.py:74
+#, python-brace-format
+msgid "{hours} 小时"
+msgstr ""
+
+#: .\scooter\models.py:79
+msgid "未知状态"
+msgstr ""
+
+#: .\scooter\models.py:82 .\scooter\models.py:83
+msgid "订单"
+msgstr ""
+
+#: .\scooter\models.py:87 .\scooter\models.py:111
+#: .\scooter\templates\feedback\edit.html:20
+#: .\scooter\templates\feedback\list.html:32
+msgid "用户"
+msgstr ""
+
+#: .\scooter\models.py:88
+msgid "卡号后4位"
+msgstr ""
+
+#: .\scooter\models.py:89 .\scooter\templates\card\add.html:20
+msgid "银行名称"
+msgstr ""
+
+#: .\scooter\models.py:90 .\scooter\templates\card\list.html:32
+msgid "设为默认"
+msgstr ""
+
+#: .\scooter\models.py:91
+msgid "添加时间"
+msgstr ""
+
+#: .\scooter\models.py:97 .\scooter\models.py:98
+#: .\scooter\templates\base.html:46
+msgid "银行卡"
+msgstr ""
+
+#: .\scooter\models.py:103 .\scooter\templates\feedback\edit.html:48
+#: .\scooter\templates\feedback\list.html:23
+msgid "待处理"
+msgstr ""
+
+#: .\scooter\models.py:104 .\scooter\templates\feedback\edit.html:49
+#: .\scooter\templates\feedback\list.html:24
+msgid "已解决"
+msgstr ""
+
+#: .\scooter\models.py:107 .\scooter\templates\feedback\edit.html:40
+#: .\scooter\templates\feedback\list.html:19
+msgid "低优先级"
+msgstr ""
+
+#: .\scooter\models.py:108 .\scooter\templates\feedback\edit.html:41
+#: .\scooter\templates\feedback\list.html:18
+msgid "高优先级"
+msgstr ""
+
+#: .\scooter\models.py:112
+msgid "故障车辆"
+msgstr ""
+
+#: .\scooter\models.py:113 .\scooter\templates\feedback\create.html:26
+#: .\scooter\templates\feedback\edit.html:30
+msgid "问题描述"
+msgstr ""
+
+#: .\scooter\models.py:114 .\scooter\templates\feedback\edit.html:46
+msgid "处理状态"
+msgstr ""
+
+#: .\scooter\models.py:115 .\scooter\templates\feedback\edit.html:24
+#: .\scooter\templates\feedback\my_feedback.html:34
+msgid "提交时间"
+msgstr ""
+
+#: .\scooter\models.py:121 .\scooter\templates\feedback\edit.html:38
+#: .\scooter\templates\feedback\list.html:34
+msgid "优先级"
+msgstr ""
+
+#: .\scooter\models.py:129 .\scooter\models.py:130
+msgid "故障反馈"
+msgstr ""
+
+#: .\scooter\templates\admin\weekly_income.html:3
+#: .\scooter\templates\admin\weekly_income.html:9
+#: .\scooter\templates\base.html:88 .\scooter\templates\index.html:26
+msgid "周收入统计"
+msgstr ""
+
+#: .\scooter\templates\admin\weekly_income.html:10
+msgid "统计周期："
+msgstr ""
+
+#: .\scooter\templates\admin\weekly_income.html:10
+msgid "至"
+msgstr ""
+
+#: .\scooter\templates\admin\weekly_income.html:13
+#: .\scooter\templates\index.html:27
+msgid "管理员后台"
+msgstr ""
+
+#: .\scooter\templates\admin\weekly_income.html:14
+msgid "返回主页"
+msgstr ""
+
+#: .\scooter\templates\admin\weekly_income.html:21
+msgid "本周总收入"
+msgstr ""
+
+#: .\scooter\templates\admin\weekly_income.html:27
+msgid "统计状态"
+msgstr ""
+
+#: .\scooter\templates\admin\weekly_income.html:29
+msgid "有数据"
+msgstr ""
+
+#: .\scooter\templates\admin\weekly_income.html:31
+#: .\scooter\templates\admin\weekly_income.html:112
+msgid "暂无数据"
+msgstr ""
+
+#: .\scooter\templates\admin\weekly_income.html:40
+msgid "按租赁时长统计"
+msgstr ""
+
+#: .\scooter\templates\admin\weekly_income.html:48
+#: .\scooter\templates\cancel_success.html:20 .\scooter\templates\index.html:48
+#: .\scooter\templates\order\my_orders.html:22
+#: .\scooter\templates\order\pay_order.html:15
+#: .\scooter\templates\order\pay_success.html:20
+#: .\scooter\templates\order_success.html:19
+msgid "租赁时长"
+msgstr ""
+
+#: .\scooter\templates\admin\weekly_income.html:49
+#: .\scooter\templates\admin\weekly_income.html:91
+msgid "订单量（笔）"
+msgstr ""
+
+#: .\scooter\templates\admin\weekly_income.html:50
+msgid "总收入（¥）"
+msgstr ""
+
+#: .\scooter\templates\admin\weekly_income.html:51
+#: .\scooter\templates\admin\weekly_income.html:93
+msgid "标签"
+msgstr ""
+
+#: .\scooter\templates\admin\weekly_income.html:62
+#: .\scooter\templates\admin\weekly_income.html:104
+msgid "热门"
+msgstr ""
+
+#: .\scooter\templates\admin\weekly_income.html:73
+msgid "本周暂无已支付订单。"
+msgstr ""
+
+#: .\scooter\templates\admin\weekly_income.html:77
+msgid "租赁时长收入图表"
+msgstr ""
+
+#: .\scooter\templates\admin\weekly_income.html:83
+msgid "按每日统计"
+msgstr ""
+
+#: .\scooter\templates\admin\weekly_income.html:90
+msgid "日期"
+msgstr ""
+
+#: .\scooter\templates\admin\weekly_income.html:92
+#: .\scooter\templates\admin\weekly_income.html:149
+#: .\scooter\templates\admin\weekly_income.html:163
+msgid "收入（¥）"
+msgstr ""
+
+#: .\scooter\templates\admin\weekly_income.html:120
+msgid "每日收入图表"
+msgstr ""
+
+#: .\scooter\templates\base.html:13
+msgid "跳到主内容"
+msgstr ""
+
+#: .\scooter\templates\base.html:15
+msgid "主导航"
+msgstr ""
+
+#: .\scooter\templates\base.html:17
+msgid "网站导航"
+msgstr ""
+
+#: .\scooter\templates\base.html:26
+msgid "打开用户菜单"
+msgstr ""
+
+#: .\scooter\templates\base.html:39
+msgid "切换导航菜单"
+msgstr ""
+
+#: .\scooter\templates\base.html:44 .\scooter\templates\index.html:4
+msgid "首页"
+msgstr ""
+
+#: .\scooter\templates\base.html:45 .\scooter\templates\base.html:81
+#: .\scooter\templates\order\my_orders.html:3
+#: .\scooter\templates\order\my_orders.html:9
+msgid "我的订单"
+msgstr ""
+
+#: .\scooter\templates\base.html:47 .\scooter\templates\base.html:83
+msgid "反馈记录"
+msgstr ""
+
+#: .\scooter\templates\base.html:49 .\scooter\templates\index.html:22
+msgid "代客下单"
+msgstr ""
+
+#: .\scooter\templates\base.html:52
+msgid "收入统计"
+msgstr ""
+
+#: .\scooter\templates\base.html:55 .\scooter\templates\base.html:96
+#: .\scooter\templates\registration\login.html:3
+#: .\scooter\templates\registration\login.html:36
+msgid "登录"
+msgstr ""
+
+#: .\scooter\templates\base.html:56 .\scooter\templates\base.html:97
+#: .\scooter\templates\registration\register.html:3
+#: .\scooter\templates\registration\register.html:48
+msgid "注册"
+msgstr ""
+
+#: .\scooter\templates\base.html:60
+msgid "用户菜单"
+msgstr ""
+
+#: .\scooter\templates\base.html:72
+msgid "账户菜单"
+msgstr ""
+
+#: .\scooter\templates\base.html:74
+msgid "欢迎使用"
+msgstr ""
+
+#: .\scooter\templates\base.html:75
+msgid "请先登录或注册"
+msgstr ""
+
+#: .\scooter\templates\base.html:82
+msgid "银行卡管理"
+msgstr ""
+
+#: .\scooter\templates\base.html:85
+#: .\scooter\templates\staff\staff_booking.html:3
+#: .\scooter\templates\staff\staff_booking.html:10
+msgid "员工代客下单"
+msgstr ""
+
+#: .\scooter\templates\base.html:89
+msgid "管理后台"
+msgstr ""
+
+#: .\scooter\templates\base.html:93
+msgid "退出登录"
+msgstr ""
+
+#: .\scooter\templates\base.html:132
+msgid "Electric Scooter Hire System"
+msgstr ""
+
+#: .\scooter\templates\cancel_success.html:4
+msgid "取消订单成功"
+msgstr ""
+
+#: .\scooter\templates\cancel_success.html:11
+msgid "订单已取消"
+msgstr ""
+
+#: .\scooter\templates\cancel_success.html:13
+msgid "取消成功"
+msgstr ""
+
+#: .\scooter\templates\cancel_success.html:14
+#, python-format
+msgid "该订单状态已更新为“%(status)s”。"
+msgstr ""
+
+#: .\scooter\templates\cancel_success.html:18 .\scooter\templates\index.html:40
+#: .\scooter\templates\order\my_orders.html:20
+#: .\scooter\templates\order\pay_order.html:13
+#: .\scooter\templates\order\pay_success.html:18
+msgid "订单 ID"
+msgstr ""
+
+#: .\scooter\templates\cancel_success.html:21
+#: .\scooter\templates\order\my_orders.html:23
+#: .\scooter\templates\order_success.html:20
+msgid "订单金额"
+msgstr ""
+
+#: .\scooter\templates\cancel_success.html:25
+#: .\scooter\templates\order\pay_success.html:26
+msgid "查看我的订单"
+msgstr ""
+
+#: .\scooter\templates\cancel_success.html:26
+#: .\scooter\templates\card\list.html:14 .\scooter\templates\error.html:17
+#: .\scooter\templates\feedback\list.html:12
+#: .\scooter\templates\feedback\my_feedback.html:14
+#: .\scooter\templates\feedback\success.html:14
+#: .\scooter\templates\order\create_order.html:53
+#: .\scooter\templates\order\my_orders.html:12
+#: .\scooter\templates\order\pay_order.html:25
+#: .\scooter\templates\order\pay_success.html:27
+#: .\scooter\templates\order_success.html:29
+#: .\scooter\templates\staff\staff_booking.html:42
+msgid "返回首页"
+msgstr ""
+
+#: .\scooter\templates\card\add.html:3 .\scooter\templates\card\add.html:10
+#: .\scooter\templates\card\list.html:13
+msgid "添加银行卡"
+msgstr ""
+
+#: .\scooter\templates\card\add.html:11
+msgid "系统仅保存卡号后四位用于展示。"
+msgstr ""
+
+#: .\scooter\templates\card\add.html:17
+msgid "添加银行卡表单"
+msgstr ""
+
+#: .\scooter\templates\card\add.html:25
+msgid "银行卡号"
+msgstr ""
+
+#: .\scooter\templates\card\add.html:27
+msgid "至少输入 4 位，实际只保留后四位。"
+msgstr ""
+
+#: .\scooter\templates\card\add.html:31
+msgid "保存"
+msgstr ""
+
+#: .\scooter\templates\card\add.html:32
+msgid "返回银行卡列表"
+msgstr ""
+
+#: .\scooter\templates\card\list.html:3 .\scooter\templates\card\list.html:9
+msgid "我的银行卡"
+msgstr ""
+
+#: .\scooter\templates\card\list.html:10
+msgid "你可以管理默认卡和删除不再使用的银行卡。"
+msgstr ""
+
+#: .\scooter\templates\card\list.html:24
+msgid "卡号后四位："
+msgstr ""
+
+#: .\scooter\templates\card\list.html:28
+msgid "默认卡"
+msgstr ""
+
+#: .\scooter\templates\card\list.html:36
+msgid "确认删除该银行卡吗？"
+msgstr ""
+
+#: .\scooter\templates\card\list.html:38
+msgid "删除"
+msgstr ""
+
+#: .\scooter\templates\card\list.html:47
+msgid "暂无银行卡"
+msgstr ""
+
+#: .\scooter\templates\card\list.html:48
+msgid "点击“添加银行卡”以便后续支付操作。"
+msgstr ""
+
+#: .\scooter\templates\error.html:4 .\scooter\templates\error.html:11
+msgid "操作失败"
+msgstr ""
+
+#: .\scooter\templates\error.html:13
+msgid "请求未完成"
+msgstr ""
+
+#: .\scooter\templates\feedback\create.html:3
+#: .\scooter\templates\feedback\create.html:10
+msgid "提交故障反馈"
+msgstr ""
+
+#: .\scooter\templates\feedback\create.html:11
+msgid "描述车辆问题后，管理员可在后台跟进处理。"
+msgstr ""
+
+#: .\scooter\templates\feedback\create.html:13
+msgid "故障反馈表单"
+msgstr ""
+
+#: .\scooter\templates\feedback\create.html:17
+msgid "选择车辆"
+msgstr ""
+
+#: .\scooter\templates\feedback\create.html:27
+msgid "请描述问题，例如刹车异常、车灯损坏等"
+msgstr ""
+
+#: .\scooter\templates\feedback\create.html:31
+#: .\scooter\templates\index.html:20
+msgid "提交反馈"
+msgstr ""
+
+#: .\scooter\templates\feedback\create.html:32
+#: .\scooter\templates\feedback\success.html:13
+#: .\scooter\templates\index.html:69
+msgid "查看我的反馈"
+msgstr ""
+
+#: .\scooter\templates\feedback\edit.html:3
+msgid "处理反馈"
+msgstr ""
+
+#: .\scooter\templates\feedback\edit.html:10
+msgid "处理故障反馈"
+msgstr ""
+
+#: .\scooter\templates\feedback\edit.html:16
+#: .\scooter\templates\feedback\list.html:31
+#: .\scooter\templates\feedback\my_feedback.html:23
+msgid "车辆"
+msgstr ""
+
+#: .\scooter\templates\feedback\edit.html:54
+msgid "保存修改"
+msgstr ""
+
+#: .\scooter\templates\feedback\edit.html:55
+msgid "返回列表"
+msgstr ""
+
+#: .\scooter\templates\feedback\list.html:3
+#: .\scooter\templates\feedback\list.html:9
+msgid "故障反馈管理"
+msgstr ""
+
+#: .\scooter\templates\feedback\list.html:10
+msgid "筛选并处理用户提交的车辆故障反馈。"
+msgstr ""
+
+#: .\scooter\templates\feedback\list.html:16
+msgid "优先级："
+msgstr ""
+
+#: .\scooter\templates\feedback\list.html:17
+#: .\scooter\templates\feedback\list.html:22
+msgid "全部"
+msgstr ""
+
+#: .\scooter\templates\feedback\list.html:21
+msgid "状态："
+msgstr ""
+
+#: .\scooter\templates\feedback\list.html:33
+msgid "内容"
+msgstr ""
+
+#: .\scooter\templates\feedback\list.html:35
+#: .\scooter\templates\feedback\my_feedback.html:27
+msgid "状态"
+msgstr ""
+
+#: .\scooter\templates\feedback\list.html:36
+#: .\scooter\templates\order\my_orders.html:26
+msgid "操作"
+msgstr ""
+
+#: .\scooter\templates\feedback\list.html:60
+msgid "处理"
+msgstr ""
+
+#: .\scooter\templates\feedback\list.html:66
+msgid "暂无符合条件的反馈"
+msgstr ""
+
+#: .\scooter\templates\feedback\my_feedback.html:3
+msgid "我的反馈"
+msgstr ""
+
+#: .\scooter\templates\feedback\my_feedback.html:9
+msgid "我的故障反馈"
+msgstr ""
+
+#: .\scooter\templates\feedback\my_feedback.html:10
+msgid "跟踪提交记录与处理状态。"
+msgstr ""
+
+#: .\scooter\templates\feedback\my_feedback.html:13
+msgid "提交新反馈"
+msgstr ""
+
+#: .\scooter\templates\feedback\my_feedback.html:42
+msgid "暂无反馈记录"
+msgstr ""
+
+#: .\scooter\templates\feedback\my_feedback.html:43
+msgid "当你提交反馈后，会在此展示处理进度。"
+msgstr ""
+
+#: .\scooter\templates\feedback\success.html:3
+msgid "反馈成功"
+msgstr ""
+
+#: .\scooter\templates\feedback\success.html:10
+msgid "反馈提交成功"
+msgstr ""
+
+#: .\scooter\templates\index.html:16
+#, python-format
+msgid "欢迎回来，%(username)s"
+msgstr ""
+
+#: .\scooter\templates\index.html:17
+msgid "选择车辆，快速完成预订和支付流程。"
+msgstr ""
+
+#: .\scooter\templates\index.html:23
+msgid "反馈列表"
+msgstr ""
+
+#: .\scooter\templates\index.html:33
+msgid "进行中订单"
+msgstr ""
+
+#: .\scooter\templates\index.html:57
+msgid "暂无进行中订单"
+msgstr ""
+
+#: .\scooter\templates\index.html:58
+msgid "点击查看我的订单，或前往下方立即预订。"
+msgstr ""
+
+#: .\scooter\templates\index.html:68
+msgid "可租赁滑板车"
+msgstr ""
+
+#: .\scooter\templates\index.html:80
+msgid "价格"
+msgstr ""
+
+#: .\scooter\templates\index.html:81 .\scooter\templates\index.html:85
+#: .\scooter\templates\order\create_order.html:32
+#: .\scooter\templates\order\create_order.html:36
+#: .\scooter\templates\order\extend.html:14
+msgid "小时"
+msgstr ""
+
+#: .\scooter\templates\index.html:84
+#: .\scooter\templates\order\create_order.html:35
+msgid "最低起租"
+msgstr ""
+
+#: .\scooter\templates\index.html:88
+msgid "位置"
+msgstr ""
+
+#: .\scooter\templates\index.html:94
+msgid "可租"
+msgstr ""
+
+#: .\scooter\templates\index.html:95
+msgid "立即预订"
+msgstr ""
+
+#: .\scooter\templates\index.html:102
+msgid "暂无可用车辆"
+msgstr ""
+
+#: .\scooter\templates\index.html:103
+msgid "请稍后刷新页面，或联系管理员补充车辆。"
+msgstr ""
+
+#: .\scooter\templates\index.html:110
+msgid "车辆位置地图"
+msgstr ""
+
+#: .\scooter\templates\index.html:111
+msgid "地图支持缩放与拖拽查看。"
+msgstr ""
+
+#: .\scooter\templates\index.html:114
+msgid "滑板车位置地图"
+msgstr ""
+
+#: .\scooter\templates\order\create_order.html:3
+#: .\scooter\templates\order\create_order.html:18
+msgid "预订"
+msgstr ""
+
+#: .\scooter\templates\order\create_order.html:24
+msgid "车辆性能"
+msgstr ""
+
+#: .\scooter\templates\order\create_order.html:31
+msgid "基础小时单价"
+msgstr ""
+
+#: .\scooter\templates\order\create_order.html:40
+msgid "创建订单表单"
+msgstr ""
+
+#: .\scooter\templates\order\create_order.html:45
+#: .\scooter\templates\staff\staff_booking.html:36
+msgid "租赁时长（小时）"
+msgstr ""
+
+#: .\scooter\templates\order\create_order.html:48
+#, python-format
+msgid "最低 %(scooter.min_hire_hours)s 小时。"
+msgstr ""
+
+#: .\scooter\templates\order\create_order.html:52
+msgid "确认预订"
+msgstr ""
+
+#: .\scooter\templates\order\create_order.html:58
+msgid "安全责任与免责声明"
+msgstr ""
+
+#: .\scooter\templates\order\create_order.html:59
+msgid ""
+"租车人需遵守交通规则，安全责任自行承担。车辆已购买基础交通保险，人为损失需赔"
+"偿。租车即表示同意以上条款。"
+msgstr ""
+
+#: .\scooter\templates\order\extend.html:3
+#: .\scooter\templates\order\my_orders.html:50
+msgid "延长租赁"
+msgstr ""
+
+#: .\scooter\templates\order\extend.html:10
+msgid "延长租赁时长"
+msgstr ""
+
+#: .\scooter\templates\order\extend.html:13
+msgid "订单车辆"
+msgstr ""
+
+#: .\scooter\templates\order\extend.html:14
+msgid "当前时长"
+msgstr ""
+
+#: .\scooter\templates\order\extend.html:15
+msgid "当前金额"
+msgstr ""
+
+#: .\scooter\templates\order\extend.html:16
+msgid "小时单价"
+msgstr ""
+
+#: .\scooter\templates\order\extend.html:19
+msgid "延长租赁表单"
+msgstr ""
+
+#: .\scooter\templates\order\extend.html:22
+msgid "增加小时数"
+msgstr ""
+
+#: .\scooter\templates\order\extend.html:27
+msgid "确认延长"
+msgstr ""
+
+#: .\scooter\templates\order\extend.html:28
+#: .\scooter\templates\order\pay_order.html:24
+msgid "返回我的订单"
+msgstr ""
+
+#: .\scooter\templates\order\my_orders.html:10
+msgid "查看历史订单、支付状态和可执行操作。"
+msgstr ""
+
+#: .\scooter\templates\order\my_orders.html:25
+msgid "支付状态"
+msgstr ""
+
+#: .\scooter\templates\order\my_orders.html:49
+#: .\scooter\templates\order_success.html:24
+msgid "去支付"
+msgstr ""
+
+#: .\scooter\templates\order\my_orders.html:51
+#: .\scooter\templates\order_success.html:25
+msgid "确认取消该订单吗？"
+msgstr ""
+
+#: .\scooter\templates\order\my_orders.html:53
+#: .\scooter\templates\order_success.html:27
+msgid "取消订单"
+msgstr ""
+
+#: .\scooter\templates\order\my_orders.html:57
+msgid "无可用操作"
+msgstr ""
+
+#: .\scooter\templates\order\my_orders.html:67
+msgid "暂无订单记录"
+msgstr ""
+
+#: .\scooter\templates\order\my_orders.html:68
+msgid "你还没有创建订单，可前往首页开始预订。"
+msgstr ""
+
+#: .\scooter\templates\order\pay_order.html:3
+msgid "订单支付"
+msgstr ""
+
+#: .\scooter\templates\order\pay_order.html:10
+#: .\scooter\templates\order\pay_order.html:23
+msgid "确认支付"
+msgstr ""
+
+#: .\scooter\templates\order\pay_order.html:16
+#: .\scooter\templates\order\pay_success.html:21
+msgid "订单原价"
+msgstr ""
+
+#: .\scooter\templates\order\pay_order.html:17
+msgid "折后金额"
+msgstr ""
+
+#: .\scooter\templates\order\pay_order.html:18
+msgid "当前状态"
+msgstr ""
+
+#: .\scooter\templates\order\pay_order.html:21
+msgid "确认支付该订单吗？"
+msgstr ""
+
+#: .\scooter\templates\order\pay_success.html:3
+#: .\scooter\templates\order\pay_success.html:10
+msgid "支付成功"
+msgstr ""
+
+#: .\scooter\templates\order\pay_success.html:13
+msgid "付款已完成"
+msgstr ""
+
+#: .\scooter\templates\order\pay_success.html:14
+msgid "订单状态："
+msgstr ""
+
+#: .\scooter\templates\order\pay_success.html:22
+msgid "支付金额"
+msgstr ""
+
+#: .\scooter\templates\order_success.html:4
+#: .\scooter\templates\order_success.html:11
+msgid "预订成功"
+msgstr ""
+
+#: .\scooter\templates\order_success.html:13
+msgid "订单已创建"
+msgstr ""
+
+#: .\scooter\templates\order_success.html:14
+msgid "请尽快完成支付，订单生效后车辆将被锁定。"
+msgstr ""
+
+#: .\scooter\templates\registration\login.html:10
+msgid "登录账号"
+msgstr ""
+
+#: .\scooter\templates\registration\login.html:11
+msgid "输入用户名和密码继续使用租赁服务。"
+msgstr ""
+
+#: .\scooter\templates\registration\login.html:15
+msgid "登录失败"
+msgstr ""
+
+#: .\scooter\templates\registration\login.html:16
+msgid "用户名或密码错误，请重试。"
+msgstr ""
+
+#: .\scooter\templates\registration\login.html:20
+msgid "登录表单"
+msgstr ""
+
+#: .\scooter\templates\registration\login.html:27
+#: .\scooter\templates\registration\register.html:28
+msgid "用户名"
+msgstr ""
+
+#: .\scooter\templates\registration\login.html:32
+#: .\scooter\templates\registration\register.html:38
+msgid "密码"
+msgstr ""
+
+#: .\scooter\templates\registration\login.html:39
+msgid "还没有账号？"
+msgstr ""
+
+#: .\scooter\templates\registration\login.html:39
+msgid "立即注册"
+msgstr ""
+
+#: .\scooter\templates\registration\register.html:10
+msgid "创建账号"
+msgstr ""
+
+#: .\scooter\templates\registration\register.html:11
+msgid "注册后可直接下单、支付与反馈车辆问题。"
+msgstr ""
+
+#: .\scooter\templates\registration\register.html:15
+msgid "提交失败"
+msgstr ""
+
+#: .\scooter\templates\registration\register.html:24
+msgid "注册表单"
+msgstr ""
+
+#: .\scooter\templates\registration\register.html:33
+msgid "邮箱"
+msgstr ""
+
+#: .\scooter\templates\registration\register.html:40
+msgid "至少 8 位，需同时包含字母与数字。"
+msgstr ""
+
+#: .\scooter\templates\registration\register.html:44
+msgid "确认密码"
+msgstr ""
+
+#: .\scooter\templates\registration\register.html:51
+msgid "已有账号？"
+msgstr ""
+
+#: .\scooter\templates\registration\register.html:51
+msgid "立即登录"
+msgstr ""
+
+#: .\scooter\templates\staff\staff_booking.html:11
+msgid "为访客创建订单后，系统会发送预订确认邮件。"
+msgstr ""
+
+#: .\scooter\templates\staff\staff_booking.html:13
+msgid "员工代客下单表单"
+msgstr ""
+
+#: .\scooter\templates\staff\staff_booking.html:17
+msgid "客户姓名"
+msgstr ""
+
+#: .\scooter\templates\staff\staff_booking.html:22
+msgid "客户邮箱"
+msgstr ""
+
+#: .\scooter\templates\staff\staff_booking.html:27
+msgid "选择滑板车"
+msgstr ""
+
+#: .\scooter\templates\staff\staff_booking.html:41
+msgid "提交预订"
+msgstr ""
+
+#: .\scooter\views.py:23
+msgid "无管理员权限"
+msgstr ""
+
+#: .\scooter\views.py:31
+msgid "无员工权限"
+msgstr ""
+
+#: .\scooter\views.py:69
+msgid "用户名已存在"
+msgstr ""
+
+#: .\scooter\views.py:76
+msgid "密码长度不能小于8位"
+msgstr ""
+
+#: .\scooter\views.py:78
+msgid "密码必须包含字母"
+msgstr ""
+
+#: .\scooter\views.py:80
+msgid "密码必须包含数字"
+msgstr ""
+
+#: .\scooter\views.py:88
+msgid "两次输入的密码不一致"
+msgstr ""
+
+#: .\scooter\views.py:137 .\scooter\views.py:188 .\scooter\views.py:455
+msgid "该滑板车不可预订！"
+msgstr ""
+
+#: .\scooter\views.py:143
+msgid "滑板车预订确认"
+msgstr ""
+
+#: .\scooter\views.py:145
+#, python-brace-format
+msgid ""
+"你好 {username}：\n"
+"\n"
+"你已成功预订电动滑板车！\n"
+"订单编号：{order_id}\n"
+"滑板车编号：{scooter_name}\n"
+"租赁时长：{hire_period} 小时\n"
+"订单总价：¥{total_price}\n"
+"下单时间：{order_time}\n"
+"\n"
+"请尽快完成支付。"
+msgstr ""
+
+#: .\scooter\views.py:173 .\scooter\views.py:258
+msgid "该页面仅支持表单提交，请勿直接访问！"
+msgstr ""
+
+#: .\scooter\views.py:179 .\scooter\views.py:446
+msgid "请选择租赁时长！"
+msgstr ""
+
+#: .\scooter\views.py:184 .\scooter\views.py:451 .\scooter\views.py:505
+msgid "小时数必须是数字"
+msgstr ""
+
+#: .\scooter\views.py:192 .\scooter\views.py:459
+#, python-brace-format
+msgid "最低起租 {hours} 小时"
+msgstr ""
+
+#: .\scooter\views.py:221
+msgid "订单不存在！"
+msgstr ""
+
+#: .\scooter\views.py:224
+msgid "该订单已支付，无需重复支付！"
+msgstr ""
+
+#: .\scooter\views.py:226
+msgid "该订单已取消，无法支付！"
+msgstr ""
+
+#: .\scooter\views.py:267
+msgid "无法取消该订单（订单不存在/已支付/已取消）！"
+msgstr ""
+
+#: .\scooter\views.py:289
+msgid "1小时档"
+msgstr ""
+
+#: .\scooter\views.py:290
+msgid "4小时档"
+msgstr ""
+
+#: .\scooter\views.py:291
+msgid "1天档(24h)"
+msgstr ""
+
+#: .\scooter\views.py:292
+msgid "1周档(168h)"
+msgstr ""
+
+#: .\scooter\views.py:379
+msgid "卡号至少4位"
+msgstr ""
+
+#: .\scooter\views.py:413
+msgid "滑板车预订确认（代下单）"
+msgstr ""
+
+#: .\scooter\views.py:415
+#, python-brace-format
+msgid ""
+"您好 {guest_name}：\n"
+"\n"
+"员工已为您代预订滑板车！\n"
+"订单编号：{order_id}\n"
+"滑板车编号：{scooter_name}\n"
+"租赁时长：{hire_period} 小时\n"
+"\n"
+"感谢使用！"
+msgstr ""
+
+#: .\scooter\views.py:500
+msgid "请输入延长小时数"
+msgstr ""
+
+#: .\scooter\views.py:508
+msgid "延长时间必须大于0"
+msgstr ""
+
+#: .\scooter\views.py:531
+msgid "请选择车辆"
+msgstr ""
+
+#: .\scooter\views.py:533
+msgid "请填写问题描述"
+msgstr ""
+
+#: .\scooter\views.py:555
+msgid "反馈提交成功！"
+msgstr ""

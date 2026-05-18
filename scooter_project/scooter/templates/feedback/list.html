@@ -1,39 +1,39 @@
 {% extends "base.html" %}
 
-{% block title %}故障反馈管理{% endblock %}
+{% block title %}{% trans "故障反馈管理" %}{% endblock %}
 
 {% block content %}
 <section class="section">
     <div class="section__head">
         <div>
-            <h1>故障反馈管理</h1>
-            <p class="text-muted mt-2">筛选并处理用户提交的车辆故障反馈。</p>
+            <h1>{% trans "故障反馈管理" %}</h1>
+            <p class="text-muted mt-2">{% trans "筛选并处理用户提交的车辆故障反馈。" %}</p>
         </div>
-        <a href="{% url 'index' %}" class="btn btn--ghost">返回首页</a>
+        <a href="{% url 'index' %}" class="btn btn--ghost">{% trans "返回首页" %}</a>
     </div>
 
     <div class="toolbar" style="margin-bottom: var(--space-4);">
-        <span class="text-secondary">优先级：</span>
-        <a href="?priority=&status={{ status }}" class="btn btn--sm {% if not priority %}btn--primary{% else %}btn--ghost{% endif %}">全部</a>
-        <a href="?priority=high&status={{ status }}" class="btn btn--sm {% if priority == 'high' %}btn--primary{% else %}btn--ghost{% endif %}">高优先级</a>
-        <a href="?priority=low&status={{ status }}" class="btn btn--sm {% if priority == 'low' %}btn--primary{% else %}btn--ghost{% endif %}">低优先级</a>
+        <span class="text-secondary">{% trans "优先级：" %}</span>
+        <a href="?priority=&status={{ status }}" class="btn btn--sm {% if not priority %}btn--primary{% else %}btn--ghost{% endif %}">{% trans "全部" %}</a>
+        <a href="?priority=high&status={{ status }}" class="btn btn--sm {% if priority == 'high' %}btn--primary{% else %}btn--ghost{% endif %}">{% trans "高优先级" %}</a>
+        <a href="?priority=low&status={{ status }}" class="btn btn--sm {% if priority == 'low' %}btn--primary{% else %}btn--ghost{% endif %}">{% trans "低优先级" %}</a>
 
-        <span class="text-secondary" style="margin-left: var(--space-4);">状态：</span>
-        <a href="?priority={{ priority }}&status=" class="btn btn--sm {% if not status %}btn--primary{% else %}btn--ghost{% endif %}">全部</a>
-        <a href="?priority={{ priority }}&status=pending" class="btn btn--sm {% if status == 'pending' %}btn--primary{% else %}btn--ghost{% endif %}">待处理</a>
-        <a href="?priority={{ priority }}&status=resolved" class="btn btn--sm {% if status == 'resolved' %}btn--primary{% else %}btn--ghost{% endif %}">已解决</a>
+        <span class="text-secondary" style="margin-left: var(--space-4);">{% trans "状态：" %}</span>
+        <a href="?priority={{ priority }}&status=" class="btn btn--sm {% if not status %}btn--primary{% else %}btn--ghost{% endif %}">{% trans "全部" %}</a>
+        <a href="?priority={{ priority }}&status=pending" class="btn btn--sm {% if status == 'pending' %}btn--primary{% else %}btn--ghost{% endif %}">{% trans "待处理" %}</a>
+        <a href="?priority={{ priority }}&status=resolved" class="btn btn--sm {% if status == 'resolved' %}btn--primary{% else %}btn--ghost{% endif %}">{% trans "已解决" %}</a>
     </div>
 
     <div class="table-scroll">
         <table class="table">
             <thead>
                 <tr>
-                    <th>车辆</th>
-                    <th>用户</th>
-                    <th>内容</th>
-                    <th>优先级</th>
-                    <th>状态</th>
-                    <th>操作</th>
+                    <th>{% trans "车辆" %}</th>
+                    <th>{% trans "用户" %}</th>
+                    <th>{% trans "内容" %}</th>
+                    <th>{% trans "优先级" %}</th>
+                    <th>{% trans "状态" %}</th>
+                    <th>{% trans "操作" %}</th>
                 </tr>
             </thead>
             <tbody>
@@ -57,13 +57,13 @@
                         {% endif %}
                     </td>
                     <td>
-                        <a href="{% url 'feedback_update' fb.id %}" class="btn btn--secondary btn--sm">处理</a>
+                        <a href="{% url 'feedback_update' fb.id %}" class="btn btn--secondary btn--sm">{% trans "处理" %}</a>
                     </td>
                 </tr>
                 {% empty %}
                 <tr>
                     <td colspan="6">
-                        <div class="alert alert--info" role="status">暂无符合条件的反馈</div>
+                        <div class="alert alert--info" role="status">{% trans "暂无符合条件的反馈" %}</div>
                     </td>
                 </tr>
                 {% endfor %}

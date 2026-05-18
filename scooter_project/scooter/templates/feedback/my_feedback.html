@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 
-{% block title %}我的反馈{% endblock %}
+{% block title %}{% trans "我的反馈" %}{% endblock %}
 
 {% block content %}
 <section class="section">
     <div class="section__head">
         <div>
-            <h1>我的故障反馈</h1>
-            <p class="text-muted mt-2">跟踪提交记录与处理状态。</p>
+            <h1>{% trans "我的故障反馈" %}</h1>
+            <p class="text-muted mt-2">{% trans "跟踪提交记录与处理状态。" %}</p>
         </div>
         <div class="toolbar">
-            <a href="{% url 'feedback_create' %}" class="btn btn--primary">提交新反馈</a>
-            <a href="{% url 'index' %}" class="btn btn--ghost">返回首页</a>
+            <a href="{% url 'feedback_create' %}" class="btn btn--primary">{% trans "提交新反馈" %}</a>
+            <a href="{% url 'index' %}" class="btn btn--ghost">{% trans "返回首页" %}</a>
         </div>
     </div>
 
@@ -20,18 +20,18 @@
             {% for fb in feedbacks %}
                 <article class="card">
                     <div class="card__body stack">
-                        <h3>车辆 {{ fb.scooter.name }}</h3>
+                        <h3>{% trans "车辆" %} {{ fb.scooter.name }}</h3>
                         <p>{{ fb.content }}</p>
                         <div class="meta-list">
                             <div class="meta-item">
-                                <span>状态</span>
+                                <span>{% trans "状态" %}</span>
                                 {% if fb.status == 'resolved' %}
                                     <span class="badge badge--success">{{ fb.get_status_display }}</span>
                                 {% else %}
                                     <span class="badge badge--warning">{{ fb.get_status_display }}</span>
                                 {% endif %}
                             </div>
-                            <div class="meta-item"><span>提交时间</span><span>{{ fb.created_at|date:"Y-m-d H:i" }}</span></div>
+                            <div class="meta-item"><span>{% trans "提交时间" %}</span><span>{{ fb.created_at|date:"Y-m-d H:i" }}</span></div>
                         </div>
                     </div>
                 </article>
@@ -39,8 +39,8 @@
         </div>
     {% else %}
         <div class="alert alert--info" role="status">
-            <strong>暂无反馈记录</strong>
-            <span>当你提交反馈后，会在此展示处理进度。</span>
+            <strong>{% trans "暂无反馈记录" %}</strong>
+            <span>{% trans "当你提交反馈后，会在此展示处理进度。" %}</span>
         </div>
     {% endif %}
 </section>

@@ -1,35 +1,35 @@
 {% extends "base.html" %}
 
-{% block title %}添加银行卡{% endblock %}
+{% block title %}{% trans "添加银行卡" %}{% endblock %}
 
 {% block content %}
 <section class="section">
     <div class="container container--narrow">
         <article class="card">
             <div class="card__body stack">
-                <h1>添加银行卡</h1>
-                <p class="text-muted">系统仅保存卡号后四位用于展示。</p>
+                <h1>{% trans "添加银行卡" %}</h1>
+                <p class="text-muted">{% trans "系统仅保存卡号后四位用于展示。" %}</p>
 
                 {% if msg %}
                     <div class="alert alert--error" role="alert">{{ msg }}</div>
                 {% endif %}
 
-                <form method="post" class="form" aria-label="添加银行卡表单">
+                <form method="post" class="form" aria-label="{% trans '添加银行卡表单' %}">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label for="bank_name" class="form-label">银行名称</label>
+                        <label for="bank_name" class="form-label">{% trans "银行名称" %}</label>
                         <input id="bank_name" type="text" name="bank_name" class="form-input" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="card_num" class="form-label">银行卡号</label>
+                        <label for="card_num" class="form-label">{% trans "银行卡号" %}</label>
                         <input id="card_num" type="text" name="card_num" class="form-input" required>
-                        <p class="form-hint">至少输入 4 位，实际只保留后四位。</p>
+                        <p class="form-hint">{% trans "至少输入 4 位，实际只保留后四位。" %}</p>
                     </div>
 
                     <div class="toolbar">
-                        <button type="submit" class="btn btn--primary">保存</button>
-                        <a href="{% url 'card_list' %}" class="btn btn--ghost">返回银行卡列表</a>
+                        <button type="submit" class="btn btn--primary">{% trans "保存" %}</button>
+                        <a href="{% url 'card_list' %}" class="btn btn--ghost">{% trans "返回银行卡列表" %}</a>
                     </div>
                 </form>
             </div>

@@ -1,28 +1,28 @@
 {% extends "base.html" %}
 
-{% block title %}订单支付{% endblock %}
+{% block title %}{% trans "订单支付" %}{% endblock %}
 
 {% block content %}
 <section class="section">
     <div class="container container--narrow">
         <article class="card">
             <div class="card__body stack">
-                <h1>确认支付</h1>
+                <h1>{% trans "确认支付" %}</h1>
 
                 <div class="meta-list">
-                    <div class="meta-item"><span>订单 ID</span><span class="font-medium">#{{ order.id }}</span></div>
-                    <div class="meta-item"><span>滑板车</span><span class="font-medium">{{ order.scooter.name }}</span></div>
-                    <div class="meta-item"><span>租赁时长</span><span class="font-medium">{{ order.hire_period_cn }}</span></div>
-                    <div class="meta-item"><span>订单原价</span><span class="font-medium">¥{{ origin_price }}</span></div>
-                    <div class="meta-item"><span>折后金额</span><span class="font-medium">¥{{ order.total_price }}</span></div>
-                    <div class="meta-item"><span>当前状态</span><span class="badge badge--warning">{{ order.pay_status_cn }}</span></div>
+                    <div class="meta-item"><span>{% trans "订单 ID" %}</span><span class="font-medium">#{{ order.id }}</span></div>
+                    <div class="meta-item"><span>{% trans "滑板车" %}</span><span class="font-medium">{{ order.scooter.name }}</span></div>
+                    <div class="meta-item"><span>{% trans "租赁时长" %}</span><span class="font-medium">{{ order.hire_period_cn }}</span></div>
+                    <div class="meta-item"><span>{% trans "订单原价" %}</span><span class="font-medium">¥{{ origin_price }}</span></div>
+                    <div class="meta-item"><span>{% trans "折后金额" %}</span><span class="font-medium">¥{{ order.total_price }}</span></div>
+                    <div class="meta-item"><span>{% trans "当前状态" %}</span><span class="badge badge--warning">{{ order.pay_status_cn }}</span></div>
                 </div>
 
-                <form method="post" class="toolbar" data-confirm="确认支付该订单吗？">
+                <form method="post" class="toolbar" data-confirm="{% trans "确认支付该订单吗？" %}">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn--primary">确认支付</button>
-                    <a href="{% url 'my_orders' %}" class="btn btn--ghost">返回我的订单</a>
-                    <a href="{% url 'index' %}" class="btn btn--ghost">返回首页</a>
+                    <button type="submit" class="btn btn--primary">{% trans "确认支付" %}</button>
+                    <a href="{% url 'my_orders' %}" class="btn btn--ghost">{% trans "返回我的订单" %}</a>
+                    <a href="{% url 'index' %}" class="btn btn--ghost">{% trans "返回首页" %}</a>
                 </form>
             </div>
         </article>

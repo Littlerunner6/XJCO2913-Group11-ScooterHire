@@ -1,30 +1,30 @@
 {% extends "base.html" %}
 
-{% block title %}员工代客下单{% endblock %}
+{% block title %}{% trans "员工代客下单" %}{% endblock %}
 
 {% block content %}
 <section class="section">
     <div class="container container--narrow">
         <article class="card">
             <div class="card__body stack">
-                <h1>员工代客下单</h1>
-                <p class="text-muted">为访客创建订单后，系统会发送预订确认邮件。</p>
+                <h1>{% trans "员工代客下单" %}</h1>
+                <p class="text-muted">{% trans "为访客创建订单后，系统会发送预订确认邮件。" %}</p>
 
-                <form method="post" class="form" aria-label="员工代客下单表单">
+                <form method="post" class="form" aria-label="{% trans "员工代客下单表单" %}">
                     {% csrf_token %}
 
                     <div class="form-group">
-                        <label for="guest_name" class="form-label">客户姓名</label>
+                        <label for="guest_name" class="form-label">{% trans "客户姓名" %}</label>
                         <input id="guest_name" type="text" name="guest_name" class="form-input" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="guest_email" class="form-label">客户邮箱</label>
+                        <label for="guest_email" class="form-label">{% trans "客户邮箱" %}</label>
                         <input id="guest_email" type="email" name="guest_email" class="form-input" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="scooter_id" class="form-label">选择滑板车</label>
+                        <label for="scooter_id" class="form-label">{% trans "选择滑板车" %}</label>
                         <select id="scooter_id" name="scooter_id" class="form-select" required>
                             {% for s in scooters %}
                                 <option value="{{ s.id }}">{{ s.id }} - {{ s.name }}</option>
@@ -33,13 +33,13 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="hire_period" class="form-label">租赁时长（小时）</label>
+                        <label for="hire_period" class="form-label">{% trans "租赁时长（小时）" %}</label>
                         <input id="hire_period" type="number" name="hire_period" min="1" class="form-input" required>
                     </div>
 
                     <div class="toolbar">
-                        <button type="submit" class="btn btn--primary">提交预订</button>
-                        <a href="{% url 'index' %}" class="btn btn--ghost">返回首页</a>
+                        <button type="submit" class="btn btn--primary">{% trans "提交预订" %}</button>
+                        <a href="{% url 'index' %}" class="btn btn--ghost">{% trans "返回首页" %}</a>
                     </div>
                 </form>
             </div>

@@ -1,38 +1,62 @@
 {% extends "base.html" %}
 
-{% block title %}处理故障反馈{% endblock %}
+{% block title %}处理反馈{% endblock %}
 
 {% block content %}
+<section class="section">
+    <div class="container container--narrow">
+        <article class="card">
+            <div class="card__header">
+                <h1>处理故障反馈</h1>
+            </div>
 
-<h2>处理故障反馈</h2>
+            <div class="card__body stack">
+                <div class="meta-list">
+                    <div class="meta-item">
+                        <span>车辆</span>
+                        <span class="font-medium">{{ feedback.scooter.name }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>用户</span>
+                        <span class="font-medium">{{ feedback.user.username }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>提交时间</span>
+                        <span class="font-medium">{{ feedback.created_at|date:"m-d H:i" }}</span>
+                    </div>
+                </div>
 
-<div style="border:1px solid #ccc; padding:15px; margin-bottom:20px;">
-    <p><strong>车辆：</strong>{{ feedback.scooter.name }}</p>
-    <p><strong>用户：</strong>{{ feedback.user.username }}</p>
-    <p><strong>提交时间：</strong>{{ feedback.created_at|date:"m-d H:i" }}</p>
-    <p><strong>问题描述：</strong></p>
-    <p style="background:#f9f9f9; padding:10px;">{{ feedback.content }}</p>
-</div>
+                <div class="alert alert--info">
+                    <strong>问题描述</strong>
+                    <span>{{ feedback.content }}</span>
+                </div>
 
-<form method="post">
-    {% csrf_token %}
+                <form method="post" class="form">
+                    {% csrf_token %}
 
-    <label>优先级：</label>
-    <select name="priority">
-        <option value="low" {% if feedback.priority == 'low' %}selected{% endif %}>低优先级</option>
-        <option value="high" {% if feedback.priority == 'high' %}selected{% endif %}>高优先级</option>
-    </select>
+                    <div class="form-group">
+                        <label for="priority" class="form-label">优先级</label>
+                        <select id="priority" name="priority" class="form-select">
+                            <option value="low" {% if feedback.priority == 'low' %}selected{% endif %}>低优先级</option>
+                            <option value="high" {% if feedback.priority == 'high' %}selected{% endif %}>高优先级</option>
+                        </select>
+                    </div>
 
-    <br><br>
+                    <div class="form-group">
+                        <label for="status" class="form-label">处理状态</label>
+                        <select id="status" name="status" class="form-select">
+                            <option value="pending" {% if feedback.status == 'pending' %}selected{% endif %}>待处理</option>
+                            <option value="resolved" {% if feedback.status == 'resolved' %}selected{% endif %}>已解决</option>
+                        </select>
+                    </div>
 
-    <label>处理状态：</label>
-    <select name="status">
-        <option value="pending" {% if feedback.status == 'pending' %}selected{% endif %}>待处理</option>
-        <option value="resolved" {% if feedback.status == 'resolved' %}selected{% endif %}>已解决</option>
-    </select>
-
-    <br><br>
-    <button type="submit">保存修改</button>
-</form>
-
+                    <div class="toolbar">
+                        <button type="submit" class="btn btn--primary">保存修改</button>
+                        <a href="{% url 'feedback_list' %}" class="btn btn--ghost">返回列表</a>
+                    </div>
+                </form>
+            </div>
+        </article>
+    </div>
+</section>
 {% endblock %}

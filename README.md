@@ -1,265 +1,287 @@
-# XJCO2913 - Group 11 - Scooter Hire System
-Software Engineering Project - Electric Scooter Hire System
+# XJCO2913 Group 11 - Scooter Hire System
 
-## Project Overview
+Electric Scooter Hire System for the XJCO2913 Software Engineering coursework.
 
-A **Software Engineering Project** implementing an **Electric Scooter Hire System** built with Django and Python. This system provides a comprehensive platform for managing electric scooter rentals, including user management, scooter inventory, booking management, and administrative controls.
-
-**Language Composition:** Python (70%), HTML (30%)
-
----
-
-## Table of Contents
-
-- [Features](#features)
-- [Project Structure](#project-structure)
-- [Technology Stack](#technology-stack)
-- [Installation](#installation)
-- [Quick Start](#quick-start)
-- [Usage](#usage)
-- [Project Structure Details](#project-structure-details)
-- [Contributing](#contributing)
-- [License](#license)
-
----
+The application is a Django web app for browsing scooters, creating bookings, simulating payments, managing cards, handling fault feedback, and supporting staff/admin workflows.
 
 ## Features
 
-### Core Functionality
+### Customer Features
 
-- **User Management**: User registration, authentication, and profile management
-- **Scooter Fleet Management**: Track and manage available electric scooters
-- **Booking System**: Users can browse available scooters and make reservations
-- **Admin Dashboard**: Administrative interface for managing users, scooters, and bookings
-- **Rental Tracking**: Real-time tracking of scooter rentals and returns
-- **Payment Integration**: Support for rental pricing and payment processing
+- Register, log in, and log out using Django authentication.
+- Browse available scooters with price, minimum hire period, location, image, and performance information.
+- View scooter locations on an interactive Leaflet/OpenStreetMap map.
+- Create scooter bookings and receive confirmation email notifications.
+- Pay for unpaid bookings with simulated payment flow.
+- View, extend, and cancel unpaid bookings.
+- Manage saved bank cards, including default card selection.
+- Submit scooter fault feedback and view personal feedback history.
+- Switch between English and Simplified Chinese.
+- Display membership groups in the welcome header for `Student`, `Elderly`, and `FrequentUser` users.
 
-### Administrative Features
+### Staff Features
 
-- Complete CRUD operations for scooters and users
-- Admin panel for monitoring system activities
-- User role-based access control
-- Reporting and analytics capabilities
+- Create bookings for unregistered customers with guest name and email.
+- Review and filter fault feedback by priority and status.
+- Update feedback priority and resolution status.
 
----
+### Admin Features
+
+- Manage scooters and orders through Django Admin.
+- Configure scooter availability, hourly price, minimum hire hours, image, performance text, address, latitude, and longitude.
+- View weekly income reports grouped by hire period and day.
 
 ## Technology Stack
 
-| Technology | Purpose |
-|------------|---------|
-| **Python** | Backend development language |
-| **Django** | Web framework for rapid development |
-| **HTML** | Frontend templating and UI |
-| **SQLite/PostgreSQL** | Database management |
-| **Django ORM** | Database abstraction and modeling |
+| Area | Technology |
+| --- | --- |
+| Backend | Python, Django |
+| Database | PostgreSQL |
+| ORM | Django ORM |
+| Frontend | Django templates, HTML, CSS, JavaScript |
+| Map | Leaflet with OpenStreetMap tiles |
+| Media | Django media uploads, Pillow |
+| Email | Django SMTP email backend |
+| Internationalization | Django i18n, `locale/` message files |
 
----
+## Project Structure
 
-## Installation
+```text
+XJCO2913-Group11-ScooterHire/
+├── README.md
+├── scooter_project/
+│   ├── manage.py
+│   ├── admin.txt
+│   ├── locale/
+│   │   ├── en/LC_MESSAGES/
+│   │   └── zh_Hans/LC_MESSAGES/
+│   ├── media/
+│   ├── scooter/
+│   │   ├── admin.py
+│   │   ├── models.py
+│   │   ├── tests.py
+│   │   ├── urls.py
+│   │   ├── views.py
+│   │   ├── migrations/
+│   │   ├── static/scooter/
+│   │   │   ├── css/
+│   │   │   └── js/
+│   │   └── templates/
+│   │       ├── admin/
+│   │       ├── card/
+│   │       ├── feedback/
+│   │       ├── order/
+│   │       ├── registration/
+│   │       ├── staff/
+│   │       ├── base.html
+│   │       └── index.html
+│   ├── scooter_project/
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   ├── asgi.py
+│   │   └── wsgi.py
+│   └── staticfiles/
+```
+
+## Main Models
+
+- `Scooter`: scooter inventory, pricing, availability, location, image, and performance descriptions.
+- `Order`: booking records for registered users and staff-created guest bookings.
+- `Card`: saved card metadata for users.
+- `Feedback`: fault reports with status and priority.
+- `User`: Django built-in user model, with membership handled through Django groups.
+
+## Key Routes
+
+| Route | Purpose |
+| --- | --- |
+| `/` | Home page, available scooters, active unpaid orders, map |
+| `/login/` | Login |
+| `/logout/` | Logout |
+| `/register/` | Register |
+| `/order/create/<scooter_id>/` | Booking form for one scooter |
+| `/order/submit/` | Submit booking form |
+| `/order/pay/<order_id>/` | Simulated payment |
+| `/order/my/` | Current user's orders |
+| `/order/cancel/<order_id>/` | Cancel unpaid order |
+| `/order/extend/<order_id>/` | Extend unpaid booking |
+| `/card/list/` | Saved cards |
+| `/card/add/` | Add card |
+| `/staff/create-booking/` | Staff booking for guest customers |
+| `/feedback/create/` | Submit scooter fault feedback |
+| `/feedback/my/` | User feedback history |
+| `/feedback/list/` | Staff feedback management |
+| `/feedback/update/<feedback_id>/` | Staff feedback update |
+| `/income/weekly/` | Admin weekly income report |
+| `/admin/` | Django Admin |
+| `/i18n/` | Django language switching |
+
+## Setup
 
 ### Prerequisites
 
-- Python 3.8 or higher
-- pip (Python package manager)
-- Virtual environment (recommended)
+- Python 3.9 or later
+- PostgreSQL running locally
+- A virtual environment
 
-### Setup Steps
+The current local environment uses:
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/Littlerunner6/XJCO2913-Group11-ScooterHire.git
-   cd XJCO2913-Group11-ScooterHire
-   ```
+```text
+Django==4.2.29
+psycopg2-binary==2.9.11
+Pillow==11.3.0
+```
 
-2. **Create a virtual environment**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
+There is currently no `requirements.txt` in the repository. Install the required packages manually:
 
-3. **Navigate to project directory**
-   ```bash
-   cd scooter_project
-   ```
+```bash
+python -m venv venv
+source venv/bin/activate
+pip install Django==4.2.29 psycopg2-binary==2.9.11 Pillow==11.3.0
+```
 
-4. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
+### Database
 
-5. **Apply database migrations**
-   ```bash
-   python manage.py migrate
-   ```
+The current `settings.py` expects this PostgreSQL database:
 
-6. **Create a superuser (admin account)**
-   ```bash
-   python manage.py createsuperuser
-   ```
+```text
+ENGINE: django.db.backends.postgresql
+NAME: scooter_db
+USER: postgres
+PASSWORD: 123456
+HOST: localhost
+PORT: 5432
+```
 
----
+Create the database before migrating:
 
-## Quick Start
+```bash
+createdb scooter_db
+```
 
-### Running the Development Server
+If your local PostgreSQL credentials differ, update `scooter_project/scooter_project/settings.py`.
+
+### Migrate and Create Admin User
 
 ```bash
 cd scooter_project
+python manage.py migrate
+python manage.py createsuperuser
+```
+
+### Run the Development Server
+
+```bash
 python manage.py runserver
 ```
 
-The application will be available at `http://127.0.0.1:8000/`
+Open:
 
-### Admin Access
+```text
+http://127.0.0.1:8000/
+```
 
-```bash
-# Access the Django admin panel at:
+Admin:
+
+```text
 http://127.0.0.1:8000/admin/
 ```
 
-Use your superuser credentials (created during installation) to log in.
+## Development Commands
 
----
-
-## Usage
-
-### For Users
-
-1. **Register/Login**: Create an account or log in to the system
-2. **Browse Scooters**: View available electric scooters
-3. **Make a Booking**: Reserve a scooter for your desired time period
-4. **Track Rental**: Monitor your active rental in real-time
-5. **Manage Account**: Update profile information and view booking history
-
-### For Administrators
-
-1. **Access Admin Panel**: Log in with admin credentials
-2. **Manage Users**: Add, edit, or remove user accounts
-3. **Manage Scooters**: Add new scooters to the fleet or update existing ones
-4. **Monitor Bookings**: View and manage all active and historical bookings
-5. **Generate Reports**: Analyze usage patterns and system statistics
-
----
-
-## Project Structure Details
-
-```
-XJCO2913-Group11-ScooterHire/
-├── scooter_project/                # Main Django project directory
-│   ├── scooter/                    # Main Django app
-│   │   ├── admin.py                # Django admin configuration
-│   │   ├── apps.py                 # App configuration
-│   │   ├── models.py               # Database models (Scooter, Booking, User, etc.)
-│   │   ├── views.py                # View logic for rendering pages
-│   │   ├── urls.py                 # URL routing configuration
-│   │   ├── tests.py                # Unit tests
-│   │   ├── migrations/             # Database migration files
-│   │   └── templates/              # HTML templates
-│   │
-│   ├── scooter_project/            # Project settings directory
-│   │   ├── settings.py             # Django project settings
-│   │   ├── urls.py                 # Main URL configuration
-│   │   ├── wsgi.py                 # WSGI application entry point
-│   │   └── asgi.py                 # ASGI application entry point
-│   │
-│   ├── manage.py                   # Django management command utility
-│   └── admin.txt                   # Admin account credentials (keep secure)
-│
-└── README.md                       # This file
-```
-
-### Key Files Explanation
-
-| File | Purpose |
-|------|---------|
-| `models.py` | Defines database schemas for Scooters, Users, Bookings, and Payments |
-| `views.py` | Contains business logic and request handlers |
-| `urls.py` | Maps URL patterns to view functions |
-| `admin.py` | Configures Django admin interface |
-| `settings.py` | Django configuration (database, installed apps, middleware) |
-| `manage.py` | Entry point for Django management commands |
-
----
-
-## Database Models
-
-### Core Models
-
-- **User**: Extends Django's built-in user model with additional fields
-- **Scooter**: Represents individual scooters with status and location info
-- **Booking**: Records rental transactions and user bookings
-- **Payment**: Manages payment records and transaction history
-- **Location**: Tracks docking stations and scooter locations
-
----
-
-## API Endpoints
-
-### Main Routes
-
-- `GET /` - Home page
-- `GET /scooters/` - List all available scooters
-- `GET /scooters/<id>/` - View scooter details
-- `POST /bookings/` - Create a new booking
-- `GET /bookings/` - View user's bookings
-- `GET /admin/` - Admin panel
-
----
-
-## Development
-
-### Running Tests
+Run Django system checks:
 
 ```bash
-python manage.py test
+python manage.py check
 ```
 
-### Creating Database Migrations
+Run tests:
+
+```bash
+python manage.py test scooter
+```
+
+Create migrations after model changes:
 
 ```bash
 python manage.py makemigrations
 python manage.py migrate
 ```
 
-### Django Shell (Interactive Console)
+Compile translation messages after editing `.po` files:
 
 ```bash
-python manage.py shell
+python manage.py compilemessages
 ```
 
----
+Collect static files:
+
+```bash
+python manage.py collectstatic
+```
+
+## User Groups and Discounts
+
+The app uses Django groups for membership-specific behavior:
+
+| Group | Discount |
+| --- | --- |
+| `FrequentUser` | 20% off |
+| `Elderly` | 15% off |
+| `Student` | 10% off |
+
+If a user belongs to multiple groups, the application applies the first match in this priority order:
+
+```text
+FrequentUser -> Elderly -> Student
+```
+
+These groups are also displayed in the home page welcome header.
+
+## Notes for Demonstration
+
+- Add scooters in Django Admin before demonstrating booking.
+- Set valid `address`, `latitude`, and `longitude` values so the map markers render correctly.
+- Mark scooters as available to make them visible on the home page.
+- Give staff accounts `is_staff=True` to access staff booking and feedback management.
+- Give admin accounts `is_superuser=True` to access weekly income and Django Admin.
+- Assign users to `Student`, `Elderly`, or `FrequentUser` groups to demonstrate discount and membership display.
+
+## Security Notes
+
+This is coursework/demo code and is not production-ready as-is.
+
+- `SECRET_KEY`, database credentials, and email credentials are currently hard-coded in `settings.py`.
+- Move secrets to environment variables before deployment.
+- Do not commit real SMTP passwords or production credentials.
+- `DEBUG=True` is enabled and should be disabled for production.
+- `ALLOWED_HOSTS` is empty and should be configured for deployment.
 
 ## Troubleshooting
 
-### Common Issues
+### `ModuleNotFoundError: No module named 'django'`
 
-**Issue**: `ModuleNotFoundError: No module named 'django'`
-- **Solution**: Ensure virtual environment is activated and dependencies are installed: `pip install -r requirements.txt`
+Activate the virtual environment and install dependencies:
 
-**Issue**: Database migration errors
-- **Solution**: Reset migrations: `python manage.py migrate --fake-initial`
+```bash
+source venv/bin/activate
+pip install Django==4.2.29 psycopg2-binary==2.9.11 Pillow==11.3.0
+```
 
-**Issue**: Admin credentials not working
-- **Solution**: Create a new superuser: `python manage.py createsuperuser`
+### PostgreSQL Connection Error
 
----
+Confirm PostgreSQL is running and that `scooter_db` exists. Then verify the credentials in `settings.py`.
+
+### No Scooters on Home Page
+
+Create scooters in Django Admin and make sure `is_available=True`.
+
+### Map Shows Default Location
+
+Set real latitude and longitude values for scooters in Django Admin.
 
 ## License
 
 This project is part of the XJCO2913 Software Engineering course at Leeds.
 
-**Academic Use Only**
-
----
-
-## Acknowledgments
-
-- Django Framework documentation and community
-- Course instructors and mentors
-- All team members who contributed to this project
-
----
-
-**Last Updated**: March 2026
-
-**Project Status**: ✅ Active Development
+Academic use only.
